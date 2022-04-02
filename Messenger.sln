@@ -1,9 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.1.32319.34
+VisualStudioVersion = 17.1.32328.378
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Messenger", "Messenger\Messenger.csproj", "{7C382E5C-04A4-41E8-85CC-9AEC18F5CD4B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Messenger", "Messenger\Messenger.csproj", "{68E98C40-67CE-4B54-9AAD-1AD3EB96E7C8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,15 +11,15 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{7C382E5C-04A4-41E8-85CC-9AEC18F5CD4B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7C382E5C-04A4-41E8-85CC-9AEC18F5CD4B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7C382E5C-04A4-41E8-85CC-9AEC18F5CD4B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7C382E5C-04A4-41E8-85CC-9AEC18F5CD4B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{68E98C40-67CE-4B54-9AAD-1AD3EB96E7C8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{68E98C40-67CE-4B54-9AAD-1AD3EB96E7C8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{68E98C40-67CE-4B54-9AAD-1AD3EB96E7C8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{68E98C40-67CE-4B54-9AAD-1AD3EB96E7C8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {3BFDF398-2001-4EAD-857E-2C98CF0E1F1F}
+		SolutionGuid = {60614017-3073-486E-BC26-AC4D4CA11AA6}
 	EndGlobalSection
 EndGlobal
