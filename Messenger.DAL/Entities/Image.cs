@@ -9,7 +9,7 @@ using MongoDB.Bson.Serialization.Attributes;
 
 namespace Messenger.DAL.Entities
 {
-    internal class Image : BaseEntity
+    public class Image : BaseEntity
     {
         [BsonRequired]
         public string ImageUrl { get; set; }

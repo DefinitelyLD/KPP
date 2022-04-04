@@ -4,6 +4,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 17.1.32328.378
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Messenger.WEB", "Messenger\Messenger.WEB.csproj", "{68E98C40-67CE-4B54-9AAD-1AD3EB96E7C8}"
+	ProjectSection(ProjectDependencies) = postProject
+		{D182BF33-BA5F-45C5-808E-6AA3A1F2B65C} = {D182BF33-BA5F-45C5-808E-6AA3A1F2B65C}
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Messenger.DAL", "Messenger.DAL\Messenger.DAL.csproj", "{D182BF33-BA5F-45C5-808E-6AA3A1F2B65C}"
 EndProject

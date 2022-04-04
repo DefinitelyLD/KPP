@@ -10,7 +10,7 @@ using MongoDB.Bson.Serialization.Attributes;
 
 namespace Messenger.DAL.Entities
 {
-    internal class User : BaseEntity
+    public class User : BaseEntity
     {
         [BsonRequired]
         public string Name { get; set; }

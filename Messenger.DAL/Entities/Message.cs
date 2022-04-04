@@ -9,7 +9,7 @@ using MongoDB.Driver;
 
 namespace Messenger.DAL.Entities
 {
-    internal class Message : BaseEntity
+    public class Message : BaseEntity
     {
         [BsonRequired]
         public Chat Chat { get; set; }

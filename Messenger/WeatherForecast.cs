@@ -1,6 +1,6 @@
 using System;
 
-namespace Messenger
+namespace Messenger.WEB
 {
     public class WeatherForecast
     {

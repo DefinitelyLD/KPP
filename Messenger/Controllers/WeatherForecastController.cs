@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Messenger.Controllers
+namespace Messenger.WEB.Controllers
 {
     [ApiController]
     [Route("[controller]")]

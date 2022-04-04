@@ -12,10 +12,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Messenger.Models;
+using Messenger.WEB.Models;
 using Microsoft.Extensions.Options;
 
-namespace Messenger
+namespace Messenger.WEB
 {
     public class Startup
     {

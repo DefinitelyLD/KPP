@@ -9,11 +9,11 @@ using MongoDB.Bson.Serialization.Attributes;
 
 namespace Messenger.DAL.Entities
 {
-    internal abstract class BaseEntity
+    public abstract class BaseEntity
     {
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
-        public int Id { get; set; }
+        public ObjectId Id { get; set; }
         public DateTime CreatedDate { get; set; } = DateTime.UtcNow;
     }
 }
