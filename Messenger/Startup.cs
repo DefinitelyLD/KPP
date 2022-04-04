@@ -7,10 +7,13 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Messenger.Models;
+using Microsoft.Extensions.Options;
 
 namespace Messenger
 {
@@ -26,6 +29,12 @@ namespace Messenger
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            // requires using Microsoft.Extensions.Options
+            services.Configure<MessengerDatabaseSettings>(
+                Configuration.GetSection(nameof(MessengerDatabaseSettings)));
+
+            services.AddSingleton<IMessengerDatabaseSettings>(sp =>
+                sp.GetRequiredService<IOptions<MessengerDatabaseSettings>>().Value);
 
             services.AddControllers();
             services.AddSwaggerGen(c =>
@@ -55,5 +64,7 @@ namespace Messenger
                 endpoints.MapControllers();
             });
         }
+
     }
+
 }
