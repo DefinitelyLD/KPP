@@ -21,9 +21,9 @@ namespace Messenger.DAL.Entities
         [BsonRequired]
         public string Email { get; set; }
 
-        public IEnumerable<ObjectId> Contacts { get; set; }
+        public IEnumerable<User> Contacts { get; set; }
 
-        public IEnumerable<ObjectId> BlockedUsers { get; set; }
+        public IEnumerable<User> BlockedUsers { get; set; }
 
         public IEnumerable<Chat> Chats { get; set; }
     }

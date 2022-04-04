@@ -5,7 +5,12 @@ VisualStudioVersion = 17.1.32328.378
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Messenger.WEB", "Messenger\Messenger.WEB.csproj", "{68E98C40-67CE-4B54-9AAD-1AD3EB96E7C8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Messenger.DAL", "Messenger.DAL\Messenger.DAL.csproj", "{D182BF33-BA5F-45C5-808E-6AA3A1F2B65C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Messenger.DAL", "Messenger.DAL\Messenger.DAL.csproj", "{D182BF33-BA5F-45C5-808E-6AA3A1F2B65C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{A938DF9F-85AF-4511-BC94-40BE2CEFDBD1}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

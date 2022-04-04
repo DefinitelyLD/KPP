@@ -15,6 +15,6 @@ namespace Messenger.DAL.Entities
 
         public string? Password { get; set; }
 
-        public ObjectId Owner { get; set; }
+        public User Owner { get; set; }
     }
 }
