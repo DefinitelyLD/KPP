@@ -16,5 +16,7 @@ namespace Messenger.DAL.Entities
         public string? Password { get; set; }
 
         public User Owner { get; set; }
+
+        public IEnumerable<User> Admins { get; set; }
     }
 }
