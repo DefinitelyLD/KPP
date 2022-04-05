@@ -14,6 +14,5 @@ namespace Messenger.DAL.Entities
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
         public ObjectId Id { get; set; }
-        public DateTime CreatedDate { get; set; } = DateTime.UtcNow;
     }
 }

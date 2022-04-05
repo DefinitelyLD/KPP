@@ -17,8 +17,10 @@ namespace Messenger.DAL.Entities
         [BsonRequired]
         public User User { get; set; }
 
-        public string? Text { get; set; }
+        public string Text { get; set; }
 
-        public IEnumerable<Image> Images { get; set; }
+        public ObjectId ImageId { get; set; } // we will use MongoDB.GridFS for uploading images.
+
+        public DateTime CreatedDate { get; set; } = DateTime.UtcNow;
     }
 }
