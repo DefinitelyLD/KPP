@@ -12,6 +12,6 @@ namespace Messenger.DAL.UoW
         IUsersRepository Users { get; }
         IChatsRepository Chats { get; }
         IMessagesRepository Messages { get; }
-        int Complete();
+        int SaveChanges();
     }
 }

@@ -58,16 +58,12 @@ namespace Messenger.DAL.Context
             GC.SuppressFinalize(this);
         }
 
-        public Task AddCommand(Func<Task> func)
-        {
-            _commands.Add(func);
-            return Task.CompletedTask;
-        }
-
         private string GetCollectionName(Type documentType)
         {
-            return ((BsonCollectionAttribute)documentType.GetCustomAttributes(typeof(BsonCollectionAttribute), true)
-                .FirstOrDefault())?.CollectionName;
+            return ((BsonCollectionAttribute)documentType
+                .GetCustomAttributes(typeof(BsonCollectionAttribute), true)
+                .FirstOrDefault())?
+                .CollectionName;
         }
     }
 }

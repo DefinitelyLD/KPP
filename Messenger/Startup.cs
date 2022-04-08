@@ -16,7 +16,6 @@ using Microsoft.Extensions.Options;
 using Messenger.DAL;
 using Messenger.DAL.Repositories;
 using Messenger.DAL.Repositories.Interfaces;
-using Messenger.BLL;
 
 namespace Messenger.WEB
 {

@@ -18,7 +18,7 @@ namespace Messenger.DAL.UoW
             Chats = chatsRepository;
             Messages = messagesRepository;
         }
-        public int Complete()
+        public int SaveChanges()
         {
             return _context.SaveChanges();
         }

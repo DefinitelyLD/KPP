@@ -16,12 +16,10 @@ namespace Messenger.DAL.Repositories
     public abstract class BaseMongoRepository<T> : IRepository<T> where T : BaseEntity
     {
         protected readonly IMongoCollection<T> _collection;
-        private readonly MongoDbContext _context;
 
         public BaseMongoRepository(MongoDbContext context)
         {
-            _context = context;
-            _collection = _context.GetCollection<T>(typeof(T));
+            _collection = context.GetCollection<T>(typeof(T));
         }
 
         public virtual T Create(T entity)

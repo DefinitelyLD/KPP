@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace Messenger.DAL
 {
-    public static class DependencyInjection
+    public static class RepositoryDependencyInjection
     {
         public static IServiceCollection AddRepository(this IServiceCollection services)
         {
