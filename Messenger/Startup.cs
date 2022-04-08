@@ -16,6 +16,7 @@ using Microsoft.Extensions.Options;
 using Messenger.DAL;
 using Messenger.DAL.Repositories;
 using Messenger.DAL.Repositories.Interfaces;
+using Messenger.Mapping;
 
 namespace Messenger.WEB
 {
@@ -39,6 +40,7 @@ namespace Messenger.WEB
                 sp.GetRequiredService<IOptions<MessengerDatabaseSettings>>().Value);
 
             services.AddRepository();
+            services.AddMappers();
 
             services.AddControllers();
             services.AddSwaggerGen(c =>
