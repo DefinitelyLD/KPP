@@ -13,39 +13,11 @@ namespace Messenger.DAL.Context
     public class DbContext : IDisposable
     {
         private IMongoDatabase Database { get; set; }
-        private readonly List<Func<Task>> _commands;
 
         public DbContext(IMessengerDatabaseSettings settings)
         {
-            // Every command will be stored and it'll be processed at SaveChanges
-            _commands = new List<Func<Task>>();
 
-            RegisterConventions();
-
-            // Configure mongo (You can inject the config, just to simplify)
             Database = new MongoClient(settings.ConnectionString).GetDatabase(settings.DatabaseName);
-        }
-
-        private void RegisterConventions()
-        {
-            var pack = new ConventionPack
-                {
-                    new IgnoreExtraElementsConvention(true),
-                    new IgnoreIfDefaultConvention(true)
-                };
-            ConventionRegistry.Register("My Solution Conventions", pack, t => true);
-        }
-
-        public int SaveChanges()
-        {
-            var qtd = _commands.Count;
-            foreach (var command in _commands)
-            {
-                command();
-            }
-
-            _commands.Clear();
-            return qtd;
         }
 
         public IMongoCollection<T> GetCollection<T>(Type documentType)

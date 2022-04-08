@@ -4,6 +4,7 @@ using Messenger.DAL.Repositories;
 using Messenger.DAL.Repositories.Interfaces;
 using Messenger.DAL.UoW;
 using Microsoft.Extensions.DependencyInjection;
+using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
 using System.Linq;

@@ -18,10 +18,6 @@ namespace Messenger.DAL.UoW
             Chats = chatsRepository;
             Messages = messagesRepository;
         }
-        public int SaveChanges()
-        {
-            return _context.SaveChanges();
-        }
         public void Dispose()
         {
             Dispose(true);
