@@ -6,6 +6,7 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Messenger.WEB", "Messenger\Messenger.WEB.csproj", "{68E98C40-67CE-4B54-9AAD-1AD3EB96E7C8}"
 	ProjectSection(ProjectDependencies) = postProject
 		{D182BF33-BA5F-45C5-808E-6AA3A1F2B65C} = {D182BF33-BA5F-45C5-808E-6AA3A1F2B65C}
+		{E01E2188-17FE-4AFF-8A53-22468EDBF29B} = {E01E2188-17FE-4AFF-8A53-22468EDBF29B}
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Messenger.DAL", "Messenger.DAL\Messenger.DAL.csproj", "{D182BF33-BA5F-45C5-808E-6AA3A1F2B65C}"
@@ -18,6 +19,10 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Messenger.BLL", "Messenger.BLL\Messenger.BLL.csproj", "{9395F1EE-EFA9-4D83-8485-9610C588DC30}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Messenger.Mapping", "Messenger.Mapping\Messenger.Mapping.csproj", "{E01E2188-17FE-4AFF-8A53-22468EDBF29B}"
+	ProjectSection(ProjectDependencies) = postProject
+		{D182BF33-BA5F-45C5-808E-6AA3A1F2B65C} = {D182BF33-BA5F-45C5-808E-6AA3A1F2B65C}
+		{9395F1EE-EFA9-4D83-8485-9610C588DC30} = {9395F1EE-EFA9-4D83-8485-9610C588DC30}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

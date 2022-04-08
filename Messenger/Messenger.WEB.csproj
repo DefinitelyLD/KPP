@@ -17,10 +17,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Messenger.BLL\Messenger.BLL.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Controllers\" />
+    <ProjectReference Include="..\Messenger.Mapping\Messenger.Mapping.csproj" />
   </ItemGroup>
 
 </Project>
