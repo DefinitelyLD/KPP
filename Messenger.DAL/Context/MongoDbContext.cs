@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Messenger.DAL.Context
 {
-    public class MongoDbContext
+    public class MongoDbContext : IDisposable
     {
         private IMongoDatabase Database { get; set; }
         private readonly List<Func<Task>> _commands;
