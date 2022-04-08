@@ -41,7 +41,7 @@ namespace Messenger.WEB
                 sp.GetRequiredService<IOptions<MessengerDatabaseSettings>>().Value);
 
             services.AddRepository();
-            services.AddAutoMapper(typeof(UserProfile));
+            services.AddMappers();
 
             services.AddControllers();
             services.AddSwaggerGen(c =>

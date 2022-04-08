@@ -16,7 +16,7 @@ namespace Messenger.WEB.Controllers
             _mapper = mapper;
         }
 
-        [HttpGet]
+        /*[HttpGet]
         public UserModel Get()
         {
             User userEn = new()
@@ -29,7 +29,7 @@ namespace Messenger.WEB.Controllers
             return _mapper.Map<UserModel>(userEn);
         }
 
-       /* public IActionResult Index()
+        public IActionResult Index()
         {
             return View();
         }*/
