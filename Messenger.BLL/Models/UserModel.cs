@@ -15,5 +15,11 @@ namespace Messenger.BLL.Models
         public string Password { get; set; }
 
         public string Email { get; set; }
+
+        public IEnumerable<string> ContactsIds { get; set; }
+
+        public IEnumerable<string> BlockedUsersIds { get; set; }
+
+        public IEnumerable<string> ChatsIds { get; set; }
     }
 }
