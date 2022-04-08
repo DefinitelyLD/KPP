@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Messenger.BLL.Models
 {
-    internal class UserModel
+    public class UserModel
     {
         public string Id { get; set; }
 

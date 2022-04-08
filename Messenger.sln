@@ -6,6 +6,7 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Messenger.WEB", "Messenger\Messenger.WEB.csproj", "{68E98C40-67CE-4B54-9AAD-1AD3EB96E7C8}"
 	ProjectSection(ProjectDependencies) = postProject
 		{D182BF33-BA5F-45C5-808E-6AA3A1F2B65C} = {D182BF33-BA5F-45C5-808E-6AA3A1F2B65C}
+		{15277787-8F19-45C0-A86C-097E369BB12C} = {15277787-8F19-45C0-A86C-097E369BB12C}
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Messenger.DAL", "Messenger.DAL\Messenger.DAL.csproj", "{D182BF33-BA5F-45C5-808E-6AA3A1F2B65C}"
@@ -15,7 +16,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		.editorconfig = .editorconfig
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Messenger.BLL", "Messenger.BLL\Messenger.BLL.csproj", "{9395F1EE-EFA9-4D83-8485-9610C588DC30}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Messenger.BLL", "Messenger.BLL\Messenger.BLL.csproj", "{9395F1EE-EFA9-4D83-8485-9610C588DC30}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Messenger.Mapping", "Messenger.Mapping\Messenger.Mapping.csproj", "{15277787-8F19-45C0-A86C-097E369BB12C}"
+	ProjectSection(ProjectDependencies) = postProject
+		{D182BF33-BA5F-45C5-808E-6AA3A1F2B65C} = {D182BF33-BA5F-45C5-808E-6AA3A1F2B65C}
+		{9395F1EE-EFA9-4D83-8485-9610C588DC30} = {9395F1EE-EFA9-4D83-8485-9610C588DC30}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -35,6 +42,10 @@ Global
 		{9395F1EE-EFA9-4D83-8485-9610C588DC30}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9395F1EE-EFA9-4D83-8485-9610C588DC30}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9395F1EE-EFA9-4D83-8485-9610C588DC30}.Release|Any CPU.Build.0 = Release|Any CPU
+		{15277787-8F19-45C0-A86C-097E369BB12C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{15277787-8F19-45C0-A86C-097E369BB12C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{15277787-8F19-45C0-A86C-097E369BB12C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{15277787-8F19-45C0-A86C-097E369BB12C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
