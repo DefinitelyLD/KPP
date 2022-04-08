@@ -21,7 +21,7 @@ namespace Messenger.DAL
             services.AddTransient<IUsersRepository, UsersRepository>();
             services.AddTransient<IUnitOfWork, UnitOfWork>();
 
-            services.AddScoped(x => new MongoDbContext(services.BuildServiceProvider().GetService<IMessengerDatabaseSettings>()));
+            services.AddScoped(x => new DbContext(services.BuildServiceProvider().GetService<IMessengerDatabaseSettings>()));
             return services;
         }
     }

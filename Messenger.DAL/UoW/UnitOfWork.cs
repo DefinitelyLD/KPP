@@ -9,9 +9,9 @@ namespace Messenger.DAL.UoW
         public IUsersRepository Users { get; }
         public IChatsRepository Chats { get; }
         public IMessagesRepository Messages { get; }
-        private readonly MongoDbContext _context;
+        private readonly DbContext _context;
 
-        public UnitOfWork(MongoDbContext context, IUsersRepository usersRepository, IChatsRepository chatsRepository, IMessagesRepository messagesRepository)
+        public UnitOfWork(DbContext context, IUsersRepository usersRepository, IChatsRepository chatsRepository, IMessagesRepository messagesRepository)
         {
             _context = context;
             Users = usersRepository;
