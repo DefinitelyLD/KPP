@@ -12,8 +12,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Messenger.WEB.Models;
 using Microsoft.Extensions.Options;
+using Messenger.DAL;
+using Messenger.DAL.Repositories;
+using Messenger.DAL.Repositories.Interfaces;
 
 namespace Messenger.WEB
 {
@@ -35,6 +37,8 @@ namespace Messenger.WEB
 
             services.AddSingleton<IMessengerDatabaseSettings>(sp =>
                 sp.GetRequiredService<IOptions<MessengerDatabaseSettings>>().Value);
+
+            services.AddRepository();
 
             services.AddControllers();
             services.AddSwaggerGen(c =>

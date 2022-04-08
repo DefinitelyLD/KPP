@@ -1,4 +1,4 @@
-﻿namespace Messenger.WEB.Models
+﻿namespace Messenger.DAL
 {
     public class MessengerDatabaseSettings : IMessengerDatabaseSettings
     {

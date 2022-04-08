@@ -10,6 +10,7 @@ using MongoDB.Bson.Serialization.Attributes;
 
 namespace Messenger.DAL.Entities
 {
+    [BsonCollection("Users")]
     public class User : BaseEntity
     {
         [BsonRequired]
@@ -21,10 +22,13 @@ namespace Messenger.DAL.Entities
         [BsonRequired]
         public string Email { get; set; }
 
-        public IEnumerable<User> Contacts { get; set; }
+        [BsonRepresentation(BsonType.ObjectId)]
+        public IEnumerable<string> ContactsIds { get; set; }
 
-        public IEnumerable<User> BlockedUsers { get; set; }
+        [BsonRepresentation(BsonType.ObjectId)]
+        public IEnumerable<string> BlockedUsersIds { get; set; }
 
-        public IEnumerable<Chat> Chats { get; set; }
+        [BsonRepresentation(BsonType.ObjectId)]
+        public IEnumerable<string> ChatsIds { get; set; }
     }
 }

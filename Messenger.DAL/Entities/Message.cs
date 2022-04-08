@@ -9,17 +9,21 @@ using MongoDB.Driver;
 
 namespace Messenger.DAL.Entities
 {
+    [BsonCollection("Messeges")]
     public class Message : BaseEntity
     {
         [BsonRequired]
-        public Chat Chat { get; set; }
+        [BsonRepresentation(BsonType.ObjectId)]
+        public string ChatId { get; set; }
 
         [BsonRequired]
-        public User User { get; set; }
+        [BsonRepresentation(BsonType.ObjectId)]
+        public string UserId { get; set; }
 
         public string Text { get; set; }
 
-        public ObjectId ImageId { get; set; } // we will use MongoDB.GridFS for uploading images.
+        [BsonRepresentation(BsonType.ObjectId)]
+        public string ImageId { get; set; } // we will use MongoDB.GridFS for uploading images.
 
         public DateTime CreatedDate { get; set; } = DateTime.UtcNow;
     }
