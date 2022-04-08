@@ -10,12 +10,12 @@ using System.Threading.Tasks;
 
 namespace Messenger.DAL.Context
 {
-    public class MongoDbContext : IDisposable
+    public class DbContext : IDisposable
     {
         private IMongoDatabase Database { get; set; }
         private readonly List<Func<Task>> _commands;
 
-        public MongoDbContext(IMessengerDatabaseSettings settings)
+        public DbContext(IMessengerDatabaseSettings settings)
         {
             // Every command will be stored and it'll be processed at SaveChanges
             _commands = new List<Func<Task>>();

@@ -17,7 +17,7 @@ namespace Messenger.DAL.Repositories
     {
         protected readonly IMongoCollection<T> _collection;
 
-        public BaseMongoRepository(MongoDbContext context)
+        public BaseMongoRepository(DbContext context)
         {
             _collection = context.GetCollection<T>(typeof(T));
         }

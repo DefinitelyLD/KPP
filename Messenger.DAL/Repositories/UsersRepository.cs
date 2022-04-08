@@ -12,7 +12,7 @@ namespace Messenger.DAL.Repositories
 {
     public class UsersRepository : BaseMongoRepository<User>, IUsersRepository
     {
-        public UsersRepository(MongoDbContext context) : base(context)
+        public UsersRepository(DbContext context) : base(context)
         {
         }
     }
