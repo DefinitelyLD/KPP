@@ -22,13 +22,10 @@ namespace Messenger.DAL.Entities
         [BsonRequired]
         public string Email { get; set; }
 
-        [BsonRepresentation(BsonType.ObjectId)]
-        public IEnumerable<string> ContactsIds { get; set; }
+        public IEnumerable<User> Contacts { get; set; }
 
-        [BsonRepresentation(BsonType.ObjectId)]
-        public IEnumerable<string> BlockedUsersIds { get; set; }
+        public IEnumerable<User> BlockedUsers { get; set; }
 
-        [BsonRepresentation(BsonType.ObjectId)]
-        public IEnumerable<string> ChatsIds { get; set; }
+        public IEnumerable<Chat> Chats { get; set; }
     }
 }
