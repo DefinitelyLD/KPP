@@ -17,14 +17,12 @@ namespace Messenger.DAL.Entities
         public string ChatId { get; set; }
 
         [BsonRequired]
-        [BsonRepresentation(BsonType.ObjectId)]
-        public string UserId { get; set; }
+        public User User { get; set; }
 
         public string Text { get; set; }
 
         [BsonRepresentation(BsonType.ObjectId)]
         public string ImageId { get; set; } // we will use MongoDB.GridFS for uploading images.
-
         public DateTime CreatedDate { get; set; } = DateTime.UtcNow;
     }
 }
