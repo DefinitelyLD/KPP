@@ -25,6 +25,6 @@ namespace Messenger.DAL.Entities
         public virtual ICollection<User> BlockedUsersFrom { get; set; }
 
         public virtual ICollection<Message> Messages { get; set; }
-        public virtual ICollection<ChatUserProfile> ChatUserProfile { get; set; }
+        public virtual ICollection<UserAccount> Chats { get; set; }
     }
 }
