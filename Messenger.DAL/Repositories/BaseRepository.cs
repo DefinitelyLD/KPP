@@ -11,7 +11,7 @@ using Messenger.DAL.Context;
 
 namespace Messenger.DAL.Repositories
 {
-    public abstract class BaseMongoRepository<T> : IRepository<T> where T : BaseEntity
+    public abstract class BaseRepository<T> : IRepository<T> where T : BaseEntity
     {
         public virtual T Create(T entity)
         {

@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Messenger.DAL.Repositories
 {
-    public class ChatsRepository : BaseMongoRepository<Chat>, IChatsRepository
+    public class ChatsRepository : BaseRepository<Chat>, IChatsRepository
     {
         
     }
