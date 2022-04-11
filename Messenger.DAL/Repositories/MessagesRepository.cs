@@ -12,8 +12,6 @@ namespace Messenger.DAL.Repositories
 {
     public class MessagesRepository : BaseMongoRepository<Message>, IMessagesRepository
     {
-        public MessagesRepository(DbContext context) : base(context)
-        {
-        }
+        
     }
 }

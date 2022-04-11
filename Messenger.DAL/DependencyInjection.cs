@@ -19,9 +19,8 @@ namespace Messenger.DAL
             services.AddTransient<IMessagesRepository, MessagesRepository>();
             services.AddTransient<IChatsRepository, ChatsRepository>();
             services.AddTransient<IUsersRepository, UsersRepository>();
-            services.AddSingleton<IUnitOfWork, UnitOfWork>();
-
-            services.AddSingleton(x => new DbContext(services.BuildServiceProvider().GetService<IMessengerDatabaseSettings>()));
+            services.AddTransient<IUnitOfWork, UnitOfWork>();
+            
             return services;
         }
     }
