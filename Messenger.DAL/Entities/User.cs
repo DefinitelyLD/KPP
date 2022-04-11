@@ -17,8 +17,6 @@ namespace Messenger.DAL.Entities
         [Required]
         [EmailAddress]
         public string Email { get; set; }
-        [Url]
-        public string AvatarUrl { get; set; }
 
         public IEnumerable<User> FriendsTo { get; set; }
         public IEnumerable<User> FriendsFrom { get; set; }

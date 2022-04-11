@@ -10,8 +10,7 @@ namespace Messenger.DAL.Entities
     public class MessageImage : BaseEntity
     {
         [Required]
-        [Url]
-        public string Url { get; set; }
+        public string Path { get; set; }
         public Message Message { get; set; }
     }
 }
