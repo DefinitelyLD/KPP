@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Messenger.DAL.Entities
 {
-    public class ChatUser
+    public class ChatUserProfile
     {
         public int ChatId { get; set; }
         public Chat Chat { get; set; }

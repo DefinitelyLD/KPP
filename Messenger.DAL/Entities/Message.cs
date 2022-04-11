@@ -13,7 +13,7 @@ namespace Messenger.DAL.Entities
         public Chat Chat { get; set; }
         [Required]
         public User User { get; set; }
-        public IEnumerable<MessageImage> Images { get; set; }
+        public ICollection<MessageImage> Images { get; set; }
         public string Text { get; set; }
         [Required]
         public DateTime CreatedTime { get; set; } = DateTime.Now;

@@ -32,17 +32,17 @@ namespace Messenger.DAL.Context
             base.OnModelCreating(modelBuilder);
 
             // chat user
-            modelBuilder.Entity<ChatUser>()
+            modelBuilder.Entity<ChatUserProfile>()
             .HasKey(t => new { t.ChatId, t.UserId });
 
-            modelBuilder.Entity<ChatUser>()
+            modelBuilder.Entity<ChatUserProfile>()
                 .HasOne(pt => pt.Chat)
-                .WithMany(t => t.ChatUsers)
+                .WithMany(t => t.ChatUserProfile)
                 .HasForeignKey(pt => pt.ChatId);
 
-            modelBuilder.Entity<ChatUser>()
+            modelBuilder.Entity<ChatUserProfile>()
                 .HasOne(pt => pt.User)
-                .WithMany(p => p.ChatUsers)
+                .WithMany(p => p.ChatUserProfile)
                 .HasForeignKey(pt => pt.UserId);
             // /chat user/
 
