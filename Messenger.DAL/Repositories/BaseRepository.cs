@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Messenger.DAL.Repositories
 {
-    public abstract class BaseRepository<T> : IRepository<T> where T : BaseEntity
+    public abstract class BaseRepository<T, TId> : IRepository<T, TId> where T : BaseEntity where TId : IComparable<TId>
     {
         private readonly DbContext _context;
         private readonly DbSet<T> _dbSet;
@@ -37,7 +37,7 @@ namespace Messenger.DAL.Repositories
             return entity;
         }
 
-        public virtual bool DeleteById(int id)
+        public virtual bool DeleteById(TId id)
         {
             T entity = _dbSet.Find(id);
             if (entity == null) 
@@ -47,7 +47,7 @@ namespace Messenger.DAL.Repositories
             return true;
         }
 
-        public async virtual Task<bool> DeleteByIdAsync(int id)
+        public async virtual Task<bool> DeleteByIdAsync(TId id)
         {
             T entity = await _dbSet.FindAsync(id);
             if (entity == null)
@@ -59,15 +59,15 @@ namespace Messenger.DAL.Repositories
 
         public virtual IQueryable<T> GetAll()
         {
-            return _dbSet.AsQueryable();
+            return _dbSet.AsNoTracking();
         }
 
-        public virtual T GetById(int id)
+        public virtual T GetById(TId id)
         {
             return _dbSet.Find(id);
         }
 
-        public async virtual Task<T> GetByIdAsync(int id)
+        public async virtual Task<T> GetByIdAsync(TId id)
         {
             return await _dbSet.FindAsync(id);
         }

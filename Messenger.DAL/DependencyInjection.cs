@@ -23,7 +23,6 @@ namespace Messenger.DAL
             services.AddTransient<IUsersRepository, UsersRepository>();
             services.AddTransient<IUnitOfWork, UnitOfWork>();
 
-
             services.AddDbContext<AppDbContext>(options =>
                 options.UseSqlServer(configuration.GetConnectionString("DatabaseConnection")));
             return services;

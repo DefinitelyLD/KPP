@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Messenger.DAL.Repositories
 {
-    public class UsersRepository : BaseRepository<User>, IUsersRepository
+    public class UsersRepository : BaseRepository<User, int>, IUsersRepository
     {
         public UsersRepository(AppDbContext context) : base(context)
         {
