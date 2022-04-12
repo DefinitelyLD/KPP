@@ -1,6 +1,7 @@
 ﻿using Messenger.DAL.Context;
 using Messenger.DAL.Entities;
 using Messenger.DAL.Repositories.Interfaces;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
@@ -12,6 +13,9 @@ namespace Messenger.DAL.Repositories
 {
     public class ChatsRepository : BaseRepository<Chat>, IChatsRepository
     {
-        
+        public ChatsRepository(AppDbContext context) : base(context)
+        {
+
+        }
     }
 }

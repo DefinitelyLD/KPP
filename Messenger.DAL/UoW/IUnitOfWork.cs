@@ -9,8 +9,10 @@ namespace Messenger.DAL.UoW
 {
     public interface IUnitOfWork : IDisposable
     {
-        IUsersRepository Users { get; }
-        IChatsRepository Chats { get; }
-        IMessagesRepository Messages { get; }
+        IUsersRepository UsersRepository { get; }
+        IChatsRepository ChatsRepository { get; }
+        IMessagesRepository MessagesRepository { get; }
+        public int Save();
+        public Task<int> SaveAsync();
     }
 }
