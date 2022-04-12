@@ -7,7 +7,13 @@ namespace Messenger.WEB.Controllers
 {
     public class MessageController : Controller
     {
-        private readonly MessageManager _messageManager;
+        private readonly IMessageManager _messageManager;
+
+        public MessageController (IMessageManager messageManager)
+        {
+            _messageManager = messageManager;
+        }
+
         public void SendMessage(Message msg, int chatId)
         {
             _messageManager.ManagerSendMessage(msg, chatId);

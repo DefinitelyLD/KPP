@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Messenger.DAL.Entities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,10 +10,10 @@ namespace Messenger.BLL.Models
     public class MessageModel
     {
         public int Id { get; set; }
-        public string ChatId { get; set; }
+        public ChatModel Chat { get; set; }
         public UserModel User { get; set; }
+        public ICollection<MessageImage> Images { get; set; }
         public string Text { get; set; }
-        public string ImageId { get; set; }
-        public DateTime CreatedDate { get; set; } = DateTime.UtcNow;
+        public DateTime CreatedTime { get; set; } = DateTime.Now;
     }
 }
