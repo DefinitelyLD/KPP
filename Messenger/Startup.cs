@@ -7,7 +7,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
-using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,6 +16,9 @@ using Messenger.DAL;
 using Messenger.DAL.Repositories;
 using Messenger.DAL.Repositories.Interfaces;
 using Messenger.Mapping;
+using Messenger.DAL.Context;
+using Microsoft.EntityFrameworkCore;
+using Messenger.BLL;
 
 namespace Messenger.WEB
 {
@@ -32,13 +34,9 @@ namespace Messenger.WEB
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            // requires using Microsoft.Extensions.Options
-            services.Configure<MessengerDatabaseSettings>(
-                Configuration.GetSection(nameof(MessengerDatabaseSettings)));
 
-            services.AddSingleton<IMessengerDatabaseSettings>(sp =>
-                sp.GetRequiredService<IOptions<MessengerDatabaseSettings>>().Value);
-
+            services.AddDbContext<AppDbContext>(options => 
+                options.UseSqlServer(Configuration.GetConnectionString("DatabaseConnection")));
             services.AddRepository();
             services.AddMappers();
 

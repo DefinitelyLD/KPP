@@ -10,10 +10,8 @@ using System.Threading.Tasks;
 
 namespace Messenger.DAL.Repositories
 {
-    public class UsersRepository : BaseMongoRepository<User>, IUsersRepository
+    public class UsersRepository : BaseRepository<User>, IUsersRepository
     {
-        public UsersRepository(DbContext context) : base(context)
-        {
-        }
+        
     }
 }

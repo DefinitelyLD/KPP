@@ -1,31 +1,30 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using MongoDB.Bson;
-using MongoDB.Driver;
-using MongoDB.Bson.Serialization.Attributes;
 
 
 namespace Messenger.DAL.Entities
 {
-    [BsonCollection("Users")]
     public class User : BaseEntity
     {
-        [BsonRequired]
+        [Required]
         public string Name { get; set; }
-
-        [BsonRequired]
+        [Required]
         public string Password { get; set; }
-
-        [BsonRequired]
+        [Required]
+        [EmailAddress]
         public string Email { get; set; }
 
-        public IEnumerable<User> Contacts { get; set; }
+        public virtual ICollection<User> FriendsTo { get; set; }
+        public virtual ICollection<User> FriendsFrom { get; set; }
 
-        public IEnumerable<User> BlockedUsers { get; set; }
+        public virtual ICollection<User> BlockedUsersTo { get; set; }
+        public virtual ICollection<User> BlockedUsersFrom { get; set; }
 
-        public IEnumerable<Chat> Chats { get; set; }
+        public virtual ICollection<Message> Messages { get; set; }
+        public virtual ICollection<UserAccount> Chats { get; set; }
     }
 }
