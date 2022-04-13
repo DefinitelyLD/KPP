@@ -13,11 +13,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Options;
 using Messenger.DAL;
-using Messenger.DAL.Repositories;
-using Messenger.DAL.Repositories.Interfaces;
 using Messenger.Mapping;
-using Messenger.DAL.Context;
-using Microsoft.EntityFrameworkCore;
 using Messenger.BLL;
 
 namespace Messenger.WEB
@@ -34,10 +30,7 @@ namespace Messenger.WEB
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
-            services.AddDbContext<AppDbContext>(options => 
-                options.UseSqlServer(Configuration.GetConnectionString("DatabaseConnection")));
-            services.AddRepository();
+            services.AddRepository(Configuration);
             services.AddMappers();
 
             services.AddControllers();

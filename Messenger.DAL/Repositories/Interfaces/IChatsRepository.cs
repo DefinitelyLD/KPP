@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Messenger.DAL.Repositories.Interfaces
 {
-    public interface IChatsRepository : IRepository<Chat>
+    public interface IChatsRepository : IRepository<Chat, int>
     {
     }
 }
