@@ -14,22 +14,22 @@ namespace Messenger.WEB.Controllers
             _messageManager = messageManager;
         }
 
-        public void SendMessage(Message msg, int chatId)
+        public void SendMessage(MessageModel msg, int chatId)
         {
             _messageManager.ManagerSendMessage(msg, chatId);
         }
 
-        public void EditMessage(Message msg, int chatId)
+        public void EditMessage(MessageModel msg, int chatId)
         {
             _messageManager.ManagerEditMessage(msg, chatId);
         }
 
-        public void DeleteMessage(Message msg, int chatId)
+        public void DeleteMessage(MessageModel msg, int chatId)
         {
             _messageManager.ManagerDeleteMessage(msg, chatId);
         }
 
-        public void GetMessage(Message msg, int chatId)
+        public void GetMessage(MessageModel msg, int chatId)
         {
             _messageManager.ManagerGetMessage(msg, chatId);
         }
