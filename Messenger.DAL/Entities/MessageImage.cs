@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Messenger.DAL.Entities
 {
-    public class MessageImage : BaseEntity
+    public class MessageImage : BaseEntity<int>
     {
         [Required]
         public string Path { get; set; }

@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace Messenger.DAL.Entities
 {
-    public abstract class BaseEntity
+    public abstract class BaseEntity<TId> where TId : IComparable<TId>
     {
         [Key]
-        public int Id { get; set; }
+        public TId Id { get; set; }
     }
 }

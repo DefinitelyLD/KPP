@@ -1,6 +1,7 @@
 ﻿using Messenger.DAL.Context;
 using Messenger.DAL.Entities;
 using Messenger.DAL.Repositories.Interfaces;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
@@ -10,8 +11,11 @@ using System.Threading.Tasks;
 
 namespace Messenger.DAL.Repositories
 {
-    public class UsersRepository : BaseRepository<User>, IUsersRepository
+    public class UsersRepository : BaseRepository<User, int>, IUsersRepository
     {
-        
+        public UsersRepository(AppDbContext context) : base(context)
+        {
+
+        }
     }
 }

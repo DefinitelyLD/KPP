@@ -18,7 +18,6 @@ namespace Messenger.DAL.Context
         public AppDbContext(DbContextOptions<AppDbContext> options)
             : base(options)
         {
-            Database.EnsureDeleted();
             Database.EnsureCreated();
         }
 

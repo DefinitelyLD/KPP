@@ -8,69 +8,98 @@ using System.Threading.Tasks;
 using Messenger.DAL.Entities;
 using Messenger.DAL.Repositories.Interfaces;
 using Messenger.DAL.Context;
+using Microsoft.EntityFrameworkCore;
 
 namespace Messenger.DAL.Repositories
 {
-    public abstract class BaseRepository<T> : IRepository<T> where T : BaseEntity
+    public abstract class BaseRepository<T, TId> : IRepository<T, TId> where T : BaseEntity<TId> where TId : IComparable<TId>
     {
+        private readonly DbContext _context;
+        private readonly DbSet<T> _dbSet;
+
+        public BaseRepository(DbContext context)
+        {
+            _context = context;
+            _dbSet = _context.Set<T>();
+        }
+
         public virtual T Create(T entity)
         {
-            throw new NotImplementedException();
+            _dbSet.Add(entity);
+            _context.SaveChanges();
+            return entity;
         }
 
-        public virtual Task<T> CreateAsync(T entity)
+        public async virtual Task<T> CreateAsync(T entity)
         {
-            throw new NotImplementedException();
+            await _dbSet.AddAsync(entity);
+            await _context.SaveChangesAsync();
+            return entity;
         }
 
-        public virtual bool DeleteById(string id)
+        public virtual bool DeleteById(TId id)
         {
-            throw new NotImplementedException();
+            T entity = _dbSet.Find(id);
+            if (entity == null) 
+                return false;
+            _dbSet.Remove(entity);
+            _context.SaveChanges();
+            return true;
         }
 
-        public virtual Task<bool> DeleteByIdAsync(string id)
+        public async virtual Task<bool> DeleteByIdAsync(TId id)
         {
-            throw new NotImplementedException();
+            T entity = await _dbSet.FindAsync(id);
+            if (entity == null)
+                return false;
+            _dbSet.Remove(entity);
+            await _context.SaveChangesAsync();
+            return true;
         }
 
-        public virtual IEnumerable<T> FindByFilter(Expression<Func<T, bool>> expression)
+        public virtual IQueryable<T> GetAll()
         {
-            throw new NotImplementedException();
+            return _dbSet.AsNoTracking();
         }
 
-        public virtual Task<IEnumerable<T>> FindByFilterAsync(Expression<Func<T, bool>> expression)
+        public virtual T GetById(TId id)
         {
-            throw new NotImplementedException();
+            return _dbSet.AsNoTracking().Where(e => e.Id.CompareTo(id) == 0).SingleOrDefault();
         }
 
-        public virtual IEnumerable<T> GetAll()
+        public async virtual Task<T> GetByIdAsync(TId id)
         {
-            throw new NotImplementedException();
+            return await _dbSet.AsNoTracking().Where(e => e.Id.CompareTo(id) == 0).SingleOrDefaultAsync();
         }
 
-        public virtual Task<IEnumerable<T>> GetAllAsync()
+        public virtual T Update(T entity)
         {
-            throw new NotImplementedException();
+            var oldEntity = _dbSet.Find(entity.Id);
+            _context.Entry(oldEntity).CurrentValues.SetValues(entity);
+            _context.SaveChanges();
+            return entity;
         }
 
-        public virtual T GetById(string id)
+        public async virtual Task<T> UpdateAsync(T entity)
         {
-            throw new NotImplementedException();
+            var oldEntity = await _dbSet.FindAsync(entity.Id);
+            _context.Entry(oldEntity).CurrentValues.SetValues(entity);
+            await _context.SaveChangesAsync();
+            return entity;
         }
 
-        public virtual Task<T> GetByIdAsync(string id)
+        public void Dispose()
         {
-            throw new NotImplementedException();
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
 
-        public virtual T Replace(T entity)
+        protected virtual void Dispose(bool disposing)
         {
-            throw new NotImplementedException();
-        }
-
-        public virtual Task<T> ReplaceAsync(T entity)
-        {
-            throw new NotImplementedException();
+            if (disposing)
+            {
+                _context.Dispose();
+            }
         }
     }
 }
