@@ -13,7 +13,7 @@ namespace Messenger.Mapping
         public static IServiceCollection AddMappers(this IServiceCollection services)
         {
             services.AddAutoMapper(typeof(UserProfile));
-
+            services.AddAutoMapper(typeof(MessageProfile));
             return services;
         }
     }

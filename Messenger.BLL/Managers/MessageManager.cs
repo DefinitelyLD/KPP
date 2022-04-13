@@ -11,23 +11,34 @@ namespace Messenger.BLL.Managers
 {
     public class MessageManager: IMessageManager
     {
+        private readonly IMapper _mapper;
+        
+        public MessageManager(IMapper mapper)
+        {
+            _mapper = mapper;
+        }
 
-        public void ManagerSendMessage (MessageModel msg, int сhatId)
+        private Message MappMessage(MessageModel msg)
+        {
+            return _mapper.Map<Message>(msg);
+        }
+
+        public Message ManagerSendMessage (MessageModel msg)
+        {
+            return MappMessage(msg);
+        }
+
+        public void ManagerEditMessage(MessageModel msg)
         {
             throw new NotImplementedException();
         }
 
-        public void ManagerEditMessage(MessageModel msg, int сhatId)
+        public void ManagerDeleteMessage(MessageModel msg)
         {
             throw new NotImplementedException();
         }
 
-        public void ManagerDeleteMessage(MessageModel msg, int сhatId)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void ManagerGetMessage(MessageModel msg, int сhatId)
+        public void ManagerGetMessage(MessageModel msg)
         {
             throw new NotImplementedException();
         }

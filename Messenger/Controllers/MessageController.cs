@@ -5,6 +5,8 @@ using Messenger.BLL.Models;
 
 namespace Messenger.WEB.Controllers
 {
+    [ApiController]
+    [Route("[controller]")]
     public class MessageController : Controller
     {
         private readonly IMessageManager _messageManager;
@@ -14,24 +16,24 @@ namespace Messenger.WEB.Controllers
             _messageManager = messageManager;
         }
 
-        public void SendMessage(MessageModel msg, int chatId)
+        public ActionResult<Message> SendMessage(MessageModel msg)
         {
-            _messageManager.ManagerSendMessage(msg, chatId);
+            return  _messageManager.ManagerSendMessage(msg);
         }
 
-        public void EditMessage(MessageModel msg, int chatId)
+        public void EditMessage(MessageModel msg)
         {
-            _messageManager.ManagerEditMessage(msg, chatId);
+            _messageManager.ManagerEditMessage(msg);
         }
 
-        public void DeleteMessage(MessageModel msg, int chatId)
+        public void DeleteMessage(MessageModel msg)
         {
-            _messageManager.ManagerDeleteMessage(msg, chatId);
+            _messageManager.ManagerDeleteMessage(msg);
         }
 
-        public void GetMessage(MessageModel msg, int chatId)
+        public void GetMessage(MessageModel msg)
         {
-            _messageManager.ManagerGetMessage(msg, chatId);
+            _messageManager.ManagerGetMessage(msg);
         }
     }
 }
