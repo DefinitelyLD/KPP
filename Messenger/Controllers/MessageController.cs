@@ -16,24 +16,24 @@ namespace Messenger.WEB.Controllers
             _messageManager = messageManager;
         }
 
-        public ActionResult<Message> SendMessage(MessageModel msg)
+        public ActionResult<MessageModel> SendMessage(MessageModel msg)
         {
             return  _messageManager.ManagerSendMessage(msg);
         }
 
-        public void EditMessage(MessageModel msg)
+        public ActionResult<MessageModel> EditMessage(MessageModel msg)
         {
-            _messageManager.ManagerEditMessage(msg);
+            return _messageManager.ManagerEditMessage(msg);
         }
 
-        public void DeleteMessage(MessageModel msg)
+        public ActionResult<bool> DeleteMessage(MessageModel msg)
         {
-            _messageManager.ManagerDeleteMessage(msg);
+            return _messageManager.ManagerDeleteMessage(msg);
         }
 
-        public void GetMessage(MessageModel msg)
+        public ActionResult<MessageModel> GetMessage(MessageModel msg)
         {
-            _messageManager.ManagerGetMessage(msg);
+            return _messageManager.ManagerGetMessage(msg);
         }
     }
 }

@@ -10,9 +10,9 @@ namespace Messenger.BLL.Managers
 {
     public interface IMessageManager
     {
-        public Message ManagerSendMessage(MessageModel msg);
-        public void ManagerEditMessage(MessageModel msg);
-        public void ManagerDeleteMessage(MessageModel msg);
-        public void ManagerGetMessage(MessageModel msg);
+        public MessageModel ManagerSendMessage(MessageModel msg);
+        public MessageModel ManagerEditMessage(MessageModel msg);
+        public bool ManagerDeleteMessage(MessageModel msg);
+        public MessageModel ManagerGetMessage(MessageModel msg);
     }
 }
