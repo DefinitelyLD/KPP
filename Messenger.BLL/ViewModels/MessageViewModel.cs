@@ -13,6 +13,6 @@ namespace Messenger.BLL.ViewModels
         public UserModel User { get; set; }
         public ICollection<MessageImageModel> Images { get; set; }
         public string Text { get; set; }
-        public DateTime CreatedTime { get; set; };
+        public DateTime CreatedTime { get; set; }
     }
 }

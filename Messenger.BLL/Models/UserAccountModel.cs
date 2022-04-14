@@ -9,9 +9,7 @@ namespace Messenger.BLL.Models
     public class UserAccountModel
     {
         public int Id { get; set; }
-        public int ChatId { get; set; }
         public ChatModel Chat { get; set; }
-        public int UserId { get; set; }
         public UserModel User { get; set; }
         public bool IsBanned { get; set; }
         public bool IsAdmin { get; set; }
