@@ -8,7 +8,6 @@ namespace Messenger.BLL.Models
 {
     public class ChatModel
     {
-        public int Id { get; set; }
         public string Topic { get; set; }
         public string? Password { get; set; }
         public virtual ICollection<MessageModel> Messages { get; set; }

@@ -8,7 +8,6 @@ namespace Messenger.BLL.Models
 {
     public class MessageImageModel
     {
-        public int Id { get; set; }
         public string Path { get; set; }
         public MessageModel Message { get; set; }
 

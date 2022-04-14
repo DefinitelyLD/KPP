@@ -9,7 +9,6 @@ namespace Messenger.BLL.Models
 {
     public class MessageModel
     {
-        public int Id { get; set; }
         public ChatModel Chat { get; set; }
         public UserModel User { get; set; }
         public ICollection<MessageImageModel> Images { get; set; }
