@@ -27,9 +27,9 @@ namespace Messenger.WEB.Controllers
             return _messageManager.EditMessage(msg);
         }
 
-        public ActionResult<bool> DeleteMessage(MessageModel msg)
+        public ActionResult<bool> DeleteMessage(int msgId)
         {
-            return _messageManager.DeleteMessage(msg);
+            return _messageManager.DeleteMessage(msgId);
         }
 
         public ActionResult<MessageModel> GetMessage(int msgId)
@@ -37,9 +37,9 @@ namespace Messenger.WEB.Controllers
             return _messageManager.GetMessage(msgId);
         }
 
-        public IEnumerable<MessageModel> GetAllMessages(MessageModel msg)
+        public IEnumerable<MessageModel> GetAllMessages()
         {
-            return _messageManager.GetAllMessages(msg);
+            return _messageManager.GetAllMessages();
         }
     }
 }

@@ -33,9 +33,9 @@ namespace Messenger.BLL.Managers
             return _mapper.Map<MessageModel>(_messageRep.Update(msgEntity));
         }
 
-        public bool DeleteMessage(MessageModel msg)
+        public bool DeleteMessage(int msgId)
         {
-            return _messageRep.DeleteById(msg.Id);
+            return _messageRep.DeleteById(msgId);
         }
 
         public MessageModel GetMessage(int msgId)
@@ -43,7 +43,7 @@ namespace Messenger.BLL.Managers
             return _mapper.Map<MessageModel>(_messageRep.GetById(msgId));
         }
 
-        public IEnumerable<MessageModel> GetAllMessages(MessageModel msg)
+        public IEnumerable<MessageModel> GetAllMessages()
         {
             var msgEntityList = _messageRep.GetAll().ToList();
             var msgModelList =_mapper.Map<List<MessageModel>>(msgEntityList);
