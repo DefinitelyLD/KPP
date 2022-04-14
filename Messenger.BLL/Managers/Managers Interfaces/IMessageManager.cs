@@ -13,7 +13,7 @@ namespace Messenger.BLL.Managers
         public MessageModel SendMessage(MessageModel msg);
         public MessageModel EditMessage(MessageModel msg);
         public bool DeleteMessage(MessageModel msg);
-        public MessageModel GetMessage(MessageModel msg);
+        public MessageModel GetMessage(int msgId);
         public IEnumerable<MessageModel> GetAllMessages(MessageModel msg);
     }
 }

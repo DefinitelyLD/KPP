@@ -32,9 +32,9 @@ namespace Messenger.WEB.Controllers
             return _messageManager.DeleteMessage(msg);
         }
 
-        public ActionResult<MessageModel> GetMessage(MessageModel msg)
+        public ActionResult<MessageModel> GetMessage(int msgId)
         {
-            return _messageManager.GetMessage(msg);
+            return _messageManager.GetMessage(msgId);
         }
 
         public IEnumerable<MessageModel> GetAllMessages(MessageModel msg)

@@ -38,9 +38,9 @@ namespace Messenger.BLL.Managers
             return _messageRep.DeleteById(msg.Id);
         }
 
-        public MessageModel GetMessage(MessageModel msg)
+        public MessageModel GetMessage(int msgId)
         {
-            return _mapper.Map<MessageModel>(_messageRep.GetById(msg.Id));
+            return _mapper.Map<MessageModel>(_messageRep.GetById(msgId));
         }
 
         public IEnumerable<MessageModel> GetAllMessages(MessageModel msg)
