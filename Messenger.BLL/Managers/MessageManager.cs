@@ -23,12 +23,14 @@ namespace Messenger.BLL.Managers
 
         public MessageModel ManagerSendMessage (MessageModel msg)
         {
-            return _mapper.Map<MessageModel>(_messageRep.Create(_mapper.Map<Message>(msg)));
+            var msgEntity = _mapper.Map<Message>(msg);
+            return _mapper.Map<MessageModel>(_messageRep.Create(msgEntity));
         }
 
         public MessageModel ManagerEditMessage(MessageModel msg)
         {
-            return _mapper.Map<MessageModel>(_messageRep.Update(_mapper.Map<Message>(msg)));
+            var msgEntity = _mapper.Map<Message>(msg);
+            return _mapper.Map<MessageModel>(_messageRep.Update(msgEntity));
         }
 
         public bool ManagerDeleteMessage(MessageModel msg)
@@ -39,6 +41,13 @@ namespace Messenger.BLL.Managers
         public MessageModel ManagerGetMessage(MessageModel msg)
         {
             return _mapper.Map<MessageModel>(_messageRep.GetById(msg.Id));
+        }
+
+        public IEnumerable<MessageModel> ManagerGetAllMessages(MessageModel msg)
+        {
+            var msgEntityList = _messageRep.GetAll().ToList();
+            var msgModelList =_mapper.Map<List<MessageModel>>(msgEntityList);
+            return msgModelList;
         }
     }
 }

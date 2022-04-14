@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Messenger.BLL.Managers;
 using Messenger.BLL.Models;
+using System.Collections.Generic;
 
 namespace Messenger.WEB.Controllers
 {
@@ -34,6 +35,11 @@ namespace Messenger.WEB.Controllers
         public ActionResult<MessageModel> GetMessage(MessageModel msg)
         {
             return _messageManager.ManagerGetMessage(msg);
+        }
+
+        public IEnumerable<MessageModel> GetAllMessages(MessageModel msg)
+        {
+            return _messageManager.ManagerGetAllMessages(msg);
         }
     }
 }

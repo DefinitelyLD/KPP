@@ -14,5 +14,6 @@ namespace Messenger.BLL.Managers
         public MessageModel ManagerEditMessage(MessageModel msg);
         public bool ManagerDeleteMessage(MessageModel msg);
         public MessageModel ManagerGetMessage(MessageModel msg);
+        public IEnumerable<MessageModel> ManagerGetAllMessages(MessageModel msg);
     }
 }
