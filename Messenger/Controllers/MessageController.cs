@@ -19,27 +19,27 @@ namespace Messenger.WEB.Controllers
 
         public ActionResult<MessageModel> SendMessage(MessageModel msg)
         {
-            return  _messageManager.ManagerSendMessage(msg);
+            return  _messageManager.SendMessage(msg);
         }
 
         public ActionResult<MessageModel> EditMessage(MessageModel msg)
         {
-            return _messageManager.ManagerEditMessage(msg);
+            return _messageManager.EditMessage(msg);
         }
 
         public ActionResult<bool> DeleteMessage(MessageModel msg)
         {
-            return _messageManager.ManagerDeleteMessage(msg);
+            return _messageManager.DeleteMessage(msg);
         }
 
         public ActionResult<MessageModel> GetMessage(MessageModel msg)
         {
-            return _messageManager.ManagerGetMessage(msg);
+            return _messageManager.GetMessage(msg);
         }
 
         public IEnumerable<MessageModel> GetAllMessages(MessageModel msg)
         {
-            return _messageManager.ManagerGetAllMessages(msg);
+            return _messageManager.GetAllMessages(msg);
         }
     }
 }
