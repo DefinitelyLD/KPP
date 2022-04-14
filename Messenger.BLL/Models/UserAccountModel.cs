@@ -8,7 +8,6 @@ namespace Messenger.BLL.Models
 {
     public class UserAccountModel
     {
-        public int Id { get; set; }
         public ChatModel Chat { get; set; }
         public UserModel User { get; set; }
         public bool IsBanned { get; set; }
