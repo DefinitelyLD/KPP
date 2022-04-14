@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace Messenger.BLL.Models
 {
-    public class UserModel
+    public class MessageImageModel
     {
-        public string Name { get; set; }
-        public string Password { get; set; }
-        public string Email { get; set; }
+        public string Path { get; set; }
+        public MessageModel Message { get; set; }
+
     }
 }
