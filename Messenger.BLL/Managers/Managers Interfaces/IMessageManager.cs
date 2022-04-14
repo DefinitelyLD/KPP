@@ -10,10 +10,10 @@ namespace Messenger.BLL.Managers
 {
     public interface IMessageManager
     {
-        public MessageModel ManagerSendMessage(MessageModel msg);
-        public MessageModel ManagerEditMessage(MessageModel msg);
-        public bool ManagerDeleteMessage(MessageModel msg);
-        public MessageModel ManagerGetMessage(MessageModel msg);
-        public IEnumerable<MessageModel> ManagerGetAllMessages(MessageModel msg);
+        public MessageModel SendMessage(MessageModel msg);
+        public MessageModel EditMessage(MessageModel msg);
+        public bool DeleteMessage(MessageModel msg);
+        public MessageModel GetMessage(MessageModel msg);
+        public IEnumerable<MessageModel> GetAllMessages(MessageModel msg);
     }
 }

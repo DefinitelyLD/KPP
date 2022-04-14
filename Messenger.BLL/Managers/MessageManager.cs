@@ -21,29 +21,29 @@ namespace Messenger.BLL.Managers
             _messageRep = messageRep;
         }
 
-        public MessageModel ManagerSendMessage (MessageModel msg)
+        public MessageModel SendMessage (MessageModel msg)
         {
             var msgEntity = _mapper.Map<Message>(msg);
             return _mapper.Map<MessageModel>(_messageRep.Create(msgEntity));
         }
 
-        public MessageModel ManagerEditMessage(MessageModel msg)
+        public MessageModel EditMessage(MessageModel msg)
         {
             var msgEntity = _mapper.Map<Message>(msg);
             return _mapper.Map<MessageModel>(_messageRep.Update(msgEntity));
         }
 
-        public bool ManagerDeleteMessage(MessageModel msg)
+        public bool DeleteMessage(MessageModel msg)
         {
             return _messageRep.DeleteById(msg.Id);
         }
 
-        public MessageModel ManagerGetMessage(MessageModel msg)
+        public MessageModel GetMessage(MessageModel msg)
         {
             return _mapper.Map<MessageModel>(_messageRep.GetById(msg.Id));
         }
 
-        public IEnumerable<MessageModel> ManagerGetAllMessages(MessageModel msg)
+        public IEnumerable<MessageModel> GetAllMessages(MessageModel msg)
         {
             var msgEntityList = _messageRep.GetAll().ToList();
             var msgModelList =_mapper.Map<List<MessageModel>>(msgEntityList);
