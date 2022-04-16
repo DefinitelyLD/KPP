@@ -1,4 +1,6 @@
-﻿using AutoMapper;
+﻿using Messenger.DAL.Entities;
+using Messenger.BLL.Managers;
+using Messenger.BLL.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Messenger.WEB.Controllers
