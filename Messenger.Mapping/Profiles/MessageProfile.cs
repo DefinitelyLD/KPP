@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
-using Messenger.BLL.Models;
+using Messenger.BLL.CreateModels;
+using Messenger.BLL.UpdateModels;
+using Messenger.BLL.ViewModels;
 using Messenger.DAL.Entities;
 using System;
 using System.Collections.Generic;
@@ -13,8 +15,12 @@ namespace Messenger.Mapping.Profiles
     {
         public MessageProfile()
         {
-            CreateMap<MessageModel, Message>();
-            CreateMap<MessageModel, Message>().ReverseMap();
+            CreateMap<MessageCreateModel, Message>();
+            CreateMap<MessageCreateModel, Message>().ReverseMap();
+            CreateMap<MessageUpdateModel, Message>();
+            CreateMap<MessageUpdateModel, Message>().ReverseMap();
+            CreateMap<MessageViewModel, Message>();
+            CreateMap<MessageViewModel, Message>().ReverseMap();
         }
     }
 }

@@ -1,18 +1,18 @@
-﻿using Messenger.BLL.CreateModels;
+﻿using Messenger.DAL.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Messenger.BLL.ViewModels
+namespace Messenger.BLL.CreateModels
 {
-    public class MessageViewModel
+    public class MessageCreateModel
     {
-        public int Id { get; set; }
+        public ChatCreateModel Chat { get; set; }
         public UserCreateModel User { get; set; }
         public ICollection<MessageImageCreateModel> Images { get; set; }
         public string Text { get; set; }
-        public DateTime CreatedTime { get; set; }
+        public DateTime CreatedTime { get; set; } = DateTime.Now;
     }
 }
