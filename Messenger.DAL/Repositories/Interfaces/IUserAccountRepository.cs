@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Messenger.DAL.Repositories.Interfaces
 {
-    internal interface IUserAccountRepository: IRepository<UserAccount, int>
+    public interface IUserAccountRepository: IRepository<UserAccount, int>
     {
     }
 }

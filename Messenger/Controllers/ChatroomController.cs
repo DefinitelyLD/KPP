@@ -43,19 +43,19 @@ namespace Messenger.WEB.Controllers
             return _chatroomManager.GetAllChatrooms();
         }
 
-        public ActionResult<ChatUpdateModel> AddToChatroom(int userId, int chatId)
+        public ActionResult<UserAccountCreateModel> AddToChatroom(int userId, int chatId)
         {
             return _chatroomManager.AddToChatroom(userId, chatId);
         }
 
-        public ActionResult<ChatUpdateModel> LeaveFromChatroom(int chatId)
+        public ActionResult<bool> LeaveFromChatroom(int userAccountId)
         {
-            return _chatroomManager.LeaveFromChatroom(chatId);
+            return _chatroomManager.LeaveFromChatroom(userAccountId);
         }
 
-        public ActionResult<bool> KickUser(int userId, int chatId)
+        public ActionResult<bool> KickUser(int userAccountId)
         {
-            return _chatroomManager.KickUser(userId, chatId);
+            return _chatroomManager.KickUser(userAccountId);
         }
 
         public ActionResult<UserAccountUpdateModel> BanUser(int userId, int chatId)
@@ -73,9 +73,9 @@ namespace Messenger.WEB.Controllers
             return _chatroomManager.UnsetAdmin(userId, chatId);
         }
 
-        public IEnumerable<UserViewModel> GetAllAdmins(int chatId)
+        public IEnumerable<UserViewModel> GetAllAdmins(ChatViewModel chatModel)
         {
-            return _chatroomManager.GetAllAdmins(chatId);
+            return _chatroomManager.GetAllAdmins(chatModel);
         }
     }
 }

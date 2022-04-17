@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using Messenger.BLL.Models;
+using Messenger.BLL.CreateModels;
 using Messenger.BLL.UpdateModels;
 using Messenger.BLL.ViewModels;
 using Messenger.DAL.Entities;
@@ -15,41 +15,41 @@ namespace Messenger.BLL.Managers
     public class MessageManager: IMessageManager
     {
         private readonly IMapper _mapper;
-        private readonly IMessagesRepository _messageRep;
+        private readonly IMessagesRepository _messageRepository;
         
-        public MessageManager(IMapper mapper, IMessagesRepository messageRep)
+        public MessageManager(IMapper mapper, IMessagesRepository messageRepository)
         {
             _mapper = mapper;
-            _messageRep = messageRep;
+            _messageRepository = messageRepository;
         }
 
-        public MessageCreateModel SendMessage (MessageCreateModel msg)
+        public MessageCreateModel SendMessage (MessageCreateModel messageModel)
         {
-            var msgEntity = _mapper.Map<Message>(msg);
-            return _mapper.Map<MessageCreateModel>(_messageRep.Create(msgEntity));
+            var msgEntity = _mapper.Map<Message>(messageModel);
+            return _mapper.Map<MessageCreateModel>(_messageRepository.Create(msgEntity));
         }
 
-        public MessageUpdateModel EditMessage(MessageUpdateModel msg)
+        public MessageUpdateModel EditMessage(MessageUpdateModel messageModel)
         {
-            var msgEntity = _mapper.Map<Message>(msg);
-            return _mapper.Map<MessageUpdateModel>(_messageRep.Update(msgEntity));
+            var msgEntity = _mapper.Map<Message>(messageModel);
+            return _mapper.Map<MessageUpdateModel>(_messageRepository.Update(msgEntity));
         }
 
-        public bool DeleteMessage(int msgId)
+        public bool DeleteMessage(int messageId)
         {
-            return _messageRep.DeleteById(msgId);
+            return _messageRepository.DeleteById(messageId);
         }
 
-        public MessageViewModel GetMessage(int msgId)
+        public MessageViewModel GetMessage(int messageId)
         {
-            return _mapper.Map<MessageViewModel>(_messageRep.GetById(msgId));
+            return _mapper.Map<MessageViewModel>(_messageRepository.GetById(messageId));
         }
 
         public IEnumerable<MessageViewModel> GetAllMessages()
         {
-            var msgEntityList = _messageRep.GetAll().ToList();
-            var msgModelList =_mapper.Map<List<MessageViewModel>>(msgEntityList);
-            return msgModelList;
+            var messageEntityList = _messageRepository.GetAll().ToList();
+            var messageModelList = _mapper.Map<List<MessageViewModel>>(messageEntityList);
+            return messageModelList;
         }
     }
 }

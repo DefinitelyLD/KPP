@@ -8,7 +8,9 @@ namespace Messenger.BLL.CreateModels
 {
     public class UserAccountCreateModel
     {
+        public int ChatId { get; set; } 
         public ChatCreateModel Chat { get; set; }
+        public int UserId { get; set; }
         public UserCreateModel User { get; set; }
         public bool IsBanned { get; set; }
         public bool IsAdmin { get; set; }
