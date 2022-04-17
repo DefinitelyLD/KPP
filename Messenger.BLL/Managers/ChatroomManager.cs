@@ -21,10 +21,10 @@ namespace Messenger.BLL.Managers
             _chatsRep = chatsRep;
         }
 
-        public ChatModel CreateChatroom(ChatModel chat)
+        public ChatCreateModel CreateChatroom(ChatCreateModel chat)
         {
             var chatEntity = _mapper.Map<Chat>(chat);
-            return _mapper.Map<ChatModel>(_chatsRep.Create(chatEntity));
+            return _mapper.Map<ChatCreateModel>(_chatsRep.Create(chatEntity));
         }
     }
 }

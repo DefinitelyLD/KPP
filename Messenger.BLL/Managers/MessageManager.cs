@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
 using Messenger.BLL.Models;
+using Messenger.BLL.UpdateModels;
+using Messenger.BLL.ViewModels;
 using Messenger.DAL.Entities;
 using Messenger.DAL.Repositories.Interfaces;
 using System;
@@ -21,16 +23,16 @@ namespace Messenger.BLL.Managers
             _messageRep = messageRep;
         }
 
-        public MessageModel SendMessage (MessageModel msg)
+        public MessageCreateModel SendMessage (MessageCreateModel msg)
         {
             var msgEntity = _mapper.Map<Message>(msg);
-            return _mapper.Map<MessageModel>(_messageRep.Create(msgEntity));
+            return _mapper.Map<MessageCreateModel>(_messageRep.Create(msgEntity));
         }
 
-        public MessageModel EditMessage(MessageModel msg)
+        public MessageUpdateModel EditMessage(MessageUpdateModel msg)
         {
             var msgEntity = _mapper.Map<Message>(msg);
-            return _mapper.Map<MessageModel>(_messageRep.Update(msgEntity));
+            return _mapper.Map<MessageUpdateModel>(_messageRep.Update(msgEntity));
         }
 
         public bool DeleteMessage(int msgId)
@@ -38,15 +40,15 @@ namespace Messenger.BLL.Managers
             return _messageRep.DeleteById(msgId);
         }
 
-        public MessageModel GetMessage(int msgId)
+        public MessageViewModel GetMessage(int msgId)
         {
-            return _mapper.Map<MessageModel>(_messageRep.GetById(msgId));
+            return _mapper.Map<MessageViewModel>(_messageRep.GetById(msgId));
         }
 
-        public IEnumerable<MessageModel> GetAllMessages()
+        public IEnumerable<MessageViewModel> GetAllMessages()
         {
             var msgEntityList = _messageRep.GetAll().ToList();
-            var msgModelList =_mapper.Map<List<MessageModel>>(msgEntityList);
+            var msgModelList =_mapper.Map<List<MessageViewModel>>(msgEntityList);
             return msgModelList;
         }
     }

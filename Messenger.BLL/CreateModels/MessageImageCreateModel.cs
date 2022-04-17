@@ -4,12 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Messenger.BLL.Models
+namespace Messenger.BLL.CreateModels
 {
-    public class MessageImageModel
+    public class MessageImageCreateModel
     {
         public string Path { get; set; }
-        public MessageModel Message { get; set; }
+        public MessageCreateModel Message { get; set; }
 
     }
 }

@@ -1,7 +1,6 @@
-﻿using Messenger.DAL.Entities;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Messenger.BLL.Managers;
-using Messenger.BLL.Models;
+using Messenger.BLL.CreateModels;
 using System.Collections.Generic;
 
 namespace Messenger.WEB.Controllers
@@ -17,12 +16,12 @@ namespace Messenger.WEB.Controllers
             _messageManager = messageManager;
         }
 
-        public ActionResult<MessageModel> SendMessage(MessageModel msg)
+        public ActionResult<MessageCreateModel> SendMessage(MessageCreateModel msg)
         {
             return  _messageManager.SendMessage(msg);
         }
 
-        public ActionResult<MessageModel> EditMessage(MessageModel msg)
+        public ActionResult<MessageCreateModel> EditMessage(MessageCreateModel msg)
         {
             return _messageManager.EditMessage(msg);
         }
@@ -32,12 +31,12 @@ namespace Messenger.WEB.Controllers
             return _messageManager.DeleteMessage(msgId);
         }
 
-        public ActionResult<MessageModel> GetMessage(int msgId)
+        public ActionResult<MessageCreateModel> GetMessage(int msgId)
         {
             return _messageManager.GetMessage(msgId);
         }
 
-        public IEnumerable<MessageModel> GetAllMessages()
+        public IEnumerable<MessageCreateModel> GetAllMessages()
         {
             return _messageManager.GetAllMessages();
         }

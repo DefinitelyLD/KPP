@@ -5,13 +5,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Messenger.BLL.Models
+namespace Messenger.BLL.CreateModels
 {
-    public class MessageModel
+    public class MessageCreateModel
     {
-        public ChatModel Chat { get; set; }
-        public UserModel User { get; set; }
-        public ICollection<MessageImageModel> Images { get; set; }
+        public ChatCreateModel Chat { get; set; }
+        public UserCreateModel User { get; set; }
+        public ICollection<MessageImageCreateModel> Images { get; set; }
         public string Text { get; set; }
         public DateTime CreatedTime { get; set; } = DateTime.Now;
     }
