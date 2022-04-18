@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
 using Messenger.BLL.Models;
-using Messenger.BLL.ViewModels;
+using Messenger.BLL.ViewModels.User;
 using Messenger.DAL.Entities;
 
 namespace Messenger.Mapping.Profiles

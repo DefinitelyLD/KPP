@@ -1,5 +1,5 @@
 ﻿using Messenger.BLL.Models;
-using Messenger.BLL.ViewModels;
+using Messenger.BLL.ViewModels.User;
 using Messenger.DAL.Entities;
 using Microsoft.AspNetCore.Identity;
 using System;

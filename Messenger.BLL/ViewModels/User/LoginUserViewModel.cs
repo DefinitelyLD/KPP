@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Messenger.BLL.ViewModels
+namespace Messenger.BLL.ViewModels.User
 {
     public class LoginUserViewModel
     {
