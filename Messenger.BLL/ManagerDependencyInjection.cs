@@ -13,8 +13,10 @@ namespace Messenger.BLL
         public static IServiceCollection AddManagers(this IServiceCollection services)
         {
             services.AddTransient<IAccountManager, AccountManager>();
+            services.AddTransient<IMessageManager, MessageManager>();
 
             return services;
         }
     }
 }
+
