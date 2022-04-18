@@ -5,8 +5,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Messenger.BLL.Chats;
-using Messenger.BLL.User;
-using Messenger.BLL.MessageImage;
+using Messenger.BLL.Users;
+using Messenger.BLL.MessageImages;
 
 namespace Messenger.BLL.Messages
 {

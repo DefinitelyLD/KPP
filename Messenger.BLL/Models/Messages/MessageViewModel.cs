@@ -1,5 +1,5 @@
-﻿using Messenger.BLL.MessageImage;
-using Messenger.BLL.User;
+﻿using Messenger.BLL.MessageImages;
+using Messenger.BLL.Users;
 using System;
 using System.Collections.Generic;
 using System.Linq;
