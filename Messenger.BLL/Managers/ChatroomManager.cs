@@ -98,19 +98,32 @@ namespace Messenger.BLL.Managers
                 .GetAll()
                 .Where(u => u.UserId == userId && u.ChatId == chatId)
                 .SingleOrDefault();
-
-            userAccountEntity.IsBanned = true;
-            return _mapper.Map<UserAccountUpdateModel>(_userAccountsRepository.Update(userAccountEntity));
+            if (userAccountEntity == null)
+            {
+                throw new Exception("The entity doesn't exist.");
+            }
+            else
+            {
+                userAccountEntity.IsBanned = true;
+                return _mapper.Map<UserAccountUpdateModel>(_userAccountsRepository.Update(userAccountEntity));
+            }
         }
+
         public UserAccountUpdateModel UnbanUser(int userId, int chatId)
         {
             var userAccountEntity = _userAccountsRepository
                 .GetAll()
                 .Where(u => u.UserId == userId && u.ChatId == chatId)
                 .SingleOrDefault();
-
-            userAccountEntity.IsBanned = false;
-            return _mapper.Map<UserAccountUpdateModel>(_userAccountsRepository.Update(userAccountEntity));
+            if (userAccountEntity == null)
+            {
+                throw new Exception("The entity doesn't exist.");
+            }
+            else
+            {
+                userAccountEntity.IsBanned = false;
+                return _mapper.Map<UserAccountUpdateModel>(_userAccountsRepository.Update(userAccountEntity));
+            }
         }
 
         public UserAccountUpdateModel SetAdmin(int userId, int chatId)
@@ -119,9 +132,15 @@ namespace Messenger.BLL.Managers
                 .GetAll()
                 .Where(u => u.UserId == userId && u.ChatId == chatId)
                 .SingleOrDefault();
-
-            userAccountEntity.IsAdmin = true;
-            return _mapper.Map<UserAccountUpdateModel>(_userAccountsRepository.Update(userAccountEntity));
+            if (userAccountEntity == null)
+            {
+                throw new Exception("The entity doesn't exist.");
+            }
+            else
+            {
+                userAccountEntity.IsAdmin = true;
+                return _mapper.Map<UserAccountUpdateModel>(_userAccountsRepository.Update(userAccountEntity));
+            }
         }
 
 
@@ -131,9 +150,15 @@ namespace Messenger.BLL.Managers
                 .GetAll()
                 .Where(u => u.UserId == userId && u.ChatId == chatId)
                 .SingleOrDefault();
-
-            userAccountEntity.IsAdmin = false;
-            return _mapper.Map<UserAccountUpdateModel>(_userAccountsRepository.Update(userAccountEntity));
+            if (userAccountEntity == null)
+            {
+                throw new Exception("The entity doesn't exist.");
+            }
+            else
+            {
+                userAccountEntity.IsAdmin = false;
+                return _mapper.Map<UserAccountUpdateModel>(_userAccountsRepository.Update(userAccountEntity));
+            }
         }
 
         public IEnumerable<UserViewModel> GetAllAdmins(ChatViewModel chatModel)
