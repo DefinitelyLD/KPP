@@ -20,6 +20,7 @@ namespace Messenger.BLL.Managers
         public bool LeaveFromChatroom(int userAccountId);
         public bool KickUser(int userAccountId);
         public UserAccountUpdateModel BanUser(int userId, int chatId);
+        public UserAccountUpdateModel UnbanUser(int userId, int chatId);
         public UserAccountUpdateModel SetAdmin(int userId, int chatId);
         public UserAccountUpdateModel UnsetAdmin(int userId, int chatId);
         public IEnumerable<UserViewModel> GetAllAdmins(ChatViewModel chatModel);

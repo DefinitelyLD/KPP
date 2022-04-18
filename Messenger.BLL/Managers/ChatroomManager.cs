@@ -94,6 +94,16 @@ namespace Messenger.BLL.Managers
             userAccountEntity.IsBanned = true;
             return _mapper.Map<UserAccountUpdateModel>(_userAccountsRepository.Update(userAccountEntity));
         }
+        public UserAccountUpdateModel UnbanUser(int userId, int chatId)
+        {
+            var userAccountEntity = _userAccountsRepository
+                .GetAll()
+                .Where(u => u.UserId == userId && u.ChatId == chatId)
+                .SingleOrDefault();
+
+            userAccountEntity.IsBanned = false;
+            return _mapper.Map<UserAccountUpdateModel>(_userAccountsRepository.Update(userAccountEntity));
+        }
 
         public UserAccountUpdateModel SetAdmin(int userId, int chatId)
         {
