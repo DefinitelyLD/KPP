@@ -13,19 +13,16 @@ namespace Messenger.BLL.Managers
     {
         private readonly IMapper _mapper;
         private readonly IChatsRepository _chatsRepository;
-        private readonly IUserAccountRepository _userAccountRepository;
-        private readonly IUsersRepository _userRepository;
+        private readonly IUserAccountsRepository _userAccountsRepository;
 
 
         public ChatroomManager(IMapper mapper, 
                                IChatsRepository chatsRepository, 
-                               IUserAccountRepository userAccountRepository,
-                               IUsersRepository userRepository)
+                               IUserAccountsRepository userAccountsRepository)
         {
             _mapper = mapper;
             _chatsRepository = chatsRepository;
-            _userAccountRepository = userAccountRepository;
-            _userRepository = userRepository;
+            _userAccountsRepository = userAccountsRepository;
         }
 
         public ChatUpdateModel EditChatroom(ChatUpdateModel chatModel)
@@ -59,45 +56,45 @@ namespace Messenger.BLL.Managers
                 UserId = userId
             };
             var userAccountEntity = _mapper.Map<UserAccount>(userAccountModel);
-            return _mapper.Map<UserAccountCreateModel>(_userAccountRepository.Create(userAccountEntity));
+            return _mapper.Map<UserAccountCreateModel>(_userAccountsRepository.Create(userAccountEntity));
         }
 
         public bool LeaveFromChatroom(int userAccountId)
         {
-            return _userAccountRepository.DeleteById(userAccountId);
+            return _userAccountsRepository.DeleteById(userAccountId);
         }
 
         public bool KickUser(int userAccountId)
         {
-            return _userAccountRepository.DeleteById(userAccountId);
+            return _userAccountsRepository.DeleteById(userAccountId);
         }
 
         public UserAccountUpdateModel BanUser(int userId, int chatId)
         {
-            var userAccountEntity =_userAccountRepository
+            var userAccountEntity = _userAccountsRepository
                 .GetAll()
                 .Where(u => u.UserId == userId && u.ChatId == chatId)
                 .SingleOrDefault();
-            return _mapper.Map<UserAccountUpdateModel>(_userAccountRepository.Update(userAccountEntity));
+            return _mapper.Map<UserAccountUpdateModel>(_userAccountsRepository.Update(userAccountEntity));
         }
 
         public UserAccountUpdateModel SetAdmin(int userId, int chatId)
         {
-            var userAccountEntity = _userAccountRepository
+            var userAccountEntity = _userAccountsRepository
                 .GetAll()
                 .Where(u => u.UserId == userId && u.ChatId == chatId)
                 .SingleOrDefault();
-            return _mapper.Map<UserAccountUpdateModel>(_userAccountRepository.Update(userAccountEntity));
+            return _mapper.Map<UserAccountUpdateModel>(_userAccountsRepository.Update(userAccountEntity));
         }
 
 
         public UserAccountUpdateModel UnsetAdmin(int userId, int chatId)
         {
-            var userAccountEntity = _userAccountRepository
+            var userAccountEntity = _userAccountsRepository
                 .GetAll()
                 .Where(u => u.UserId == userId && u.ChatId == chatId)
                 .SingleOrDefault();
-            return _mapper.Map<UserAccountUpdateModel>(_userAccountRepository.Update(userAccountEntity));
+            return _mapper.Map<UserAccountUpdateModel>(_userAccountsRepository.Update(userAccountEntity));
         }
 
         public IEnumerable<UserViewModel> GetAllAdmins(ChatViewModel chatModel)

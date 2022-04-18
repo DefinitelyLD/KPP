@@ -10,9 +10,9 @@ using System.Threading.Tasks;
 
 namespace Messenger.DAL.Repositories
 {
-    public class UserAccountRepository : BaseRepository<UserAccount, int>, IUserAccountRepository
+    public class UserAccountsRepository : BaseRepository<UserAccount, int>, IUserAccountsRepository
     {
-        public UserAccountRepository(AppDbContext context) : base(context)
+        public UserAccountsRepository(AppDbContext context) : base(context)
         {
         }
     }
