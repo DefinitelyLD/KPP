@@ -22,6 +22,7 @@ namespace Messenger.DAL
             services.AddTransient<IChatsRepository, ChatsRepository>();
             services.AddTransient<IUsersRepository, UsersRepository>();
             services.AddTransient<IUnitOfWork, UnitOfWork>();
+            services.AddTransient<IUserAccountsRepository, UserAccountsRepository>();
 
             services.AddDbContext<AppDbContext>(options =>
                 options.UseSqlServer(configuration.GetConnectionString("DatabaseConnection")));

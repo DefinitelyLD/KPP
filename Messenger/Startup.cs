@@ -32,6 +32,7 @@ namespace Messenger.WEB
         {
             services.AddRepository(Configuration);
             services.AddMappers();
+            services.AddManagers();
 
             services.AddControllers();
             services.AddSwaggerGen(c =>

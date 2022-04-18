@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Messenger.BLL.UpdateModels
+namespace Messenger.BLL.MessageImages
 {
     public class MessageImageUpdateModel
     {

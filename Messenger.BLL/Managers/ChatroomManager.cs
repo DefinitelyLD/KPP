@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
-using Messenger.BLL.CreateModels;
-using Messenger.BLL.UpdateModels;
-using Messenger.BLL.ViewModels;
+using Messenger.BLL.Chats;
+using Messenger.BLL.UserAccounts;
+using Messenger.BLL.Users;
 using Messenger.DAL.Entities;
 using Messenger.DAL.Repositories.Interfaces;
 using System;
@@ -39,7 +39,15 @@ namespace Messenger.BLL.Managers
 
         public ChatViewModel GetChatroom(int chatId)
         {
-            return _mapper.Map<ChatViewModel>(_chatsRepository.GetById(chatId));
+            Chat chatEntity = _chatsRepository.GetById(chatId);
+            if (chatEntity == null)
+            {
+                throw new Exception("The entity doesn't exist.");
+            }
+            else
+            {
+                return _mapper.Map<ChatViewModel>(chatEntity);
+            }
         }
 
         public IEnumerable<ChatViewModel> GetAllChatrooms()
@@ -66,7 +74,7 @@ namespace Messenger.BLL.Managers
             } 
             else if(userAccountExistingEntity != null && userAccountExistingEntity.IsBanned == true)
             {
-                throw new Exception("The user is banned!");
+                throw new Exception("The user is already banned.");
             }
             else
             {

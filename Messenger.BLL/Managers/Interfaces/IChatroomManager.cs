@@ -1,6 +1,6 @@
-﻿using Messenger.BLL.CreateModels;
-using Messenger.BLL.UpdateModels;
-using Messenger.BLL.ViewModels;
+﻿using Messenger.BLL.Chats;
+using Messenger.BLL.UserAccounts;
+using Messenger.BLL.Users;
 using System;
 using System.Collections.Generic;
 using System.Linq;
