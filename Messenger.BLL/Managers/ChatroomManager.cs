@@ -4,6 +4,7 @@ using Messenger.BLL.UpdateModels;
 using Messenger.BLL.ViewModels;
 using Messenger.DAL.Entities;
 using Messenger.DAL.Repositories.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -50,13 +51,27 @@ namespace Messenger.BLL.Managers
 
         public UserAccountCreateModel AddToChatroom(int userId, int chatId)
         {
-            UserAccountCreateModel userAccountModel = new()
+            var userAccountExistingEntity = _userAccountsRepository.GetAll()
+                .Where(p => p.UserId == userId && p.ChatId == chatId)
+                .FirstOrDefault();
+            if (userAccountExistingEntity == null)
             {
-                ChatId = chatId,
-                UserId = userId
-            };
-            var userAccountEntity = _mapper.Map<UserAccount>(userAccountModel);
-            return _mapper.Map<UserAccountCreateModel>(_userAccountsRepository.Create(userAccountEntity));
+                UserAccountCreateModel userAccountModel = new()
+                {
+                    ChatId = chatId,
+                    UserId = userId
+                };
+                var userAccountNewEntity = _mapper.Map<UserAccount>(userAccountModel);
+                return _mapper.Map<UserAccountCreateModel>(_userAccountsRepository.Create(userAccountNewEntity));
+            } 
+            else if(userAccountExistingEntity != null && userAccountExistingEntity.IsBanned == true)
+            {
+                throw new Exception("The user is banned!");
+            }
+            else
+            {
+                throw new Exception("The user is already in the chat."); //Temporary solution
+            }
         }
 
         public bool LeaveFromChatroom(int userAccountId)
@@ -75,6 +90,8 @@ namespace Messenger.BLL.Managers
                 .GetAll()
                 .Where(u => u.UserId == userId && u.ChatId == chatId)
                 .SingleOrDefault();
+
+            userAccountEntity.IsBanned = true;
             return _mapper.Map<UserAccountUpdateModel>(_userAccountsRepository.Update(userAccountEntity));
         }
 
@@ -84,6 +101,8 @@ namespace Messenger.BLL.Managers
                 .GetAll()
                 .Where(u => u.UserId == userId && u.ChatId == chatId)
                 .SingleOrDefault();
+
+            userAccountEntity.IsAdmin = true;
             return _mapper.Map<UserAccountUpdateModel>(_userAccountsRepository.Update(userAccountEntity));
         }
 
@@ -94,6 +113,8 @@ namespace Messenger.BLL.Managers
                 .GetAll()
                 .Where(u => u.UserId == userId && u.ChatId == chatId)
                 .SingleOrDefault();
+
+            userAccountEntity.IsAdmin = false;
             return _mapper.Map<UserAccountUpdateModel>(_userAccountsRepository.Update(userAccountEntity));
         }
 
