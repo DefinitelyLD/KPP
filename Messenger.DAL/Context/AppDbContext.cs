@@ -1,4 +1,5 @@
 ﻿using Messenger.DAL.Entities;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using System;
@@ -9,10 +10,9 @@ using System.Threading.Tasks;
 
 namespace Messenger.DAL.Context
 {
-    public class AppDbContext : DbContext
+    public class AppDbContext : IdentityDbContext<User>
     {
         public DbSet<Chat> Chats { get; set; }
-        public DbSet<User> Users { get; set; }
         public DbSet<Message> Messages { get; set; }
         public DbSet<MessageImage> MessageImages { get; set; }
         public AppDbContext(DbContextOptions<AppDbContext> options)

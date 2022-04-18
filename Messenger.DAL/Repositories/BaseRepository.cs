@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Messenger.DAL.Repositories
 {
-    public abstract class BaseRepository<T, TId> : IRepository<T, TId> where T : BaseEntity<TId> where TId : IComparable<TId>
+    public abstract class BaseRepository<T, TId> : IRepository<T, TId> where T : class where TId : IComparable<TId>
     {
         private readonly DbContext _context;
         private readonly DbSet<T> _dbSet;
@@ -64,26 +64,24 @@ namespace Messenger.DAL.Repositories
 
         public virtual T GetById(TId id)
         {
-            return _dbSet.AsNoTracking().Where(e => e.Id.CompareTo(id) == 0).SingleOrDefault();
+            return _dbSet.Find(id);
         }
 
         public async virtual Task<T> GetByIdAsync(TId id)
         {
-            return await _dbSet.AsNoTracking().Where(e => e.Id.CompareTo(id) == 0).SingleOrDefaultAsync();
+            return await _dbSet.FindAsync(id);
         }
 
         public virtual T Update(T entity)
         {
-            var oldEntity = _dbSet.Find(entity.Id);
-            _context.Entry(oldEntity).CurrentValues.SetValues(entity);
+            _dbSet.Update(entity);
             _context.SaveChanges();
             return entity;
         }
 
         public async virtual Task<T> UpdateAsync(T entity)
         {
-            var oldEntity = await _dbSet.FindAsync(entity.Id);
-            _context.Entry(oldEntity).CurrentValues.SetValues(entity);
+            _dbSet.Update(entity);
             await _context.SaveChangesAsync();
             return entity;
         }

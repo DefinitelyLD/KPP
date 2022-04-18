@@ -15,6 +15,9 @@ using Microsoft.Extensions.Options;
 using Messenger.DAL;
 using Messenger.Mapping;
 using Messenger.BLL;
+using Microsoft.AspNetCore.Identity;
+using Messenger.DAL.Entities;
+using Messenger.DAL.Context;
 
 namespace Messenger.WEB
 {
@@ -30,8 +33,18 @@ namespace Messenger.WEB
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddManagers();
             services.AddRepository(Configuration);
             services.AddMappers();
+
+            services.AddIdentity<User, IdentityRole>(opts =>
+            {
+                opts.Password.RequireNonAlphanumeric = false;
+                opts.Password.RequireLowercase = false;
+                opts.Password.RequireUppercase = false;
+                opts.Password.RequireDigit = false;
+            }).AddEntityFrameworkStores<AppDbContext>()
+              .AddDefaultTokenProviders();
 
             services.AddControllers();
             services.AddSwaggerGen(c =>
@@ -53,6 +66,7 @@ namespace Messenger.WEB
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
 
             app.UseAuthorization();
 
