@@ -1,9 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Messenger.BLL.Managers;
-using Messenger.BLL.CreateModels;
 using System.Collections.Generic;
-using Messenger.BLL.UpdateModels;
-using Messenger.BLL.ViewModels;
+using Messenger.BLL.Messages;
 
 namespace Messenger.WEB.Controllers
 {

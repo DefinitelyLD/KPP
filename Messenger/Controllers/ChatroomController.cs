@@ -1,8 +1,8 @@
-﻿using Messenger.BLL.Managers;
-using Messenger.BLL.CreateModels;
-using Messenger.BLL.UpdateModels;
+﻿using Messenger.BLL.Chats;
+using Messenger.BLL.Managers;
+using Messenger.BLL.UserAccounts;
+using Messenger.BLL.Users;
 using Microsoft.AspNetCore.Mvc;
-using Messenger.BLL.ViewModels;
 using System.Collections.Generic;
 
 namespace Messenger.WEB.Controllers
