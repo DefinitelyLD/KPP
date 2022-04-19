@@ -74,11 +74,13 @@ namespace Messenger.BLL.Managers
             } 
             else if(userAccountExistingEntity != null && userAccountExistingEntity.IsBanned == true)
             {
+                //TODO: should be done in #12 issue
                 throw new Exception("The user is already banned.");
             }
             else
             {
-                throw new Exception("The user is already in the chat."); //Temporary solution
+                //TODO: should be done in #12 issue
+                throw new Exception("The user is already in the chat."); 
             }
         }
 
