@@ -43,7 +43,7 @@ namespace Messenger.BLL.Managers
             Message messageEntity = _messagesRepository.GetById(messageId);
             if (messageEntity == null)
             {
-                throw new Exception("The entity doesn't exist.");
+                throw new KeyNotFoundException();
             }
             else
             {

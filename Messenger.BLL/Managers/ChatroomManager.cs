@@ -42,7 +42,7 @@ namespace Messenger.BLL.Managers
             Chat chatEntity = _chatsRepository.GetById(chatId);
             if (chatEntity == null)
             {
-                throw new Exception("The entity doesn't exist.");
+                throw new KeyNotFoundException();
             }
             else
             {
@@ -100,7 +100,7 @@ namespace Messenger.BLL.Managers
                 .SingleOrDefault();
             if (userAccountEntity == null)
             {
-                throw new Exception("The entity doesn't exist.");
+                throw new KeyNotFoundException();
             }
             else
             {
@@ -117,7 +117,7 @@ namespace Messenger.BLL.Managers
                 .SingleOrDefault();
             if (userAccountEntity == null)
             {
-                throw new Exception("The entity doesn't exist.");
+                throw new KeyNotFoundException();
             }
             else
             {
@@ -134,7 +134,7 @@ namespace Messenger.BLL.Managers
                 .SingleOrDefault();
             if (userAccountEntity == null)
             {
-                throw new Exception("The entity doesn't exist.");
+                throw new KeyNotFoundException();
             }
             else
             {
@@ -152,7 +152,7 @@ namespace Messenger.BLL.Managers
                 .SingleOrDefault();
             if (userAccountEntity == null)
             {
-                throw new Exception("The entity doesn't exist.");
+                throw new KeyNotFoundException();
             }
             else
             {
