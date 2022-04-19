@@ -64,12 +64,18 @@ namespace Messenger.DAL.Repositories
 
         public virtual T GetById(TId id)
         {
-            return _dbSet.Find(id);
+            var result = _dbSet.Find(id);
+            if (result == null)
+                throw new KeyNotFoundException();
+            return result;
         }
 
         public async virtual Task<T> GetByIdAsync(TId id)
         {
-            return await _dbSet.FindAsync(id);
+            var result = await _dbSet.FindAsync(id);
+            if (result == null)
+                throw new KeyNotFoundException();
+            return result;
         }
 
         public virtual T Update(T entity)
