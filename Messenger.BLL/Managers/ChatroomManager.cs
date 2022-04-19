@@ -16,7 +16,6 @@ namespace Messenger.BLL.Managers
         private readonly IChatsRepository _chatsRepository;
         private readonly IUserAccountsRepository _userAccountsRepository;
 
-
         public ChatroomManager(IMapper mapper, 
                                IChatsRepository chatsRepository, 
                                IUserAccountsRepository userAccountsRepository)
@@ -41,13 +40,9 @@ namespace Messenger.BLL.Managers
         {
             Chat chatEntity = _chatsRepository.GetById(chatId);
             if (chatEntity == null)
-            {
                 throw new KeyNotFoundException();
-            }
-            else
-            {
-                return _mapper.Map<ChatViewModel>(chatEntity);
-            }
+
+            return _mapper.Map<ChatViewModel>(chatEntity);
         }
 
         public IEnumerable<ChatViewModel> GetAllChatrooms()
@@ -61,106 +56,103 @@ namespace Messenger.BLL.Managers
         {
             var userAccountExistingEntity = _userAccountsRepository.GetAll()
                 .Where(p => p.UserId == userId && p.ChatId == chatId)
-                .FirstOrDefault();
-            if (userAccountExistingEntity == null)
-            {
-                UserAccountCreateModel userAccountModel = new()
-                {
-                    ChatId = chatId,
-                    UserId = userId
-                };
-                var userAccountNewEntity = _mapper.Map<UserAccount>(userAccountModel);
-                return _mapper.Map<UserAccountCreateModel>(_userAccountsRepository.Create(userAccountNewEntity));
-            } 
-            else if(userAccountExistingEntity != null && userAccountExistingEntity.IsBanned == true)
-            {
-                //TODO: should be done in #12 issue
-                throw new Exception("The user is already banned.");
-            }
-            else
-            {
+                .SingleOrDefault();
+
+            if (userAccountExistingEntity != null)
                 //TODO: should be done in #12 issue
                 throw new Exception("The user is already in the chat."); 
-            }
+
+            UserAccountCreateModel userAccountModel = new()
+            {
+                ChatId = chatId,
+                UserId = userId
+            };
+            var userAccountNewEntity = _mapper.Map<UserAccount>(userAccountModel);
+            return _mapper.Map<UserAccountCreateModel>(_userAccountsRepository.Create(userAccountNewEntity));
         }
 
         public bool LeaveFromChatroom(int userAccountId)
         {
+            var userAccountEntity = _userAccountsRepository.GetById(userAccountId);
+            if (userAccountEntity.IsOwner)
+                throw new Exception("Owner can't leave the chat");
+
             return _userAccountsRepository.DeleteById(userAccountId);
         }
 
-        public bool KickUser(int userAccountId)
+        public bool KickUser(UserAccountViewModel userAccountModel,
+                             UserAccountViewModel adminAccountModel)
         {
-            return _userAccountsRepository.DeleteById(userAccountId);
+            var userAccountEntity = _userAccountsRepository.GetById(userAccountModel.Id);
+            var adminAccountEntity = _userAccountsRepository.GetById(adminAccountModel.Id);
+
+            CheckModels(userAccountEntity, adminAccountEntity);
+
+            if (userAccountEntity.IsAdmin && !adminAccountEntity.IsOwner)
+                throw new Exception("You can't kick the owner");
+
+            return _userAccountsRepository.DeleteById(userAccountEntity.Id);
         }
 
-        public UserAccountUpdateModel BanUser(int userId, int chatId)
+        public UserAccountUpdateModel BanUser(UserAccountViewModel userAccountModel, 
+                                              UserAccountViewModel adminAccountModel)
         {
-            var userAccountEntity = _userAccountsRepository
-                .GetAll()
-                .Where(u => u.UserId == userId && u.ChatId == chatId)
-                .SingleOrDefault();
-            if (userAccountEntity == null)
-            {
-                throw new KeyNotFoundException();
-            }
-            else
-            {
-                userAccountEntity.IsBanned = true;
-                return _mapper.Map<UserAccountUpdateModel>(_userAccountsRepository.Update(userAccountEntity));
-            }
+            var userAccountEntity = _userAccountsRepository.GetById(userAccountModel.Id);
+            var adminAccountEntity = _userAccountsRepository.GetById(adminAccountModel.Id);
+
+            CheckModels(userAccountEntity, adminAccountEntity);
+
+            if (userAccountEntity.IsOwner || userAccountEntity.IsBanned)
+                throw new Exception("You can't ban the owner or a banned user");
+
+            userAccountEntity.IsBanned = true;
+            return _mapper.Map<UserAccountUpdateModel>(_userAccountsRepository.Update(userAccountEntity));
         }
 
-        public UserAccountUpdateModel UnbanUser(int userId, int chatId)
+        public UserAccountUpdateModel UnbanUser(UserAccountViewModel userAccountModel,
+                                                UserAccountViewModel adminAccountModel)
         {
-            var userAccountEntity = _userAccountsRepository
-                .GetAll()
-                .Where(u => u.UserId == userId && u.ChatId == chatId)
-                .SingleOrDefault();
-            if (userAccountEntity == null)
-            {
-                throw new KeyNotFoundException();
-            }
-            else
-            {
-                userAccountEntity.IsBanned = false;
-                return _mapper.Map<UserAccountUpdateModel>(_userAccountsRepository.Update(userAccountEntity));
-            }
+            var userAccountEntity = _userAccountsRepository.GetById(userAccountModel.Id);
+            var adminAccountEntity = _userAccountsRepository.GetById(adminAccountModel.Id);
+
+            CheckModels(userAccountEntity, adminAccountEntity);
+
+            if (!userAccountEntity.IsBanned)
+                throw new Exception("You can't unban this user");
+
+            userAccountEntity.IsBanned = false;
+            return _mapper.Map<UserAccountUpdateModel>(_userAccountsRepository.Update(userAccountEntity));
+            
         }
 
-        public UserAccountUpdateModel SetAdmin(int userId, int chatId)
+        public UserAccountUpdateModel SetAdmin(UserAccountViewModel userAccountModel,
+                                               UserAccountViewModel adminAccountModel)
         {
-            var userAccountEntity = _userAccountsRepository
-                .GetAll()
-                .Where(u => u.UserId == userId && u.ChatId == chatId)
-                .SingleOrDefault();
-            if (userAccountEntity == null)
-            {
-                throw new KeyNotFoundException();
-            }
-            else
-            {
-                userAccountEntity.IsAdmin = true;
-                return _mapper.Map<UserAccountUpdateModel>(_userAccountsRepository.Update(userAccountEntity));
-            }
+            var userAccountEntity = _userAccountsRepository.GetById(userAccountModel.Id);
+            var adminAccountEntity = _userAccountsRepository.GetById(adminAccountModel.Id);
+
+            CheckModels(userAccountEntity, adminAccountEntity);
+
+            if (userAccountEntity.IsAdmin || userAccountEntity.IsBanned)
+                throw new Exception("This user is already admin or banned");
+
+            userAccountEntity.IsAdmin = true;
+            return _mapper.Map<UserAccountUpdateModel>(_userAccountsRepository.Update(userAccountEntity));
         }
 
-
-        public UserAccountUpdateModel UnsetAdmin(int userId, int chatId)
+        public UserAccountUpdateModel UnsetAdmin(UserAccountViewModel userAccountModel,
+                                                 UserAccountViewModel adminAccountModel)
         {
-            var userAccountEntity = _userAccountsRepository
-                .GetAll()
-                .Where(u => u.UserId == userId && u.ChatId == chatId)
-                .SingleOrDefault();
-            if (userAccountEntity == null)
-            {
-                throw new KeyNotFoundException();
-            }
-            else
-            {
-                userAccountEntity.IsAdmin = false;
-                return _mapper.Map<UserAccountUpdateModel>(_userAccountsRepository.Update(userAccountEntity));
-            }
+            var userAccountEntity = _userAccountsRepository.GetById(userAccountModel.Id);
+            var adminAccountEntity = _userAccountsRepository.GetById(adminAccountModel.Id);
+
+            CheckModels(userAccountEntity, adminAccountEntity);
+
+            if (!userAccountEntity.IsAdmin)
+                throw new Exception("This user is banned or not an admin");
+
+            userAccountEntity.IsAdmin = false;
+            return _mapper.Map<UserAccountUpdateModel>(_userAccountsRepository.Update(userAccountEntity));
         }
 
         public IEnumerable<UserViewModel> GetAllAdmins(ChatViewModel chatModel)
@@ -169,6 +161,15 @@ namespace Messenger.BLL.Managers
             var adminsEntityList = chatEntity.Users.Where(u => u.IsAdmin == true).ToList();
             var userModelList = _mapper.Map<List<UserViewModel>>(adminsEntityList);
             return userModelList;
+        }
+
+        private static void CheckModels(UserAccount userAccountEntity, UserAccount adminAccountEntity)
+        {
+            if (userAccountEntity.ChatId != adminAccountEntity.ChatId)
+                throw new Exception("Users are in different chats");
+
+            if (!adminAccountEntity.IsAdmin)
+                throw new Exception("This action is for admins only");
         }
     }
 }

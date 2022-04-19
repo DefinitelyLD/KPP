@@ -18,11 +18,16 @@ namespace Messenger.BLL.Managers
 
         public UserAccountCreateModel AddToChatroom(int userId, int chatId);
         public bool LeaveFromChatroom(int userAccountId);
-        public bool KickUser(int userAccountId);
-        public UserAccountUpdateModel BanUser(int userId, int chatId);
-        public UserAccountUpdateModel UnbanUser(int userId, int chatId);
-        public UserAccountUpdateModel SetAdmin(int userId, int chatId);
-        public UserAccountUpdateModel UnsetAdmin(int userId, int chatId);
+        public bool KickUser(UserAccountViewModel userAccountModel,
+                             UserAccountViewModel adminAccountModel);
+        public UserAccountUpdateModel BanUser(UserAccountViewModel userAccountModel,
+                                              UserAccountViewModel adminAccountModel);
+        public UserAccountUpdateModel UnbanUser(UserAccountViewModel userAccountModel,
+                                                UserAccountViewModel adminAccountModel);
+        public UserAccountUpdateModel SetAdmin(UserAccountViewModel userAccountModel,
+                                               UserAccountViewModel adminAccountModel);
+        public UserAccountUpdateModel UnsetAdmin(UserAccountViewModel userAccountModel,
+                                                 UserAccountViewModel adminAccountModel);
         public IEnumerable<UserViewModel> GetAllAdmins(ChatViewModel chatModel);
 
     }
