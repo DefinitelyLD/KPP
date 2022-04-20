@@ -22,7 +22,7 @@ namespace Messenger.WEB.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<IdentityResult>> Register(UserRegisterModel model)
+        public async Task<ActionResult<IdentityResult>> Register(UserCreateModel model)
         {
             return await _accountManager.RegisterUser(model);
         }

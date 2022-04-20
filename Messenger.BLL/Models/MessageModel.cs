@@ -1,4 +1,5 @@
-﻿using Messenger.DAL.Entities;
+﻿using Messenger.BLL.Users;
+using Messenger.DAL.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;

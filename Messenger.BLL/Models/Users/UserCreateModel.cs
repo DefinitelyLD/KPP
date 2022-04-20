@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Messenger.BLL.Users
 {
-    public class UserRegisterModel
+    public class UserCreateModel
     {
         public string UserName { get; set; }
         public string Email { get; set; }

@@ -12,7 +12,7 @@ namespace Messenger.BLL.Managers
 {
     public interface IAccountManager
     {
-        public Task<IdentityResult> RegisterUser(UserRegisterModel model);
+        public Task<IdentityResult> RegisterUser(UserCreateModel model);
         public Task<SignInResult> LoginUser(UserLoginModel model);
         public Task LogoutUser();
         public Task<bool> DeleteUser(string id);
