@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Messenger.WEB.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("[controller]/[action]")]
     public class UserController : Controller
     {
     }
