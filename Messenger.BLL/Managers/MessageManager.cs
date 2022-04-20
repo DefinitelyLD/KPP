@@ -41,7 +41,6 @@ namespace Messenger.BLL.Managers
         public MessageViewModel GetMessage(int messageId)
         {
             Message messageEntity = _messagesRepository.GetById(messageId);
-            if (messageEntity == null) throw new KeyNotFoundException();
             return _mapper.Map<MessageViewModel>(messageEntity);
         }
 

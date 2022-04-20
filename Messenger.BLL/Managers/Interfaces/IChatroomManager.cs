@@ -24,6 +24,8 @@ namespace Messenger.BLL.Managers
                                               UserAccountViewModel adminAccountModel);
         public UserAccountUpdateModel UnbanUser(UserAccountViewModel userAccountModel,
                                                 UserAccountViewModel adminAccountModel);
+        public IEnumerable<UserViewModel> GetAllBannedUsers(ChatViewModel chatModel);
+
         public UserAccountUpdateModel SetAdmin(UserAccountViewModel userAccountModel,
                                                UserAccountViewModel adminAccountModel);
         public UserAccountUpdateModel UnsetAdmin(UserAccountViewModel userAccountModel,

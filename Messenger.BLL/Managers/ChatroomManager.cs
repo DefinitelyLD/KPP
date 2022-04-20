@@ -39,8 +39,6 @@ namespace Messenger.BLL.Managers
         public ChatViewModel GetChatroom(int chatId)
         {
             Chat chatEntity = _chatsRepository.GetById(chatId);
-            if (chatEntity == null)
-                throw new KeyNotFoundException();
 
             return _mapper.Map<ChatViewModel>(chatEntity);
         }
@@ -123,6 +121,14 @@ namespace Messenger.BLL.Managers
             userAccountEntity.IsBanned = false;
             return _mapper.Map<UserAccountUpdateModel>(_userAccountsRepository.Update(userAccountEntity));
             
+        }
+
+        public IEnumerable<UserViewModel> GetAllBannedUsers(ChatViewModel chatModel)
+        {
+            var chatEntity = _mapper.Map<Chat>(chatModel);
+            var bannedUsersEntityList = chatEntity.Users.Where(u => u.IsBanned == true).ToList();
+            var userModelList = _mapper.Map<List<UserViewModel>>(bannedUsersEntityList);
+            return userModelList;
         }
 
         public UserAccountUpdateModel SetAdmin(UserAccountViewModel userAccountModel,
