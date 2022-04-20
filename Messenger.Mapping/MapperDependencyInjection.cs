@@ -14,6 +14,7 @@ namespace Messenger.Mapping
         {
             services.AddAutoMapper(typeof(UserProfile));
             services.AddAutoMapper(typeof(MessageProfile));
+            services.AddAutoMapper(typeof(ChatProfile));
             return services;
         }
     }

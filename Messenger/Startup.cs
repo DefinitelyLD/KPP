@@ -36,6 +36,7 @@ namespace Messenger.WEB
             services.AddManagers();
             services.AddRepository(Configuration);
             services.AddMappers();
+            services.AddManagers();
 
             services.AddIdentity<User, IdentityRole>(opts =>
             {

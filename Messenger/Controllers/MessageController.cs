@@ -1,13 +1,12 @@
-﻿using Messenger.DAL.Entities;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Messenger.BLL.Managers;
-using Messenger.BLL.Models;
 using System.Collections.Generic;
+using Messenger.BLL.Messages;
 
 namespace Messenger.WEB.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("[controller]/[action]")]
     public class MessageController : Controller
     {
         private readonly IMessageManager _messageManager;
@@ -17,27 +16,32 @@ namespace Messenger.WEB.Controllers
             _messageManager = messageManager;
         }
 
-        public ActionResult<MessageModel> SendMessage(MessageModel msg)
+        [HttpPost]
+        public ActionResult<MessageCreateModel> SendMessage(MessageCreateModel messageModel)
         {
-            return  _messageManager.SendMessage(msg);
+            return  _messageManager.SendMessage(messageModel);
         }
 
-        public ActionResult<MessageModel> EditMessage(MessageModel msg)
+        [HttpPost]
+        public ActionResult<MessageUpdateModel> EditMessage(MessageUpdateModel messageModel)
         {
-            return _messageManager.EditMessage(msg);
+            return _messageManager.EditMessage(messageModel);
         }
 
-        public ActionResult<bool> DeleteMessage(int msgId)
+        [HttpDelete]
+        public ActionResult<bool> DeleteMessage(int messageId)
         {
-            return _messageManager.DeleteMessage(msgId);
+            return _messageManager.DeleteMessage(messageId);
         }
 
-        public ActionResult<MessageModel> GetMessage(int msgId)
+        [HttpGet]
+        public ActionResult<MessageViewModel> GetMessage(int messageId)
         {
-            return _messageManager.GetMessage(msgId);
+            return _messageManager.GetMessage(messageId);
         }
 
-        public IEnumerable<MessageModel> GetAllMessages()
+        [HttpGet]
+        public IEnumerable<MessageViewModel> GetAllMessages()
         {
             return _messageManager.GetAllMessages();
         }
