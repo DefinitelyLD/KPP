@@ -11,7 +11,7 @@ namespace Messenger.BLL.Models
     public class MessageModel
     {
         public ChatModel Chat { get; set; }
-        public UserModel User { get; set; }
+        public UserCreateModel User { get; set; }
         public ICollection<MessageImageModel> Images { get; set; }
         public string Text { get; set; }
         public DateTime CreatedTime { get; set; } = DateTime.Now;
