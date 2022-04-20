@@ -1,5 +1,6 @@
 ﻿using Messenger.BLL.Chats;
 using Messenger.BLL.Managers;
+using Messenger.BLL.Models.UserAccounts;
 using Messenger.BLL.UserAccounts;
 using Messenger.BLL.Users;
 using Microsoft.AspNetCore.Mvc;
@@ -55,33 +56,33 @@ namespace Messenger.WEB.Controllers
         }
 
         [HttpDelete]
-        public ActionResult<bool> KickUser(int userAccountId)
+        public ActionResult<bool> KickUser(UserAccountActionModel actionModel)
         {
-            return _chatroomManager.KickUser(userAccountId);
+            return _chatroomManager.KickUser(actionModel.user, actionModel.admin);
         }
 
         [HttpPost]
-        public ActionResult<UserAccountUpdateModel> BanUser(int userId, int chatId)
+        public ActionResult<UserAccountUpdateModel> BanUser(UserAccountActionModel actionModel)
         {
-            return _chatroomManager.BanUser(userId, chatId);
+            return _chatroomManager.BanUser(actionModel.user, actionModel.admin);
         }
 
         [HttpPost]
-        public ActionResult<UserAccountUpdateModel> UnbanUser(int userId, int chatId)
+        public ActionResult<UserAccountUpdateModel> UnbanUser(UserAccountActionModel actionModel)
         {
-            return _chatroomManager.UnbanUser(userId, chatId);
+            return _chatroomManager.UnbanUser(actionModel.user, actionModel.admin);
         }
 
         [HttpPost]
-        public ActionResult<UserAccountUpdateModel> SetAdmin(int userId, int chatId)
+        public ActionResult<UserAccountUpdateModel> SetAdmin(UserAccountActionModel actionModel)
         {
-            return _chatroomManager.SetAdmin(userId, chatId);
+            return _chatroomManager.SetAdmin(actionModel.user, actionModel.admin);
         }
 
         [HttpPost]
-        public ActionResult<UserAccountUpdateModel> UnsetAdmin(int userId, int chatId)
+        public ActionResult<UserAccountUpdateModel> UnsetAdmin(UserAccountActionModel actionModel)
         {
-            return _chatroomManager.UnsetAdmin(userId, chatId);
+            return _chatroomManager.UnsetAdmin(actionModel.user, actionModel.admin);
         }
 
         [HttpGet]
