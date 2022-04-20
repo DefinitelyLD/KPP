@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Messenger.BLL.ViewModels.User
+namespace Messenger.BLL.Models.Users
 {
-    public class ChangeUserPasswordViewModel
+    public class UserChangePasswordModel
     {
         public string Id { get; set; }
         public string NewPassword { get; set; }

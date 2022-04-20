@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Messenger.BLL.Models
+namespace Messenger.BLL.Users
 {
     public class UserModel
     {

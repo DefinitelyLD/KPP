@@ -5,11 +5,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Messenger.BLL.ViewModels.User
+namespace Messenger.BLL.Users
 {
-    public class DeleteUserViewModel
+    public class UserRegisterModel
     {
-        public string Id { get; set; }
+        public string UserName { get; set; }
         public string Email { get; set; }
+        public string Password { get; set; }
     }
 }

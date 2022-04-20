@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Messenger.BLL.Users;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;

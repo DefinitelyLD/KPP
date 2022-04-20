@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
 using Messenger.BLL.Models;
-using Messenger.BLL.ViewModels.User;
+using Messenger.BLL.Users;
 using Messenger.DAL.Entities;
 
 namespace Messenger.Mapping.Profiles
@@ -16,8 +16,12 @@ namespace Messenger.Mapping.Profiles
         {
             CreateMap<UserModel, User>();
             CreateMap<UserModel, User>().ReverseMap();
-            CreateMap<RegisterUserViewModel, User>();
-            CreateMap<RegisterUserViewModel, User>().ReverseMap();
+            CreateMap<UserCreateModel, User>();
+            CreateMap<UserCreateModel, User>().ReverseMap();
+            CreateMap<UserChangePasswordModel, User>();
+            CreateMap<UserChangePasswordModel, User>().ReverseMap();
+            CreateMap<UserLoginModel, User>();
+            CreateMap<UserLoginModel, User>().ReverseMap();
         }
     }
 }

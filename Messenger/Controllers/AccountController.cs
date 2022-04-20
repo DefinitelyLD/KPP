@@ -1,6 +1,6 @@
 ﻿using Messenger.BLL.Managers;
 using Messenger.BLL.Models;
-using Messenger.BLL.ViewModels.User;
+using Messenger.BLL.Users;
 using Messenger.DAL.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -22,13 +22,13 @@ namespace Messenger.WEB.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<IdentityResult>> Register(RegisterUserViewModel model)
+        public async Task<ActionResult<IdentityResult>> Register(UserRegisterModel model)
         {
             return await _accountManager.RegisterUser(model);
         }
 
         [HttpPost]
-        public async Task<ActionResult<Microsoft.AspNetCore.Identity.SignInResult>> Login(LoginUserViewModel model)
+        public async Task<ActionResult<Microsoft.AspNetCore.Identity.SignInResult>> Login(UserLoginModel model)
         {
             return await _accountManager.LoginUser(model);
         }
@@ -46,7 +46,7 @@ namespace Messenger.WEB.Controllers
         }
 
         [HttpPost]
-        public async Task<bool> ChangePassword(ChangeUserPasswordViewModel model)
+        public async Task<bool> ChangePassword(UserChangePasswordModel model)
         {
             return await _accountManager.ChangeUserPassword(model);
         }
