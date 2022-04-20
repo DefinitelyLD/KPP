@@ -44,7 +44,7 @@ namespace Messenger.WEB.Controllers
         }
 
         [HttpPost]
-        public ActionResult<UserAccountCreateModel> AddToChatroom(int userId, int chatId)
+        public ActionResult<UserAccountCreateModel> AddToChatroom(string userId, int chatId)
         {
             return _chatroomManager.AddToChatroom(userId, chatId);
         }
