@@ -25,6 +25,12 @@ namespace Messenger.BLL.Managers
             _userAccountsRepository = userAccountsRepository;
         }
 
+        public ChatCreateModel CreateChatroom(ChatCreateModel chatCreateModel)
+        {
+            var chatEntity = _mapper.Map<Chat>(chatCreateModel);
+            return _mapper.Map<ChatCreateModel>(_chatsRepository.Create(chatEntity));
+        }
+
         public ChatUpdateModel EditChatroom(ChatUpdateModel chatModel)
         {
             var chatEntity = _mapper.Map<Chat>(chatModel);
