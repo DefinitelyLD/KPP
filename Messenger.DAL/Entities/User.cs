@@ -4,20 +4,13 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace Messenger.DAL.Entities
 {
-    public class User : BaseEntity<int>
+    public class User : IdentityUser
     {
-        [Required]
-        public string Name { get; set; }
-        [Required]
-        public string Password { get; set; }
-        [Required]
-        [EmailAddress]
-        public string Email { get; set; }
-
         public virtual ICollection<User> FriendsTo { get; set; }
         public virtual ICollection<User> FriendsFrom { get; set; }
 

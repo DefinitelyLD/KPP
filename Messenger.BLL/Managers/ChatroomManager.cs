@@ -50,7 +50,7 @@ namespace Messenger.BLL.Managers
             return chatModelList;
         }
 
-        public UserAccountCreateModel AddToChatroom(int userId, int chatId)
+        public UserAccountCreateModel AddToChatroom(string userId, int chatId)
         {
             var userAccountExistingEntity = _userAccountsRepository.GetAll()
                 .Where(p => p.UserId == userId && p.ChatId == chatId)
