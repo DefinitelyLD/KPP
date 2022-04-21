@@ -68,7 +68,6 @@ namespace Messenger.WEB
 
             app.UseRouting();
 
-
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
