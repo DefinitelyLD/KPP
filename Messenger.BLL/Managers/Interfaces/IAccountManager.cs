@@ -12,8 +12,8 @@ namespace Messenger.BLL.Managers
 {
     public interface IAccountManager
     {
-        public Task<IdentityResult> RegisterUser(UserCreateModel model);
-        public Task<SignInResult> LoginUser(UserLoginModel model);
+        public Task<UserViewModel> RegisterUser(UserCreateModel model);
+        public Task<UserViewModel> LoginUser(UserLoginModel model);
         public Task LogoutUser();
         public Task<bool> DeleteUser(string id);
         public Task<bool> ChangeUserPassword(UserChangePasswordModel model);
