@@ -94,9 +94,7 @@ namespace Messenger.WEB
             });
 
             app.UseHttpsRedirection();
-
             app.UseRouting();
-
             app.UseAuthentication();
             app.UseAuthorization();
 

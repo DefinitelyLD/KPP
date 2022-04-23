@@ -5,10 +5,8 @@ namespace Messenger.BLL.Token
 {
     public class TokenAuthOptions
     {
-        public const string ISSUER = "Messenger";
-        public const string AUDIENCE = "Messenger";
         const string KEY = "ultramegasuperduper_secretkey";
-        public const int LIFETIME = 1;
+        public const int LIFETIME = 7;
         public static SymmetricSecurityKey GetSymmetricSecurityKey()
         {
             return new SymmetricSecurityKey(Encoding.ASCII.GetBytes(KEY));

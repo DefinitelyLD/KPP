@@ -21,9 +21,10 @@ namespace Messenger.BLL.Token
             var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256Signature);
             var tokenDescriptor = new SecurityTokenDescriptor {
                 Subject = new ClaimsIdentity(claims),
-                Expires = DateTime.Now.AddMinutes(600), 
+                Expires = DateTime.Now.AddDays(TokenAuthOptions.LIFETIME), 
                 SigningCredentials = credentials
             };
+
             var tokenHandler = new JwtSecurityTokenHandler();
             var token = tokenHandler.CreateToken(tokenDescriptor);
             return tokenHandler.WriteToken(token);
