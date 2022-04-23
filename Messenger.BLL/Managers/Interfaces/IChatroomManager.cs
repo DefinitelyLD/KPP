@@ -16,7 +16,7 @@ namespace Messenger.BLL.Managers
         public ChatViewModel GetChatroom(int chatId);
         public IEnumerable<ChatViewModel> GetAllChatrooms();
 
-        public UserAccountCreateModel AddToChatroom(int userId, int chatId);
+        public UserAccountCreateModel AddToChatroom(string userId, int chatId);
         public bool LeaveFromChatroom(int userAccountId);
         public bool KickUser(UserAccountViewModel userAccountModel,
                              UserAccountViewModel adminAccountModel);

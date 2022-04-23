@@ -18,6 +18,9 @@ using Messenger.BLL;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using Messenger.BLL.Models.UserAccounts;
+using Microsoft.AspNetCore.Identity;
+using Messenger.DAL.Entities;
+using Messenger.DAL.Context;
 
 namespace Messenger.WEB
 {
@@ -33,9 +36,19 @@ namespace Messenger.WEB
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddManagers();
             services.AddRepository(Configuration);
             services.AddMappers();
             services.AddManagers();
+
+            services.AddIdentity<User, IdentityRole>(opts =>
+            {
+                opts.Password.RequireNonAlphanumeric = false;
+                opts.Password.RequireLowercase = false;
+                opts.Password.RequireUppercase = false;
+                opts.Password.RequireDigit = false;
+            }).AddEntityFrameworkStores<AppDbContext>()
+              .AddDefaultTokenProviders();
 
             services.AddControllers();
             services.AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<UserAccountActionModelValidator>());
