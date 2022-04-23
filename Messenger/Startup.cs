@@ -52,11 +52,10 @@ namespace Messenger.WEB
             .AddDefaultTokenProviders();
 
             services.AddJwtToken();
-
             services.AddDistributedMemoryCache();
             services.AddSession();
-
             services.AddControllers();
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Messenger", Version = "v1" });
