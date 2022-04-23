@@ -1,12 +1,14 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 namespace Messenger.BLL.Token
 {
     public static class TokenDependencyInjection
     {
-        public static IServiceCollection AddJwtToken(this IServiceCollection services)
+        public static IServiceCollection AddJwtToken(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddScoped<ITokenService, TokenService>();
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -17,8 +19,8 @@ namespace Messenger.BLL.Token
                             ValidateIssuer = false,
                             ValidateAudience = false,
                             ValidateLifetime = true,
-                            IssuerSigningKey = TokenAuthOptions.GetSymmetricSecurityKey(),
-                            ValidateIssuerSigningKey = true,
+                            IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(configuration["Jwt:Key"])),
+                        ValidateIssuerSigningKey = true,
                         };
                     });
 

@@ -51,7 +51,7 @@ namespace Messenger.WEB
             }).AddEntityFrameworkStores<AppDbContext>()
             .AddDefaultTokenProviders();
 
-            services.AddJwtToken();
+            services.AddJwtToken(Configuration);
             services.AddDistributedMemoryCache();
             services.AddSession();
             services.AddControllers();
