@@ -15,6 +15,9 @@ using Microsoft.Extensions.Options;
 using Messenger.DAL;
 using Messenger.Mapping;
 using Messenger.BLL;
+using FluentValidation;
+using FluentValidation.AspNetCore;
+using Messenger.BLL.Models.UserAccounts;
 
 namespace Messenger.WEB
 {
@@ -35,6 +38,7 @@ namespace Messenger.WEB
             services.AddManagers();
 
             services.AddControllers();
+            services.AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<UserAccountActionModelValidator>());
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Messenger", Version = "v1" });
