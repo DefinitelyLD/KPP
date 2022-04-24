@@ -15,6 +15,9 @@ using Microsoft.Extensions.Options;
 using Messenger.DAL;
 using Messenger.Mapping;
 using Messenger.BLL;
+using FluentValidation;
+using FluentValidation.AspNetCore;
+using Messenger.BLL.Models.UserAccounts;
 using Microsoft.AspNetCore.Identity;
 using Messenger.DAL.Entities;
 using Messenger.DAL.Context;
@@ -55,6 +58,7 @@ namespace Messenger.WEB
             services.AddDistributedMemoryCache();
             services.AddSession();
             services.AddControllers();
+            services.AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<UserAccountActionModelValidator>());
 
             services.AddSwaggerGen(c =>
             {
