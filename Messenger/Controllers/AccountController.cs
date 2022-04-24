@@ -1,7 +1,8 @@
 ﻿using Messenger.BLL.Managers;
 using Messenger.BLL.Models;
 using Messenger.BLL.Users;
-using Messenger.DAL.Entities;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections;
@@ -21,16 +22,22 @@ namespace Messenger.WEB.Controllers
             _accountManager = accountManager;
         }
 
+        [AllowAnonymous]
         [HttpPost]
-        public async Task<ActionResult<IdentityResult>> Register(UserCreateModel model)
+        public async Task<ActionResult<UserViewModel>> Register(UserCreateModel model)
         {
-            return await _accountManager.RegisterUser(model);
+            var result = await _accountManager.RegisterUser(model);
+            HttpContext.Session.SetString("Token", result.Token);
+            return result;
         }
 
+        [AllowAnonymous]
         [HttpPost]
-        public async Task<ActionResult<Microsoft.AspNetCore.Identity.SignInResult>> Login(UserLoginModel model)
+        public async Task<ActionResult<UserViewModel>> Login(UserLoginModel model)
         {
-            return await _accountManager.LoginUser(model);
+            var result = await _accountManager.LoginUser(model);
+            HttpContext.Session.SetString("Token", result.Token);
+            return result;
         }
 
         [HttpPost]
