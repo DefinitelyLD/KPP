@@ -28,7 +28,7 @@ namespace Messenger.BLL.Managers
         public ChatCreateModel CreateChatroom(ChatCreateModel chatModel)
         {
             var chatEntity = _mapper.Map<Chat>(chatModel);
-            var chatViewModel =_mapper.Map<ChatViewModel>(_chatsRepository.Create(chatEntity));
+            var chatViewModel = _mapper.Map<ChatViewModel>(_chatsRepository.Create(chatEntity));
             
             UserAccountCreateModel ownerAccountModel = new()
             {
@@ -37,9 +37,9 @@ namespace Messenger.BLL.Managers
                 IsOwner = true
             };
             var ownerAccountEntity = _mapper.Map<UserAccount>(ownerAccountModel);
-            _mapper.Map<UserAccountCreateModel>(_userAccountsRepository.Create(ownerAccountEntity));
+            _userAccountsRepository.Create(ownerAccountEntity);
 
-            return _mapper.Map<ChatCreateModel>(chatEntity);
+            return _mapper.Map<ChatCreateModel>(chatViewModel);
         }
 
         public ChatUpdateModel EditChatroom(ChatUpdateModel chatModel)
