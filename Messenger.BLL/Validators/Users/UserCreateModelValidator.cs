@@ -12,7 +12,7 @@ namespace Messenger.BLL.Validators.Users
     {
         public UserCreateModelValidator()
         {
-            RuleFor(x => x.Name).NotEmpty().MaximumLength(25);
+            RuleFor(x => x.UserName).NotEmpty().MaximumLength(25);
             RuleFor(x => x.Password).NotEmpty().MinimumLength(8).MaximumLength(20);
             RuleFor(x => x.Email).NotEmpty().EmailAddress();
         }

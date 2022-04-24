@@ -13,7 +13,7 @@ namespace Messenger.BLL.Validators.Users
         public UserViewModelValidator()
         {
             RuleFor(x => x.Id).NotNull();
-            RuleFor(x => x.Name).NotEmpty().MaximumLength(25);
+            RuleFor(x => x.UserName).NotEmpty().MaximumLength(25);
             RuleFor(x => x.Password).NotEmpty().MinimumLength(8).MaximumLength(20);
             RuleFor(x => x.Email).NotEmpty().EmailAddress();
         }
