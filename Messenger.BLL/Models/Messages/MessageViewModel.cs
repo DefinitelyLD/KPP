@@ -1,5 +1,6 @@
 ﻿using Messenger.BLL.MessageImages;
 using Messenger.BLL.Users;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,7 +13,8 @@ namespace Messenger.BLL.Messages
     {
         public int Id { get; set; }
         public UserViewModel User { get; set; }
-        public ICollection<MessageImageViewModel> Images { get; set; }
+        public List<MessageImageViewModel> Images { get; set; }
+        public IFormFileCollection Files { get; set; }
         public string Text { get; set; }
         public DateTime CreatedTime { get; set; }
     }

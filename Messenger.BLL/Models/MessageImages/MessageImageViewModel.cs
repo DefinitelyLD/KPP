@@ -11,6 +11,8 @@ namespace Messenger.BLL.MessageImages
     {
         public int Id { get; set; }    
         public string Path { get; set; }
-        public MessageCreateModel Message { get; set; }
+        public MessageViewModel Message { get; set; }
+        public byte[] Bytes { get; set; }
+        public float Size { get; set; }
     }
 }

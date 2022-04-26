@@ -2,6 +2,7 @@
 using Messenger.BLL.Managers;
 using System.Collections.Generic;
 using Messenger.BLL.Messages;
+using Microsoft.AspNetCore.Http;
 
 namespace Messenger.WEB.Controllers
 {
@@ -17,9 +18,10 @@ namespace Messenger.WEB.Controllers
         }
 
         [HttpPost]
-        public ActionResult<MessageCreateModel> SendMessage(MessageCreateModel messageModel)
+        public ActionResult<MessageCreateModel> SendMessage(MessageCreateModel messageModel, 
+                                                            List<IFormFile> images = null)
         {
-            return  _messageManager.SendMessage(messageModel);
+            return  _messageManager.SendMessage(messageModel, images);
         }
 
         [HttpPost]

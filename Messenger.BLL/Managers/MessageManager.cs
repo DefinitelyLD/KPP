@@ -1,9 +1,12 @@
 ﻿using AutoMapper;
+using Messenger.BLL.MessageImages;
 using Messenger.BLL.Messages;
 using Messenger.DAL.Entities;
 using Messenger.DAL.Repositories.Interfaces;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -21,8 +24,45 @@ namespace Messenger.BLL.Managers
             _messagesRepository = messagesRepository;
         }
 
-        public MessageCreateModel SendMessage (MessageCreateModel messageModel)
+        public MessageCreateModel SendMessage (MessageCreateModel messageModel, List<IFormFile> images)
         {
+            List<MessageImageCreateModel> imageModelList = new();
+
+            if (images.Count > 0)
+            {
+                foreach (var file in images)
+                {
+                    using var memorySteam = new MemoryStream();
+                    var newImage = new MessageImageCreateModel()
+                    {
+                        Path = file.FileName,
+                        Bytes = memorySteam.ToArray(),
+                        Size = file.Length
+                    };
+                    imageModelList.Add(newImage);
+                }
+            }
+            messageModel.Images = imageModelList;
+            /*List<MessageImageCreateModel> imagesList = new();
+
+            if(messageModel.Files.Count > 0)
+            {
+                foreach(var file in messageModel.Files)
+                {
+                    using(var memorySteam = new MemoryStream())
+                    {
+                        var newImage = new MessageImageCreateModel()
+                        {
+                            Path = file.FileName,
+                            Bytes = memorySteam.ToArray(),
+                            Size = file.Length
+                        };
+                        imagesList.Add(newImage);
+                    }
+                }
+            }
+            messageModel.Images = imagesList; */
+
             var msgEntity = _mapper.Map<Message>(messageModel);
             return _mapper.Map<MessageCreateModel>(_messagesRepository.Create(msgEntity));
         }

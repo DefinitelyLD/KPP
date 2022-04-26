@@ -25,6 +25,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Http;
 using Messenger.BLL.Token;
+using Messenger.BLL.Validators.UserAccounts;
 
 namespace Messenger.WEB
 {
@@ -40,7 +41,6 @@ namespace Messenger.WEB
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddManagers();
             services.AddRepository(Configuration);
             services.AddMappers();
             services.AddManagers();
