@@ -10,8 +10,9 @@ namespace Messenger.BLL.Managers
 {
     public interface IMessageManager
     {
-        public MessageCreateModel SendMessage(MessageCreateModel messageModel, List<IFormFile> images);
-        public MessageUpdateModel EditMessage(MessageUpdateModel messageModel);
+        public Task<MessageViewModel> SendMessage(MessageCreateModel messageModel);
+
+        public MessageViewModel EditMessage(MessageUpdateModel messageModel);
         public bool DeleteMessage(int messageId);
         public MessageViewModel GetMessage(int messageId);
         public IEnumerable<MessageViewModel> GetAllMessages();

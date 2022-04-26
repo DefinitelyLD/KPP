@@ -15,7 +15,6 @@ namespace Messenger.BLL.Messages
     {
         public ChatViewModel Chat { get; set; }
         public UserViewModel User { get; set; }
-        public List<MessageImageCreateModel> Images { get; set; }
         public IFormFileCollection Files { get; set; }
         public string Text { get; set; }
         public DateTime CreatedTime { get; set; } = DateTime.Now;

@@ -4,6 +4,7 @@ using Messenger.BLL.Messages;
 using Messenger.DAL.Entities;
 using Messenger.DAL.Repositories.Interfaces;
 using Microsoft.AspNetCore.Http;
+using Microsoft.VisualBasic;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -17,60 +18,44 @@ namespace Messenger.BLL.Managers
     {
         private readonly IMapper _mapper;
         private readonly IMessagesRepository _messagesRepository;
+        private readonly IMessageImagesRepository _messageImagesRepository;
+        private const string PathToSave = "..\\Messenger.BLL\\Images\\";
         
-        public MessageManager(IMapper mapper, IMessagesRepository messagesRepository)
+        public MessageManager(IMapper mapper, 
+                              IMessagesRepository messagesRepository, 
+                              IMessageImagesRepository messageImagesRepository)
         {
             _mapper = mapper;
             _messagesRepository = messagesRepository;
+            _messageImagesRepository = messageImagesRepository;
         }
 
-        public MessageCreateModel SendMessage (MessageCreateModel messageModel, List<IFormFile> images)
+        public async Task<MessageViewModel> SendMessage (MessageCreateModel messageModel)
         {
-            List<MessageImageCreateModel> imageModelList = new();
+            var messageEntity = _mapper.Map<Message>(messageModel);
 
-            if (images.Count > 0)
+            var messageViewModel = _mapper.Map<MessageViewModel>(_messagesRepository.Create(messageEntity));
+            foreach (var file in messageModel.Files)
             {
-                foreach (var file in images)
+                string filePath = PathToSave + Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
+                using (Stream fileStream = new FileStream(filePath, FileMode.Create))
+                    await file.CopyToAsync(fileStream);
+                MessageImageCreateModel imageModel = new()
                 {
-                    using var memorySteam = new MemoryStream();
-                    var newImage = new MessageImageCreateModel()
-                    {
-                        Path = file.FileName,
-                        Bytes = memorySteam.ToArray(),
-                        Size = file.Length
-                    };
-                    imageModelList.Add(newImage);
-                }
+                    Path = filePath,
+                    MessageId = messageViewModel.Id
+                };
+                var messageImageEntity = _mapper.Map<MessageImage>(imageModel);
+                _messageImagesRepository.Create(messageImageEntity);
             }
-            messageModel.Images = imageModelList;
-            /*List<MessageImageCreateModel> imagesList = new();
 
-            if(messageModel.Files.Count > 0)
-            {
-                foreach(var file in messageModel.Files)
-                {
-                    using(var memorySteam = new MemoryStream())
-                    {
-                        var newImage = new MessageImageCreateModel()
-                        {
-                            Path = file.FileName,
-                            Bytes = memorySteam.ToArray(),
-                            Size = file.Length
-                        };
-                        imagesList.Add(newImage);
-                    }
-                }
-            }
-            messageModel.Images = imagesList; */
-
-            var msgEntity = _mapper.Map<Message>(messageModel);
-            return _mapper.Map<MessageCreateModel>(_messagesRepository.Create(msgEntity));
+            return messageViewModel;
         }
 
-        public MessageUpdateModel EditMessage(MessageUpdateModel messageModel)
+        public MessageViewModel EditMessage(MessageUpdateModel messageModel)
         {
             var msgEntity = _mapper.Map<Message>(messageModel);
-            return _mapper.Map<MessageUpdateModel>(_messagesRepository.Update(msgEntity));
+            return _mapper.Map<MessageViewModel>(_messagesRepository.Update(msgEntity));
         }
 
         public bool DeleteMessage(int messageId)
