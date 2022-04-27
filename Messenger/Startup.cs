@@ -17,7 +17,6 @@ using Messenger.Mapping;
 using Messenger.BLL;
 using FluentValidation;
 using FluentValidation.AspNetCore;
-using Messenger.BLL.Models.UserAccounts;
 using Microsoft.AspNetCore.Identity;
 using Messenger.DAL.Entities;
 using Messenger.DAL.Context;
@@ -25,6 +24,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Http;
 using Messenger.BLL.Token;
+using Messenger.BLL.Validators.UserAccounts;
 
 namespace Messenger.WEB
 {
