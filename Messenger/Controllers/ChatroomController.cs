@@ -20,7 +20,7 @@ namespace Messenger.WEB.Controllers
         }
 
         [HttpPost]
-        public ActionResult<ChatCreateModel> CreateChatroom(ChatCreateModel chat)
+        public ActionResult<ChatViewModel> CreateChatroom(ChatCreateModel chat)
         {
             return _chatroomManager.CreateChatroom(chat);
         }

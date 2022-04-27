@@ -25,7 +25,7 @@ namespace Messenger.BLL.Managers
             _userAccountsRepository = userAccountsRepository;
         }
 
-        public ChatCreateModel CreateChatroom(ChatCreateModel chatModel)
+        public ChatViewModel CreateChatroom(ChatCreateModel chatModel)
         {
             var chatEntity = _mapper.Map<Chat>(chatModel);
             var chatViewModel = _mapper.Map<ChatViewModel>(_chatsRepository.Create(chatEntity));
@@ -34,12 +34,13 @@ namespace Messenger.BLL.Managers
             {
                 ChatId = chatViewModel.Id,
                 UserId = chatViewModel.Users.First().User.Id,
-                IsOwner = true
+                IsOwner = true,
+                IsAdmin = true
             };
             var ownerAccountEntity = _mapper.Map<UserAccount>(ownerAccountModel);
             _userAccountsRepository.Create(ownerAccountEntity);
 
-            return _mapper.Map<ChatCreateModel>(chatViewModel);
+            return chatViewModel;
         }
 
         public ChatUpdateModel EditChatroom(ChatUpdateModel chatModel)
