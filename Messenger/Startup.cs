@@ -58,7 +58,7 @@ namespace Messenger.WEB
             services.AddDistributedMemoryCache();
             services.AddSession();
             services.AddControllers();
-           // services.AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<UserAccountActionModelValidator>());
+            services.AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<UserAccountActionModelValidator>());
 
             services.AddSwaggerGen(c =>
             {

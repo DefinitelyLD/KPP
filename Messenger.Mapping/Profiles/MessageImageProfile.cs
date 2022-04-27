@@ -13,11 +13,8 @@ namespace Messenger.Mapping.Profiles
     {
         public MessageImageProfile()
         {
-            CreateMap<MessageImageCreateModel, MessageImage>();
             CreateMap<MessageImageCreateModel, MessageImage>().ReverseMap();
-            CreateMap<MessageImageUpdateModel, MessageImage>();
             CreateMap<MessageImageUpdateModel, MessageImage>().ReverseMap();
-            CreateMap<MessageImageViewModel, MessageImage>();
             CreateMap<MessageImageViewModel, MessageImage>().ReverseMap();
         }
     }
