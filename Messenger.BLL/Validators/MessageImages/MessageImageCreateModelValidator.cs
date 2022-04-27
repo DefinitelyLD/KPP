@@ -13,7 +13,7 @@ namespace Messenger.BLL.Validators.MessageImages
         public MessageImageCreateModelValidator() 
         {
             RuleFor(x => x.Path).NotEmpty();
-            RuleFor(x => x.Message).NotNull();
+            RuleFor(x => x.MessageId).NotNull();
         }
     }
 }
