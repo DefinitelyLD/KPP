@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Messenger.BLL.Chats;
+using Messenger.BLL.Exceptions;
 using Messenger.BLL.UserAccounts;
 using Messenger.BLL.Users;
 using Messenger.DAL.Entities;
@@ -76,7 +77,7 @@ namespace Messenger.BLL.Managers
 
             if (userAccountExistingEntity != null)
                 //TODO: should be done in #12 issue
-                throw new Exception("The user is already in the chat."); 
+                throw new BadRequestException("The user is already in the chat."); 
 
             UserAccountCreateModel userAccountModel = new()
             {
@@ -91,7 +92,7 @@ namespace Messenger.BLL.Managers
         {
             var userAccountEntity = _userAccountsRepository.GetById(userAccountId);
             if (userAccountEntity.IsOwner)
-                throw new Exception("Owner can't leave the chat");
+                throw new BadRequestException("Owner can't leave the chat");
 
             return _userAccountsRepository.DeleteById(userAccountId);
         }
@@ -105,7 +106,7 @@ namespace Messenger.BLL.Managers
             CheckModels(userAccountEntity, adminAccountEntity);
 
             if (userAccountEntity.IsAdmin && !adminAccountEntity.IsOwner)
-                throw new Exception("You can't kick the owner");
+                throw new BadRequestException("You can't kick the owner");
 
             return _userAccountsRepository.DeleteById(userAccountEntity.Id);
         }
@@ -119,7 +120,7 @@ namespace Messenger.BLL.Managers
             CheckModels(userAccountEntity, adminAccountEntity);
 
             if (userAccountEntity.IsOwner || userAccountEntity.IsBanned)
-                throw new Exception("You can't ban the owner or a banned user");
+                throw new BadRequestException("You can't ban the owner or a banned user");
 
             userAccountEntity.IsBanned = true;
             return _mapper.Map<UserAccountUpdateModel>(_userAccountsRepository.Update(userAccountEntity));
@@ -134,7 +135,7 @@ namespace Messenger.BLL.Managers
             CheckModels(userAccountEntity, adminAccountEntity);
 
             if (!userAccountEntity.IsBanned)
-                throw new Exception("You can't unban this user");
+                throw new BadRequestException("You can't unban this user");
 
             userAccountEntity.IsBanned = false;
             return _mapper.Map<UserAccountUpdateModel>(_userAccountsRepository.Update(userAccountEntity));
@@ -158,7 +159,7 @@ namespace Messenger.BLL.Managers
             CheckModels(userAccountEntity, adminAccountEntity);
 
             if (userAccountEntity.IsAdmin || userAccountEntity.IsBanned)
-                throw new Exception("This user is already admin or banned");
+                throw new BadRequestException("This user is already admin or banned");
 
             userAccountEntity.IsAdmin = true;
             return _mapper.Map<UserAccountUpdateModel>(_userAccountsRepository.Update(userAccountEntity));
@@ -173,7 +174,7 @@ namespace Messenger.BLL.Managers
             CheckModels(userAccountEntity, adminAccountEntity);
 
             if (!userAccountEntity.IsAdmin)
-                throw new Exception("This user is banned or not an admin");
+                throw new BadRequestException("This user is banned or not an admin");
 
             userAccountEntity.IsAdmin = false;
             return _mapper.Map<UserAccountUpdateModel>(_userAccountsRepository.Update(userAccountEntity));
@@ -190,10 +191,10 @@ namespace Messenger.BLL.Managers
         private static void CheckModels(UserAccount userAccountEntity, UserAccount adminAccountEntity)
         {
             if (userAccountEntity.ChatId != adminAccountEntity.ChatId)
-                throw new Exception("Users are in different chats");
+                throw new BadRequestException("Users are in different chats");
 
             if (!adminAccountEntity.IsAdmin)
-                throw new Exception("This action is for admins only");
+                throw new NotAllowedException("This action is for admins only");
         }
 
     }
