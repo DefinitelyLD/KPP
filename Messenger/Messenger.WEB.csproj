@@ -16,6 +16,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Messenger.BLL\Messenger.BLL.csproj" />
     <ProjectReference Include="..\Messenger.Mapping\Messenger.Mapping.csproj" />
+    <ProjectReference Include="..\Messenger.Middleware\Messenger.Middleware.csproj" />
   </ItemGroup>
 
 </Project>

@@ -26,6 +26,7 @@ using Microsoft.AspNetCore.Http;
 using Messenger.BLL.Token;
 using Messenger.BLL.Validators.UserAccounts;
 using Messenger.WEB.SignalR;
+using Messenger.Middleware;
 
 namespace Messenger.WEB
 {
@@ -102,6 +103,8 @@ namespace Messenger.WEB
             app.UseRouting();
             app.UseAuthentication();
             app.UseAuthorization();
+
+            app.UseMiddleware<ErrorHandlerMiddleware>();
 
             app.UseEndpoints(endpoints =>
             {

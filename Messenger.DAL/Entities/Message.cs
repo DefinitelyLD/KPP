@@ -12,7 +12,11 @@ namespace Messenger.DAL.Entities
         [Required]
         public Chat Chat { get; set; }
         [Required]
+        public int ChatId { get; set; }
+        [Required]
         public User User { get; set; }
+        [Required]
+        public string UserId { get; set; }
         public ICollection<MessageImage> Images { get; set; }
         public string Text { get; set; }
         [Required]
