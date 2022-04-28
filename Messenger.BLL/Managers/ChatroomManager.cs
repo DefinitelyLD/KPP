@@ -25,6 +25,24 @@ namespace Messenger.BLL.Managers
             _userAccountsRepository = userAccountsRepository;
         }
 
+        public ChatViewModel CreateChatroom(ChatCreateModel chatModel)
+        {
+            var chatEntity = _mapper.Map<Chat>(chatModel);
+            var chatViewModel = _mapper.Map<ChatViewModel>(_chatsRepository.Create(chatEntity));
+            
+            UserAccountCreateModel ownerAccountModel = new()
+            {
+                ChatId = chatViewModel.Id,
+                UserId = chatViewModel.Users.First().User.Id,
+                IsOwner = true,
+                IsAdmin = true
+            };
+            var ownerAccountEntity = _mapper.Map<UserAccount>(ownerAccountModel);
+            _userAccountsRepository.Create(ownerAccountEntity);
+
+            return chatViewModel;
+        }
+
         public ChatUpdateModel EditChatroom(ChatUpdateModel chatModel)
         {
             var chatEntity = _mapper.Map<Chat>(chatModel);
@@ -177,5 +195,6 @@ namespace Messenger.BLL.Managers
             if (!adminAccountEntity.IsAdmin)
                 throw new Exception("This action is for admins only");
         }
+
     }
 }

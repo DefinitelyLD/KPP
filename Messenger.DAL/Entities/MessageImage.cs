@@ -12,5 +12,6 @@ namespace Messenger.DAL.Entities
         [Required]
         public string Path { get; set; }
         public Message Message { get; set; }
+        public int MessageId { get; set; } 
     }
 }
