@@ -33,8 +33,11 @@ namespace Messenger.BLL.Managers
         public async Task<MessageViewModel> SendMessage (MessageCreateModel messageModel)
         {
             var messageEntity = _mapper.Map<Message>(messageModel);
-
             var messageViewModel = _mapper.Map<MessageViewModel>(_messagesRepository.Create(messageEntity));
+
+            if (messageModel.Files == null)
+                return messageViewModel;
+
             foreach (var file in messageModel.Files)
             {
                 string filePath = PathToSave + Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
