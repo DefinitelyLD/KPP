@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Messenger.BLL.Exceptions;
 using Messenger.BLL.Models;
 using Messenger.BLL.Token;
 using Messenger.BLL.Users;
@@ -44,7 +45,7 @@ namespace Messenger.BLL.Managers
         {
             var result = await _signInManager.PasswordSignInAsync(model.UserName, model.Password, model.RememberMe, false);
             if (!result.Succeeded)
-                throw new Exception("Login error");
+                throw new BadRequestException("Login error");
             var userEntity = await _userManager.FindByNameAsync(model.UserName);
             var userModel = _mapper.Map<UserViewModel>(userEntity);
             userModel.Token = GenerateToken(userEntity);
@@ -79,7 +80,7 @@ namespace Messenger.BLL.Managers
         {
             var generatedToken = _tokenService.BuildToken(user);
             if (generatedToken == null)
-                throw new Exception("Failed generate token");
+                throw new BadRequestException("Failed generate token");
             return generatedToken;
         }
     }

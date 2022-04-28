@@ -20,6 +20,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Messenger.BLL", "Messenger.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Messenger.Mapping", "Messenger.Mapping\Messenger.Mapping.csproj", "{15277787-8F19-45C0-A86C-097E369BB12C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Messenger.Middleware", "Messenger.Middleware\Messenger.Middleware.csproj", "{A6550F75-66E8-4785-A204-A2706AC456A3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -42,6 +44,10 @@ Global
 		{15277787-8F19-45C0-A86C-097E369BB12C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{15277787-8F19-45C0-A86C-097E369BB12C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{15277787-8F19-45C0-A86C-097E369BB12C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A6550F75-66E8-4785-A204-A2706AC456A3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A6550F75-66E8-4785-A204-A2706AC456A3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A6550F75-66E8-4785-A204-A2706AC456A3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A6550F75-66E8-4785-A204-A2706AC456A3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
