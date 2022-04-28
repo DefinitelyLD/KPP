@@ -25,6 +25,8 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Http;
 using Messenger.BLL.Token;
+using Messenger.BLL.Validators.UserAccounts;
+using Messenger.WEB.SignalR;
 
 namespace Messenger.WEB
 {
@@ -59,6 +61,7 @@ namespace Messenger.WEB
             services.AddSession();
             services.AddControllers();
             services.AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<UserAccountActionModelValidator>());
+            services.AddSignalR();
 
             services.AddSwaggerGen(c =>
             {
@@ -72,6 +75,7 @@ namespace Messenger.WEB
                     BearerFormat = "JWT",
                     Scheme = "bearer"
                 });
+                c.AddSignalRSwaggerGen();
             });
         }
 
@@ -105,6 +109,7 @@ namespace Messenger.WEB
             {
                 endpoints.MapControllers()
                 .RequireAuthorization();
+                endpoints.MapHub<MessageHub>("/message");
             });
         }
 
