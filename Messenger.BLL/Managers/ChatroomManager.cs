@@ -180,11 +180,24 @@ namespace Messenger.BLL.Managers
             return _mapper.Map<UserAccountUpdateModel>(_userAccountsRepository.Update(userAccountEntity));
         }
 
-        public IEnumerable<UserViewModel> GetAllAdmins(ChatViewModel chatModel)
+        public IEnumerable<UserAccountViewModel> GetAllAdmins(int chatId)
         {
-            var chatEntity = _mapper.Map<Chat>(chatModel);
-            var adminsEntityList = chatEntity.Users.Where(u => u.IsAdmin == true).ToList();
-            var userModelList = _mapper.Map<List<UserViewModel>>(adminsEntityList);
+            var adminsEntityList = _userAccountsRepository
+                .GetAll()
+                .Where(u => u.IsAdmin == true && u.ChatId == chatId)
+                .ToList();
+
+            var userModelList = _mapper.Map<List<UserAccountViewModel>>(adminsEntityList);
+            return userModelList;
+        }
+
+        public IEnumerable<UserAccountViewModel> GetAllUsers(int chatId)
+        {
+            var usersEntityList = _userAccountsRepository
+                .GetAll()
+                .Where(u => u.ChatId == chatId)
+                .ToList();
+            var userModelList = _mapper.Map<List<UserAccountViewModel>>(usersEntityList);
             return userModelList;
         }
 

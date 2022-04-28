@@ -31,7 +31,8 @@ namespace Messenger.BLL.Managers
                                                UserAccountViewModel adminAccountModel);
         public UserAccountUpdateModel UnsetAdmin(UserAccountViewModel userAccountModel,
                                                  UserAccountViewModel adminAccountModel);
-        public IEnumerable<UserViewModel> GetAllAdmins(ChatViewModel chatModel);
+        public IEnumerable<UserAccountViewModel> GetAllAdmins(int chatId);
+        public IEnumerable<UserAccountViewModel> GetAllUsers(int chatId);
 
     }
 }

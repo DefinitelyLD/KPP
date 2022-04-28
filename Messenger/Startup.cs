@@ -26,6 +26,7 @@ using Microsoft.AspNetCore.Http;
 using Messenger.BLL.Token;
 using Messenger.BLL.Validators.UserAccounts;
 using Messenger.Middleware;
+using System.Text.Json.Serialization;
 
 namespace Messenger.WEB
 {
@@ -57,7 +58,7 @@ namespace Messenger.WEB
             services.AddJwtToken(Configuration);
             services.AddDistributedMemoryCache();
             services.AddSession();
-            services.AddControllers();
+            services.AddControllers().AddJsonOptions(x => x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve);
             services.AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<UserAccountActionModelValidator>());
 
             services.AddSwaggerGen(c =>
