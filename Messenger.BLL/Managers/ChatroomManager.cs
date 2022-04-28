@@ -33,7 +33,7 @@ namespace Messenger.BLL.Managers
             UserAccountCreateModel ownerAccountModel = new()
             {
                 ChatId = chatViewModel.Id,
-                UserId = chatViewModel.Users.First().User.Id,
+                UserId = chatModel.UserId,
                 IsOwner = true,
                 IsAdmin = true
             };
