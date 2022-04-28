@@ -33,20 +33,23 @@ namespace Messenger.BLL.Managers
         public async Task<MessageViewModel> SendMessage (MessageCreateModel messageModel)
         {
             var messageEntity = _mapper.Map<Message>(messageModel);
-
             var messageViewModel = _mapper.Map<MessageViewModel>(_messagesRepository.Create(messageEntity));
-            foreach (var file in messageModel.Files)
+
+            if (messageModel.Files != null)
             {
-                string filePath = PathToSave + Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
-                using (Stream fileStream = new FileStream(filePath, FileMode.Create))
-                    await file.CopyToAsync(fileStream);
-                MessageImageCreateModel imageModel = new()
+                foreach (var file in messageModel.Files)
                 {
-                    Path = filePath,
-                    MessageId = messageViewModel.Id
-                };
-                var messageImageEntity = _mapper.Map<MessageImage>(imageModel);
-                _messageImagesRepository.Create(messageImageEntity);
+                    string filePath = PathToSave + Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
+                    using (Stream fileStream = new FileStream(filePath, FileMode.Create))
+                        await file.CopyToAsync(fileStream);
+                    MessageImageCreateModel imageModel = new()
+                    {
+                        Path = filePath,
+                        MessageId = messageViewModel.Id
+                    };
+                    var messageImageEntity = _mapper.Map<MessageImage>(imageModel);
+                    _messageImagesRepository.Create(messageImageEntity);
+                }
             }
 
             return messageViewModel;

@@ -12,8 +12,8 @@ namespace Messenger.BLL.Validators.Messages
     {
         public MessageCreateModelValidator() 
         {
-            RuleFor(x => x.Chat).NotNull();
-            RuleFor(x => x.User).NotNull();
+            RuleFor(x => x.ChatId).NotNull();
+            RuleFor(x => x.UserId).NotNull();
             RuleFor(x => x.Text).MaximumLength(3000);
         }
     }

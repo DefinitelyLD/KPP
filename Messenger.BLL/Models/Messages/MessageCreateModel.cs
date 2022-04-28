@@ -13,8 +13,8 @@ namespace Messenger.BLL.Messages
 {
     public class MessageCreateModel
     {
-        public ChatViewModel Chat { get; set; }
-        public UserViewModel User { get; set; }
+        public int ChatId { get; set; }
+        public string UserId { get; set; }
         public IFormFileCollection Files { get; set; }
         public string Text { get; set; }
         public DateTime CreatedTime { get; set; } = DateTime.Now;
