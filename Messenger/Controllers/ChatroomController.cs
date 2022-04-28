@@ -1,6 +1,5 @@
 ﻿using Messenger.BLL.Chats;
 using Messenger.BLL.Managers;
-using Messenger.BLL.Models.UserAccounts;
 using Messenger.BLL.UserAccounts;
 using Messenger.BLL.Users;
 using Microsoft.AspNetCore.Mvc;
@@ -62,33 +61,38 @@ namespace Messenger.WEB.Controllers
         }
 
         [HttpDelete]
-        public ActionResult<bool> KickUser(UserAccountActionModel actionModel)
+        public ActionResult<bool> KickUser(UserAccountViewModel userModel)
         {
-            return _chatroomManager.KickUser(actionModel.user, actionModel.admin);
+            var admin = HttpContext.User.Identity.Name;
+            return _chatroomManager.KickUser(userModel, admin);
         }
 
         [HttpPost]
-        public ActionResult<UserAccountUpdateModel> BanUser(UserAccountActionModel actionModel)
+        public ActionResult<UserAccountUpdateModel> BanUser(UserAccountViewModel userModel)
         {
-            return _chatroomManager.BanUser(actionModel.user, actionModel.admin);
+            var admin = HttpContext.User.Identity.Name;
+            return _chatroomManager.BanUser(userModel, admin);
         }
 
         [HttpPost]
-        public ActionResult<UserAccountUpdateModel> UnbanUser(UserAccountActionModel actionModel)
+        public ActionResult<UserAccountUpdateModel> UnbanUser(UserAccountViewModel userModel)
         {
-            return _chatroomManager.UnbanUser(actionModel.user, actionModel.admin);
+            var admin = HttpContext.User.Identity.Name;
+            return _chatroomManager.UnbanUser(userModel, admin);
         }
 
         [HttpPost]
-        public ActionResult<UserAccountUpdateModel> SetAdmin(UserAccountActionModel actionModel)
+        public ActionResult<UserAccountUpdateModel> SetAdmin(UserAccountViewModel userModel)
         {
-            return _chatroomManager.SetAdmin(actionModel.user, actionModel.admin);
+            var admin = HttpContext.User.Identity.Name;
+            return _chatroomManager.SetAdmin(userModel, admin);
         }
 
         [HttpPost]
-        public ActionResult<UserAccountUpdateModel> UnsetAdmin(UserAccountActionModel actionModel)
+        public ActionResult<UserAccountUpdateModel> UnsetAdmin(UserAccountViewModel userModel)
         {
-            return _chatroomManager.UnsetAdmin(actionModel.user, actionModel.admin);
+            var admin = HttpContext.User.Identity.Name;
+            return _chatroomManager.UnsetAdmin(userModel, admin);
         }
 
         [HttpGet]

@@ -97,11 +97,14 @@ namespace Messenger.BLL.Managers
             return _userAccountsRepository.DeleteById(userAccountId);
         }
 
-        public bool KickUser(UserAccountViewModel userAccountModel,
-                             UserAccountViewModel adminAccountModel)
+        public bool KickUser(UserAccountViewModel userAccountModel, string admin)
         {
             var userAccountEntity = _userAccountsRepository.GetById(userAccountModel.Id);
-            var adminAccountEntity = _userAccountsRepository.GetById(adminAccountModel.Id);
+            var adminAccountEntity = _userAccountsRepository.GetAll()
+                                                            .Where(u => u.User.UserName == admin)
+                                                            .SingleOrDefault();
+            if (adminAccountEntity == null)
+                throw new KeyNotFoundException();
 
             CheckModels(userAccountEntity, adminAccountEntity);
 
@@ -111,11 +114,14 @@ namespace Messenger.BLL.Managers
             return _userAccountsRepository.DeleteById(userAccountEntity.Id);
         }
 
-        public UserAccountUpdateModel BanUser(UserAccountViewModel userAccountModel, 
-                                              UserAccountViewModel adminAccountModel)
+        public UserAccountUpdateModel BanUser(UserAccountViewModel userAccountModel, string admin)
         {
             var userAccountEntity = _userAccountsRepository.GetById(userAccountModel.Id);
-            var adminAccountEntity = _userAccountsRepository.GetById(adminAccountModel.Id);
+            var adminAccountEntity = _userAccountsRepository.GetAll()
+                                                .Where(u => u.User.UserName == admin)
+                                                .SingleOrDefault();
+            if (adminAccountEntity == null)
+                throw new KeyNotFoundException();
 
             CheckModels(userAccountEntity, adminAccountEntity);
 
@@ -126,11 +132,14 @@ namespace Messenger.BLL.Managers
             return _mapper.Map<UserAccountUpdateModel>(_userAccountsRepository.Update(userAccountEntity));
         }
 
-        public UserAccountUpdateModel UnbanUser(UserAccountViewModel userAccountModel,
-                                                UserAccountViewModel adminAccountModel)
+        public UserAccountUpdateModel UnbanUser(UserAccountViewModel userAccountModel, string admin)
         {
             var userAccountEntity = _userAccountsRepository.GetById(userAccountModel.Id);
-            var adminAccountEntity = _userAccountsRepository.GetById(adminAccountModel.Id);
+            var adminAccountEntity = _userAccountsRepository.GetAll()
+                                                .Where(u => u.User.UserName == admin)
+                                                .SingleOrDefault();
+            if (adminAccountEntity == null)
+                throw new KeyNotFoundException();
 
             CheckModels(userAccountEntity, adminAccountEntity);
 
@@ -150,11 +159,14 @@ namespace Messenger.BLL.Managers
             return userModelList;
         }
 
-        public UserAccountUpdateModel SetAdmin(UserAccountViewModel userAccountModel,
-                                               UserAccountViewModel adminAccountModel)
+        public UserAccountUpdateModel SetAdmin(UserAccountViewModel userAccountModel, string admin)
         {
             var userAccountEntity = _userAccountsRepository.GetById(userAccountModel.Id);
-            var adminAccountEntity = _userAccountsRepository.GetById(adminAccountModel.Id);
+            var adminAccountEntity = _userAccountsRepository.GetAll()
+                                                .Where(u => u.User.UserName == admin)
+                                                .SingleOrDefault();
+            if (adminAccountEntity == null)
+                throw new KeyNotFoundException();
 
             CheckModels(userAccountEntity, adminAccountEntity);
 
@@ -165,11 +177,14 @@ namespace Messenger.BLL.Managers
             return _mapper.Map<UserAccountUpdateModel>(_userAccountsRepository.Update(userAccountEntity));
         }
 
-        public UserAccountUpdateModel UnsetAdmin(UserAccountViewModel userAccountModel,
-                                                 UserAccountViewModel adminAccountModel)
+        public UserAccountUpdateModel UnsetAdmin(UserAccountViewModel userAccountModel, string admin)
         {
             var userAccountEntity = _userAccountsRepository.GetById(userAccountModel.Id);
-            var adminAccountEntity = _userAccountsRepository.GetById(adminAccountModel.Id);
+            var adminAccountEntity = _userAccountsRepository.GetAll()
+                                                .Where(u => u.User.UserName == admin)
+                                                .SingleOrDefault();
+            if (adminAccountEntity == null)
+                throw new KeyNotFoundException();
 
             CheckModels(userAccountEntity, adminAccountEntity);
 
