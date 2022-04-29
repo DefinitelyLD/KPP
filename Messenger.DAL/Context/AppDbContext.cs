@@ -33,10 +33,6 @@ namespace Messenger.DAL.Context
 
             modelBuilder.Entity<MessageImage>().Navigation(u => u.Message).AutoInclude();
 
-            modelBuilder.Entity<User>().Navigation(u => u.FriendsTo).AutoInclude();
-            modelBuilder.Entity<User>().Navigation(u => u.FriendsFrom).AutoInclude();
-            modelBuilder.Entity<User>().Navigation(u => u.BlockedUsersTo).AutoInclude();
-            modelBuilder.Entity<User>().Navigation(u => u.BlockedUsersFrom).AutoInclude();
             modelBuilder.Entity<User>().Navigation(u => u.Messages).AutoInclude();
 
             modelBuilder.Entity<UserAccount>().Navigation(u => u.Chat).AutoInclude();

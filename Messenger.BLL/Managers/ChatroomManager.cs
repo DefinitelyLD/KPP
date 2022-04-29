@@ -181,9 +181,6 @@ namespace Messenger.BLL.Managers
                 .Where(u => u.IsBanned == true && u.ChatId == chatId)
                 .ToList();
 
-            if (bannedUsersEntityList.Count == 0)
-                throw new KeyNotFoundException();
-
             var userModelList = _mapper.Map<List<UserAccountViewModel>>(bannedUsersEntityList);
             return userModelList;
         }
