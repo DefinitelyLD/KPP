@@ -94,13 +94,15 @@ namespace Messenger.WEB.Controllers
         [HttpGet]
         public IEnumerable<UserAccountViewModel> GetAllAdmins(int chatId)
         {
-            return _chatroomManager.GetAllAdmins(chatId);
+            var userName = HttpContext.User.Identity.Name;
+            return _chatroomManager.GetAllAdmins(chatId, userName);
         }
 
         [HttpGet]
         public IEnumerable<UserAccountViewModel> GetAllUsers(int chatId)
         {
-            return _chatroomManager.GetAllUsers(chatId);
+            var userName = HttpContext.User.Identity.Name;
+            return _chatroomManager.GetAllUsers(chatId, userName);
         }
     }
 }
