@@ -142,14 +142,6 @@ namespace Messenger.BLL.Managers
             
         }
 
-        public IEnumerable<UserViewModel> GetAllBannedUsers(ChatViewModel chatModel)
-        {
-            var chatEntity = _mapper.Map<Chat>(chatModel);
-            var bannedUsersEntityList = chatEntity.Users.Where(u => u.IsBanned == true).ToList();
-            var userModelList = _mapper.Map<List<UserViewModel>>(bannedUsersEntityList);
-            return userModelList;
-        }
-
         public UserAccountUpdateModel SetAdmin(UserAccountViewModel userAccountModel,
                                                UserAccountViewModel adminAccountModel)
         {
@@ -180,6 +172,22 @@ namespace Messenger.BLL.Managers
             return _mapper.Map<UserAccountUpdateModel>(_userAccountsRepository.Update(userAccountEntity));
         }
 
+        public IEnumerable<UserAccountViewModel> GetAllBannedUsers(int chatId, string userName)
+        {
+            //throw KeyNotFoundException, if current user isn't in the chat
+            CheckUserInChat(chatId, userName);
+            var bannedUsersEntityList = _userAccountsRepository
+                .GetAll()
+                .Where(u => u.IsBanned == true && u.ChatId == chatId)
+                .ToList();
+
+            if (bannedUsersEntityList.Count == 0)
+                throw new KeyNotFoundException();
+
+            var userModelList = _mapper.Map<List<UserAccountViewModel>>(bannedUsersEntityList);
+            return userModelList;
+        }
+
         public IEnumerable<UserAccountViewModel> GetAllAdmins(int chatId, string userName)
         {
             //throw KeyNotFoundException, if current user isn't in the chat
@@ -187,7 +195,7 @@ namespace Messenger.BLL.Managers
 
             var adminsEntityList = _userAccountsRepository
                 .GetAll()
-                .Where(u => u.User.UserName == userName && u.ChatId == chatId)
+                .Where(u => u.IsAdmin == true && u.ChatId == chatId)
                 .ToList();
 
             var userModelList = _mapper.Map<List<UserAccountViewModel>>(adminsEntityList);
@@ -203,6 +211,7 @@ namespace Messenger.BLL.Managers
                 .GetAll()
                 .Where(u => u.ChatId == chatId)
                 .ToList();
+
             var userModelList = _mapper.Map<List<UserAccountViewModel>>(usersEntityList);
             return userModelList;
         }

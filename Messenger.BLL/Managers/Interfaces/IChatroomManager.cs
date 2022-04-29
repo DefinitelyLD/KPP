@@ -25,12 +25,11 @@ namespace Messenger.BLL.Managers
                                               UserAccountViewModel adminAccountModel);
         public UserAccountUpdateModel UnbanUser(UserAccountViewModel userAccountModel,
                                                 UserAccountViewModel adminAccountModel);
-        public IEnumerable<UserViewModel> GetAllBannedUsers(ChatViewModel chatModel);
-
         public UserAccountUpdateModel SetAdmin(UserAccountViewModel userAccountModel,
                                                UserAccountViewModel adminAccountModel);
         public UserAccountUpdateModel UnsetAdmin(UserAccountViewModel userAccountModel,
                                                  UserAccountViewModel adminAccountModel);
+        public IEnumerable<UserAccountViewModel> GetAllBannedUsers(int chatId, string userName);
         public IEnumerable<UserAccountViewModel> GetAllAdmins(int chatId, string userName);
         public IEnumerable<UserAccountViewModel> GetAllUsers(int chatId, string userName);
 
