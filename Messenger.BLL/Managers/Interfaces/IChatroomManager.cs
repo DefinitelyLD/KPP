@@ -33,5 +33,6 @@ namespace Messenger.BLL.Managers
         public IEnumerable<UserAccountViewModel> GetAllAdmins(int chatId, string userName);
         public IEnumerable<UserAccountViewModel> GetAllUsers(int chatId, string userName);
 
+
     }
 }

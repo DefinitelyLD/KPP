@@ -58,8 +58,9 @@ namespace Messenger.WEB
             services.AddJwtToken(Configuration);
             services.AddDistributedMemoryCache();
             services.AddSession();
+          
             services.AddControllers().AddJsonOptions(x => x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve);
-            services.AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<UserAccountActionModelValidator>());
+            services.AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<UserAccountCreateModelValidator>());
 
             services.AddSwaggerGen(c =>
             {

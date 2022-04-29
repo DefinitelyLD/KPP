@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
-using Messenger.BLL.Models;
 using Messenger.BLL.Users;
 using Messenger.DAL.Entities;
 
