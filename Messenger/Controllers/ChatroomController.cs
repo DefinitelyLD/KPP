@@ -71,6 +71,9 @@ namespace Messenger.WEB.Controllers
         [HttpPost]
         public ActionResult<UserAccountUpdateModel> BanUser(UserAccountViewModel userModel)
         {
+            if (HttpContext.User.FindFirst(ClaimTypes.NameIdentifier) == null)
+                throw new KeyNotFoundException();
+
             var adminId = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
             return _chatroomManager.BanUser(userModel, adminId);
         }
@@ -78,6 +81,9 @@ namespace Messenger.WEB.Controllers
         [HttpPost]
         public ActionResult<UserAccountUpdateModel> UnbanUser(UserAccountViewModel userModel)
         {
+            if (HttpContext.User.FindFirst(ClaimTypes.NameIdentifier) == null)
+                throw new KeyNotFoundException();
+
             var adminId = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
             return _chatroomManager.UnbanUser(userModel, adminId);
         }
@@ -85,6 +91,9 @@ namespace Messenger.WEB.Controllers
         [HttpPost]
         public ActionResult<UserAccountUpdateModel> SetAdmin(UserAccountViewModel userModel)
         {
+            if (HttpContext.User.FindFirst(ClaimTypes.NameIdentifier) == null)
+                throw new KeyNotFoundException();
+
             var adminId = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
             return _chatroomManager.SetAdmin(userModel, adminId);
         }
@@ -92,6 +101,9 @@ namespace Messenger.WEB.Controllers
         [HttpPost]
         public ActionResult<UserAccountUpdateModel> UnsetAdmin(UserAccountViewModel userModel)
         {
+            if (HttpContext.User.FindFirst(ClaimTypes.NameIdentifier) == null)
+                throw new KeyNotFoundException();
+
             var adminId = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
             return _chatroomManager.UnsetAdmin(userModel, adminId);
         }
