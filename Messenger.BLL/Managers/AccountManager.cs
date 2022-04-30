@@ -11,6 +11,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Routing;
 
 namespace Messenger.BLL.Managers
 {
@@ -20,6 +23,7 @@ namespace Messenger.BLL.Managers
         private readonly SignInManager<User> _signInManager;
         private readonly IMapper _mapper;
         private readonly ITokenService _tokenService;
+
         public AccountManager (UserManager<User> userManager, SignInManager<User> signInManager, IMapper mapper, ITokenService tokenService)
         {
             _userManager = userManager;
@@ -28,20 +32,46 @@ namespace Messenger.BLL.Managers
             _tokenService = tokenService;
         }
 
-        public async Task<UserViewModel> RegisterUser(UserCreateModel model)
+        public async Task<UserViewModel> RegisterUser(UserCreateModel model, HttpContext httpContext, IUrlHelper url)
         {
             User user = _mapper.Map<User>(model);
             var result = await _userManager.CreateAsync(user, model.Password);
             if (result.Succeeded)
+            {
                 await _signInManager.SignInAsync(user, false);
+                
+                var emailToken = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                
+                var callbackUrl = url.Action(
+                        "ConfirmEmail", 
+                        "Account",
+                        new { userId = user.Id, code = emailToken },
+                        protocol: httpContext.Request.Scheme);
+                EmailService emailService = new EmailService();
+                await emailService.SendEmailAsync(model.Email, "Confirm new account",
+                    $"Hello, {model.UserName}. Click the following link to confirm your registration: <a href='{callbackUrl}'>link</a>");
+                
+            }
+                
             var userEntity = await _userManager.FindByNameAsync(model.UserName);
             var userModel = _mapper.Map<UserViewModel>(userEntity);
-            userModel.Token = GenerateToken(userEntity);
+            userModel.Token = GenerateToken(userEntity); // this line throws "System.ArgumentException: IDX10703: Cannot create a 'System.RuntimeType', key length is zero."
             return userModel;
+        }
+
+        public async Task<bool> ConfirmUserEmail(string userId, string code)
+        {
+            var user = await _userManager.FindByIdAsync(userId);
+            var result = await _userManager.ConfirmEmailAsync(user, code);
+            return result.Succeeded;
         }
 
         public async Task<UserViewModel> LoginUser(UserLoginModel model)
         {
+            var user = await _userManager.FindByNameAsync(model.UserName);
+            if (!await _userManager.IsEmailConfirmedAsync(user))
+                throw new Exception("Email is not confirmed");
+
             var result = await _signInManager.PasswordSignInAsync(model.UserName, model.Password, model.RememberMe, false);
             if (!result.Succeeded)
                 throw new Exception("Login error");

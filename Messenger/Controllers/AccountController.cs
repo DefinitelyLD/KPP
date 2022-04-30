@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Routing;
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -26,8 +27,16 @@ namespace Messenger.WEB.Controllers
         [HttpPost]
         public async Task<ActionResult<UserViewModel>> Register(UserCreateModel model)
         {
-            var result = await _accountManager.RegisterUser(model);
+            var result = await _accountManager.RegisterUser(model, HttpContext, Url);
             HttpContext.Session.SetString("Token", result.Token);
+            return result;
+        }
+
+        [AllowAnonymous]
+        [HttpGet]
+        public async Task<ActionResult<bool>> ConfirmEmail(string userId, string code)
+        {
+            var result = await _accountManager.ConfirmUserEmail(userId, code);
             return result;
         }
 
