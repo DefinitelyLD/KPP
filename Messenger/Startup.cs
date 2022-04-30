@@ -25,8 +25,10 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Http;
 using Messenger.BLL.Token;
 using Messenger.BLL.Validators.UserAccounts;
+using Messenger.WEB.SignalR;
 using Messenger.Middleware;
 using System.Text.Json.Serialization;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace Messenger.WEB
 {
@@ -60,6 +62,9 @@ namespace Messenger.WEB
             services.AddSession();
           
             services.AddControllers().AddJsonOptions(x => x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve);
+          
+            services.AddSignalR();
+
             services.AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<UserAccountCreateModelValidator>());
 
             services.AddSwaggerGen(c =>
@@ -109,6 +114,7 @@ namespace Messenger.WEB
             {
                 endpoints.MapControllers()
                 .RequireAuthorization();
+                endpoints.MapHub<ChatHub>("/hubs/chat");
             });
         }
 
