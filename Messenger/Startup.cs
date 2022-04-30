@@ -25,7 +25,9 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Http;
 using Messenger.BLL.Token;
 using Messenger.BLL.Validators.UserAccounts;
+using Messenger.WEB.SignalR;
 using Messenger.Middleware;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace Messenger.WEB
 {
@@ -58,6 +60,7 @@ namespace Messenger.WEB
             services.AddDistributedMemoryCache();
             services.AddSession();
             services.AddControllers();
+            services.AddSignalR();
             services.AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<UserAccountCreateModelValidator>());
 
             services.AddSwaggerGen(c =>
@@ -107,6 +110,7 @@ namespace Messenger.WEB
             {
                 endpoints.MapControllers()
                 .RequireAuthorization();
+                endpoints.MapHub<ChatHub>("/hubs/chat");
             });
         }
 
