@@ -152,7 +152,6 @@ namespace Messenger.BLL.Managers
         }
 
         public UserAccountUpdateModel SetAdmin(UserAccountViewModel userAccountModel, string admin)
-
         {
             var userAccountEntity = _userAccountsRepository.GetById(userAccountModel.Id);
             var adminAccountEntity = _userAccountsRepository.GetAll()
