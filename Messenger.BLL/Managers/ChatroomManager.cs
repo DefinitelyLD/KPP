@@ -97,11 +97,11 @@ namespace Messenger.BLL.Managers
             return _userAccountsRepository.DeleteById(userAccountId);
         }
 
-        public bool KickUser(UserAccountViewModel userAccountModel, string admin)
+        public bool KickUser(UserAccountViewModel userAccountModel, string adminId)
         {
             var userAccountEntity = _userAccountsRepository.GetById(userAccountModel.Id);
             var adminAccountEntity = _userAccountsRepository.GetAll()
-                                                            .Where(u => u.User.UserName == admin)
+                                                            .Where(u => u.User.Id == adminId)
                                                             .SingleOrDefault();
             if (adminAccountEntity == null)
                 throw new KeyNotFoundException();
@@ -114,11 +114,11 @@ namespace Messenger.BLL.Managers
             return _userAccountsRepository.DeleteById(userAccountEntity.Id);
         }
 
-        public UserAccountUpdateModel BanUser(UserAccountViewModel userAccountModel, string admin)
+        public UserAccountUpdateModel BanUser(UserAccountViewModel userAccountModel, string adminId)
         {
             var userAccountEntity = _userAccountsRepository.GetById(userAccountModel.Id);
             var adminAccountEntity = _userAccountsRepository.GetAll()
-                                                .Where(u => u.User.UserName == admin)
+                                                .Where(u => u.User.Id == adminId)
                                                 .SingleOrDefault();
             if (adminAccountEntity == null)
                 throw new KeyNotFoundException();
@@ -132,11 +132,11 @@ namespace Messenger.BLL.Managers
             return _mapper.Map<UserAccountUpdateModel>(_userAccountsRepository.Update(userAccountEntity));
         }
 
-        public UserAccountUpdateModel UnbanUser(UserAccountViewModel userAccountModel, string admin)
+        public UserAccountUpdateModel UnbanUser(UserAccountViewModel userAccountModel, string adminId)
         {
             var userAccountEntity = _userAccountsRepository.GetById(userAccountModel.Id);
             var adminAccountEntity = _userAccountsRepository.GetAll()
-                                                .Where(u => u.User.UserName == admin)
+                                                .Where(u => u.User.Id == adminId)
                                                 .SingleOrDefault();
             if (adminAccountEntity == null)
                 throw new KeyNotFoundException();
@@ -148,14 +148,13 @@ namespace Messenger.BLL.Managers
 
             userAccountEntity.IsBanned = false;
             return _mapper.Map<UserAccountUpdateModel>(_userAccountsRepository.Update(userAccountEntity));
-            
         }
 
-        public UserAccountUpdateModel SetAdmin(UserAccountViewModel userAccountModel, string admin)
+        public UserAccountUpdateModel SetAdmin(UserAccountViewModel userAccountModel, string adminId)
         {
             var userAccountEntity = _userAccountsRepository.GetById(userAccountModel.Id);
             var adminAccountEntity = _userAccountsRepository.GetAll()
-                                                .Where(u => u.User.UserName == admin)
+                                                .Where(u => u.User.Id == adminId)
                                                 .SingleOrDefault();
             if (adminAccountEntity == null)
                 throw new KeyNotFoundException();
@@ -169,11 +168,11 @@ namespace Messenger.BLL.Managers
             return _mapper.Map<UserAccountUpdateModel>(_userAccountsRepository.Update(userAccountEntity));
         }
 
-        public UserAccountUpdateModel UnsetAdmin(UserAccountViewModel userAccountModel, string admin)
+        public UserAccountUpdateModel UnsetAdmin(UserAccountViewModel userAccountModel, string adminId)
         {
             var userAccountEntity = _userAccountsRepository.GetById(userAccountModel.Id);
             var adminAccountEntity = _userAccountsRepository.GetAll()
-                                                .Where(u => u.User.UserName == admin)
+                                                .Where(u => u.User.Id == adminId)
                                                 .SingleOrDefault();
             if (adminAccountEntity == null)
                 throw new KeyNotFoundException();
