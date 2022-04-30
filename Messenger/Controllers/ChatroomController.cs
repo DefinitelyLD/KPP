@@ -117,9 +117,24 @@ namespace Messenger.WEB.Controllers
         }
 
         [HttpGet]
-        public IEnumerable<UserViewModel> GetAllAdmins(ChatViewModel chatModel)
+        public IEnumerable<UserAccountViewModel> GetAllBannedUsers(int chatId)
         {
-            return _chatroomManager.GetAllAdmins(chatModel);
+            var userName = HttpContext.User.Identity.Name;
+            return _chatroomManager.GetAllBannedUsers(chatId, userName);
+        }
+
+        [HttpGet]
+        public IEnumerable<UserAccountViewModel> GetAllAdmins(int chatId)
+        {
+            var userName = HttpContext.User.Identity.Name;
+            return _chatroomManager.GetAllAdmins(chatId, userName);
+        }
+
+        [HttpGet]
+        public IEnumerable<UserAccountViewModel> GetAllUsers(int chatId)
+        {
+            var userName = HttpContext.User.Identity.Name;
+            return _chatroomManager.GetAllUsers(chatId, userName);
         }
     }
 }

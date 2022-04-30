@@ -148,15 +148,6 @@ namespace Messenger.BLL.Managers
 
             userAccountEntity.IsBanned = false;
             return _mapper.Map<UserAccountUpdateModel>(_userAccountsRepository.Update(userAccountEntity));
-            
-        }
-
-        public IEnumerable<UserViewModel> GetAllBannedUsers(ChatViewModel chatModel)
-        {
-            var chatEntity = _mapper.Map<Chat>(chatModel);
-            var bannedUsersEntityList = chatEntity.Users.Where(u => u.IsBanned == true).ToList();
-            var userModelList = _mapper.Map<List<UserViewModel>>(bannedUsersEntityList);
-            return userModelList;
         }
 
         public UserAccountUpdateModel SetAdmin(UserAccountViewModel userAccountModel, string adminId)
@@ -195,11 +186,45 @@ namespace Messenger.BLL.Managers
             return _mapper.Map<UserAccountUpdateModel>(_userAccountsRepository.Update(userAccountEntity));
         }
 
-        public IEnumerable<UserViewModel> GetAllAdmins(ChatViewModel chatModel)
+        public IEnumerable<UserAccountViewModel> GetAllBannedUsers(int chatId, string userName)
         {
-            var chatEntity = _mapper.Map<Chat>(chatModel);
-            var adminsEntityList = chatEntity.Users.Where(u => u.IsAdmin == true).ToList();
-            var userModelList = _mapper.Map<List<UserViewModel>>(adminsEntityList);
+            //throw KeyNotFoundException, if current user isn't in the chat
+            ThrowExceptionIfUserIsNotInChat(chatId, userName);
+
+            var bannedUsersEntityList = _userAccountsRepository
+                .GetAll()
+                .Where(u => u.IsBanned == true && u.ChatId == chatId)
+                .ToList();
+
+            var userModelList = _mapper.Map<List<UserAccountViewModel>>(bannedUsersEntityList);
+            return userModelList;
+        }
+
+        public IEnumerable<UserAccountViewModel> GetAllAdmins(int chatId, string userName)
+        {
+            //throw KeyNotFoundException, if current user isn't in the chat
+            ThrowExceptionIfUserIsNotInChat(chatId, userName); 
+
+            var adminsEntityList = _userAccountsRepository
+                .GetAll()
+                .Where(u => u.IsAdmin == true && u.ChatId == chatId)
+                .ToList();
+
+            var userModelList = _mapper.Map<List<UserAccountViewModel>>(adminsEntityList);
+            return userModelList;
+        }
+
+        public IEnumerable<UserAccountViewModel> GetAllUsers(int chatId, string userName)
+        {
+            //throw KeyNotFoundException, if current user isn't in the chat
+            ThrowExceptionIfUserIsNotInChat(chatId, userName);
+
+            var usersEntityList = _userAccountsRepository
+                .GetAll()
+                .Where(u => u.ChatId == chatId)
+                .ToList();
+
+            var userModelList = _mapper.Map<List<UserAccountViewModel>>(usersEntityList);
             return userModelList;
         }
 
@@ -210,6 +235,17 @@ namespace Messenger.BLL.Managers
 
             if (!adminAccountEntity.IsAdmin)
                 throw new NotAllowedException("This action is for admins only");
+        }
+
+        private void ThrowExceptionIfUserIsNotInChat(int chatId, string userName)
+        {
+            var currentUserEntity = _userAccountsRepository
+                .GetAll()
+                .Where(u => u.User.UserName == userName && u.ChatId == chatId)
+                .SingleOrDefault();
+
+            if (currentUserEntity == null)
+                throw new KeyNotFoundException();
         }
 
     }
