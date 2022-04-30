@@ -27,6 +27,7 @@ using Messenger.BLL.Token;
 using Messenger.BLL.Validators.UserAccounts;
 using Messenger.WEB.SignalR;
 using Messenger.Middleware;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace Messenger.WEB
 {
@@ -74,7 +75,6 @@ namespace Messenger.WEB
                     BearerFormat = "JWT",
                     Scheme = "bearer"
                 });
-                c.AddSignalRSwaggerGen();
             });
         }
 
@@ -110,7 +110,7 @@ namespace Messenger.WEB
             {
                 endpoints.MapControllers()
                 .RequireAuthorization();
-                endpoints.MapHub<MessageHub>("/message");
+                endpoints.MapHub<ChatHub>("/hubs/chat");
             });
         }
 
