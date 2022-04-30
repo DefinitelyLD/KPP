@@ -64,47 +64,55 @@ namespace Messenger.WEB.Controllers
         [HttpDelete]
         public ActionResult<bool> KickUser(UserAccountViewModel userModel)
         {
-            var adminId = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            var httpContext = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier);
+            if (httpContext == null)
+                throw new KeyNotFoundException();
+
+            var adminId = httpContext.Value;
             return _chatroomManager.KickUser(userModel, adminId);
         }
 
         [HttpPost]
         public ActionResult<UserAccountUpdateModel> BanUser(UserAccountViewModel userModel)
         {
-            if (HttpContext.User.FindFirst(ClaimTypes.NameIdentifier) == null)
+            var httpContext = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier);
+            if (httpContext == null)
                 throw new KeyNotFoundException();
 
-            var adminId = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            var adminId = httpContext.Value;
             return _chatroomManager.BanUser(userModel, adminId);
         }
 
         [HttpPost]
         public ActionResult<UserAccountUpdateModel> UnbanUser(UserAccountViewModel userModel)
         {
-            if (HttpContext.User.FindFirst(ClaimTypes.NameIdentifier) == null)
+            var httpContext = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier);
+            if (httpContext == null)
                 throw new KeyNotFoundException();
 
-            var adminId = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            var adminId = httpContext.Value;
             return _chatroomManager.UnbanUser(userModel, adminId);
         }
 
         [HttpPost]
         public ActionResult<UserAccountUpdateModel> SetAdmin(UserAccountViewModel userModel)
         {
-            if (HttpContext.User.FindFirst(ClaimTypes.NameIdentifier) == null)
+            var httpContext = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier);
+            if (httpContext == null)
                 throw new KeyNotFoundException();
 
-            var adminId = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            var adminId = httpContext.Value;
             return _chatroomManager.SetAdmin(userModel, adminId);
         }
 
         [HttpPost]
         public ActionResult<UserAccountUpdateModel> UnsetAdmin(UserAccountViewModel userModel)
         {
-            if (HttpContext.User.FindFirst(ClaimTypes.NameIdentifier) == null)
+            var httpContext = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier);
+            if (httpContext == null)
                 throw new KeyNotFoundException();
 
-            var adminId = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            var adminId = httpContext.Value;
             return _chatroomManager.UnsetAdmin(userModel, adminId);
         }
 
