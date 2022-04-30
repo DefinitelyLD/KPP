@@ -190,7 +190,7 @@ namespace Messenger.BLL.Managers
         public IEnumerable<UserAccountViewModel> GetAllBannedUsers(int chatId, string userName)
         {
             //throw KeyNotFoundException, if current user isn't in the chat
-            CheckUserInChat(chatId, userName);
+            ThrowExceptionIfUserIsNotInChat(chatId, userName);
             var bannedUsersEntityList = _userAccountsRepository
                 .GetAll()
                 .Where(u => u.IsBanned == true && u.ChatId == chatId)
@@ -203,7 +203,7 @@ namespace Messenger.BLL.Managers
         public IEnumerable<UserAccountViewModel> GetAllAdmins(int chatId, string userName)
         {
             //throw KeyNotFoundException, if current user isn't in the chat
-            CheckUserInChat(chatId, userName); 
+            ThrowExceptionIfUserIsNotInChat(chatId, userName); 
 
             var adminsEntityList = _userAccountsRepository
                 .GetAll()
@@ -217,7 +217,7 @@ namespace Messenger.BLL.Managers
         public IEnumerable<UserAccountViewModel> GetAllUsers(int chatId, string userName)
         {
             //throw KeyNotFoundException, if current user isn't in the chat
-            CheckUserInChat(chatId, userName);
+            ThrowExceptionIfUserIsNotInChat(chatId, userName);
 
             var usersEntityList = _userAccountsRepository
                 .GetAll()
@@ -237,7 +237,7 @@ namespace Messenger.BLL.Managers
                 throw new NotAllowedException("This action is for admins only");
         }
 
-        private void CheckUserInChat(int chatId, string userName)
+        private void ThrowExceptionIfUserIsNotInChat(int chatId, string userName)
         {
             var currentUserEntity = _userAccountsRepository
                 .GetAll()
