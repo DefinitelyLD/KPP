@@ -191,6 +191,7 @@ namespace Messenger.BLL.Managers
         {
             //throw KeyNotFoundException, if current user isn't in the chat
             ThrowExceptionIfUserIsNotInChat(chatId, userName);
+
             var bannedUsersEntityList = _userAccountsRepository
                 .GetAll()
                 .Where(u => u.IsBanned == true && u.ChatId == chatId)
