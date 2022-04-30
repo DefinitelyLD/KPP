@@ -4,6 +4,7 @@ using Messenger.BLL.UserAccounts;
 using Messenger.BLL.Users;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
+using System.Security.Claims;
 
 namespace Messenger.WEB.Controllers
 {
@@ -63,36 +64,36 @@ namespace Messenger.WEB.Controllers
         [HttpDelete]
         public ActionResult<bool> KickUser(UserAccountViewModel userModel)
         {
-            var admin = HttpContext.User.Identity.Name;
-            return _chatroomManager.KickUser(userModel, admin);
+            var adminId = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            return _chatroomManager.KickUser(userModel, adminId);
         }
 
         [HttpPost]
         public ActionResult<UserAccountUpdateModel> BanUser(UserAccountViewModel userModel)
         {
-            var admin = HttpContext.User.Identity.Name;
-            return _chatroomManager.BanUser(userModel, admin);
+            var adminId = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            return _chatroomManager.BanUser(userModel, adminId);
         }
 
         [HttpPost]
         public ActionResult<UserAccountUpdateModel> UnbanUser(UserAccountViewModel userModel)
         {
-            var admin = HttpContext.User.Identity.Name;
-            return _chatroomManager.UnbanUser(userModel, admin);
+            var adminId = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            return _chatroomManager.UnbanUser(userModel, adminId);
         }
 
         [HttpPost]
         public ActionResult<UserAccountUpdateModel> SetAdmin(UserAccountViewModel userModel)
         {
-            var admin = HttpContext.User.Identity.Name;
-            return _chatroomManager.SetAdmin(userModel, admin);
+            var adminId = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            return _chatroomManager.SetAdmin(userModel, adminId);
         }
 
         [HttpPost]
         public ActionResult<UserAccountUpdateModel> UnsetAdmin(UserAccountViewModel userModel)
         {
-            var admin = HttpContext.User.Identity.Name;
-            return _chatroomManager.UnsetAdmin(userModel, admin);
+            var adminId = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            return _chatroomManager.UnsetAdmin(userModel, adminId);
         }
 
         [HttpGet]
