@@ -26,6 +26,7 @@ using Microsoft.AspNetCore.Http;
 using Messenger.BLL.Token;
 using Messenger.BLL.Validators.UserAccounts;
 using Messenger.Middleware;
+using Serilog;
 
 namespace Messenger.WEB
 {
@@ -76,7 +77,7 @@ namespace Messenger.WEB
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory loggerFactory)
         {
             if (env.IsDevelopment())
             {
@@ -108,8 +109,13 @@ namespace Messenger.WEB
                 endpoints.MapControllers()
                 .RequireAuthorization();
             });
+
+            Log.Logger = new LoggerConfiguration()
+            .ReadFrom.Configuration(Configuration)
+            .Enrich.FromLogContext()
+            .CreateLogger();
+
+            loggerFactory.AddSerilog();
         }
-
     }
-
 }
