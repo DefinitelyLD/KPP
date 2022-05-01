@@ -28,6 +28,7 @@ using Messenger.BLL.Validators.UserAccounts;
 using Messenger.WEB.SignalR;
 using Messenger.Middleware;
 using Serilog;
+using System.Text.Json.Serialization;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Messenger.WEB.Logger;
 
@@ -61,8 +62,11 @@ namespace Messenger.WEB
             services.AddJwtToken(Configuration);
             services.AddDistributedMemoryCache();
             services.AddSession();
-            services.AddControllers();
+          
+            services.AddControllers().AddJsonOptions(x => x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve);
+          
             services.AddSignalR();
+
             services.AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<UserAccountCreateModelValidator>());
 
             services.AddSwaggerGen(c =>
