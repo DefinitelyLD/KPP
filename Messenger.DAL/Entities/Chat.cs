@@ -13,8 +13,8 @@ namespace Messenger.DAL.Entities
         public string Topic { get; set; }
         public string? Password { get; set; }
 
-        public virtual ICollection<Message> Messages { get; set; }
+        public ICollection<Message> Messages { get; set; }
 
-        public virtual ICollection<UserAccount> Users { get; set; }
+        public ICollection<UserAccount> Users { get; set; }
     }
 }

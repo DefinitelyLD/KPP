@@ -28,6 +28,14 @@ namespace Messenger.DAL.Context
 
             modelBuilder.ApplyConfiguration(new UserConfiguration());
             modelBuilder.ApplyConfiguration(new UserAccountConfiguration());
+            modelBuilder.Entity<Chat>().Navigation(u => u.Messages).AutoInclude();
+            modelBuilder.Entity<Chat>().Navigation(u => u.Users).AutoInclude();
+
+            modelBuilder.Entity<MessageImage>().Navigation(u => u.Message).AutoInclude();
+
+            modelBuilder.Entity<User>().Navigation(u => u.Messages).AutoInclude();
+
+            modelBuilder.Entity<UserAccount>().Navigation(u => u.Chat).AutoInclude();
         }
     }
 }
