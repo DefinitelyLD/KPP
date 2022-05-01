@@ -29,6 +29,7 @@ using Messenger.WEB.SignalR;
 using Messenger.Middleware;
 using Serilog;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using Messenger.WEB.Logger;
 
 namespace Messenger.WEB
 {
@@ -114,12 +115,7 @@ namespace Messenger.WEB
                 endpoints.MapHub<ChatHub>("/hubs/chat");
             });
 
-            Log.Logger = new LoggerConfiguration()
-            .ReadFrom.Configuration(Configuration)
-            .Enrich.FromLogContext()
-            .CreateLogger();
-
-            loggerFactory.AddSerilog();
+            LoggerConfig.ConfigureLogger(loggerFactory, Configuration);
         }
     }
 }
