@@ -10,14 +10,14 @@ namespace Messenger.WEB.Logger
 {
     public class LoggerConfig
     {
-        public static void ConfigureLogger(ILoggerFactory loggerFactory, IConfiguration configuration) 
+        public static void ConfigureLogger(IConfiguration configuration) 
         {
             Log.Logger = new LoggerConfiguration()
             .ReadFrom.Configuration(configuration)
             .Enrich.FromLogContext()
             .CreateLogger();
 
-            loggerFactory.AddSerilog();
+            new LoggerFactory().AddSerilog();
         }
     }
 }

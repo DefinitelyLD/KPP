@@ -85,7 +85,7 @@ namespace Messenger.WEB
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory loggerFactory)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
             {
@@ -119,7 +119,7 @@ namespace Messenger.WEB
                 endpoints.MapHub<ChatHub>("/hubs/chat");
             });
 
-            LoggerConfig.ConfigureLogger(loggerFactory, Configuration);
+            LoggerConfig.ConfigureLogger(Configuration);
         }
     }
 }
