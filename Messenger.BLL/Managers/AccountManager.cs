@@ -47,15 +47,13 @@ namespace Messenger.BLL.Managers
                         "Account",
                         new { userId = user.Id, code = emailToken },
                         protocol: httpContext.Request.Scheme);
-                EmailService emailService = new EmailService();
-                await emailService.SendEmailAsync(model.Email, "Confirm new account",
-                    $"Hello, {model.UserName}. Click the following link to confirm your registration: <a href='{callbackUrl}'>link</a>");
-                
+                EmailManager emailService = new EmailManager();
+                await emailService.SendEmailAsync(model.Email, "Confirm new account", emailService.RegistrationMessageTemplate(model.UserName, callbackUrl));
             }
                 
             var userEntity = await _userManager.FindByNameAsync(model.UserName);
             var userModel = _mapper.Map<UserViewModel>(userEntity);
-            userModel.Token = GenerateToken(userEntity); // this line throws "System.ArgumentException: IDX10703: Cannot create a 'System.RuntimeType', key length is zero."
+            userModel.Token = GenerateToken(userEntity);
             return userModel;
         }
 
@@ -71,7 +69,7 @@ namespace Messenger.BLL.Managers
             var user = await _userManager.FindByNameAsync(model.UserName);
             if (!await _userManager.IsEmailConfirmedAsync(user))
                 throw new Exception("Email is not confirmed");
-
+            
             var result = await _signInManager.PasswordSignInAsync(model.UserName, model.Password, model.RememberMe, false);
             if (!result.Succeeded)
                 throw new Exception("Login error");
