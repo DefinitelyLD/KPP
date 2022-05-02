@@ -15,7 +15,7 @@ namespace Messenger.BLL.Validators.Messages
             RuleFor(x => x.Id).NotNull();
             RuleFor(x => x.User).NotNull();
             RuleFor(x => x.Text).MaximumLength(3000);
-            RuleForEach(x => x.Files).SetValidator(new FileValidator());
+            //RuleForEach(x => x.Files).SetValidator(new FileValidator());
         }
     }
 }

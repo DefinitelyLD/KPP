@@ -12,6 +12,7 @@ namespace Messenger.BLL.Messages
     {
         public int Id { get; set; }
         public string Text { get; set; }
-        public IFormFileCollection Files { get; set; }
+        public IFormFile File { get; set; }
+        public int ImageId { get; set; }
     }
 }

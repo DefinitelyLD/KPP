@@ -25,9 +25,9 @@ namespace Messenger.WEB.Controllers
         }
 
         [HttpPost]
-        public ActionResult<MessageViewModel> EditMessage(MessageUpdateModel messageModel)
+        public async Task<ActionResult<MessageViewModel>> EditMessage([FromQuery] MessageUpdateModel messageModel)
         {
-            return _messageManager.EditMessage(messageModel);
+            return await _messageManager.EditMessage(messageModel);
         }
 
         [HttpDelete]

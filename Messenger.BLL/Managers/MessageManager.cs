@@ -19,7 +19,7 @@ namespace Messenger.BLL.Managers
         private readonly IMapper _mapper;
         private readonly IMessagesRepository _messagesRepository;
         private readonly IMessageImagesRepository _messageImagesRepository;
-        private const string PathToSave = "..\\Messenger.BLL\\Images\\";
+        private const string FilePath = "..\\Messenger.BLL\\Images\\";
         
         public MessageManager(IMapper mapper, 
                               IMessagesRepository messagesRepository, 
@@ -39,7 +39,7 @@ namespace Messenger.BLL.Managers
             {
                 foreach (var file in messageModel.Files)
                 {
-                    string filePath = PathToSave + Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
+                    string filePath = FilePath + Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
                     using (Stream fileStream = new FileStream(filePath, FileMode.Create))
                         await file.CopyToAsync(fileStream);
                     MessageImageCreateModel imageModel = new()
@@ -51,14 +51,26 @@ namespace Messenger.BLL.Managers
                     _messageImagesRepository.Create(messageImageEntity);
                 }
             }
-
             return messageViewModel;
         }
 
-        public MessageViewModel EditMessage(MessageUpdateModel messageModel)
+        public async Task<MessageViewModel> EditMessage(MessageUpdateModel messageModel)
         {
-            var msgEntity = _mapper.Map<Message>(messageModel);
-            return _mapper.Map<MessageViewModel>(_messagesRepository.Update(msgEntity));
+            var messageEntity = _mapper.Map<Message>(messageModel);
+            var messageFile = messageModel.File; 
+            if (messageFile != null)
+            {
+                var messageImageEntity = _messageImagesRepository.GetById(messageModel.ImageId);
+                File.Delete(messageImageEntity.Path);
+                string filePath = FilePath + Guid.NewGuid().ToString() + Path.GetExtension(messageFile.FileName);
+                using Stream fileStream = new FileStream(filePath, FileMode.Create);
+                await messageFile.CopyToAsync(fileStream);
+                messageImageEntity.Path = filePath;
+                _messageImagesRepository.Update(messageImageEntity);
+                var messageEntityWithImage = _mapper.Map<Message>(messageModel);
+                return _mapper.Map<MessageViewModel>(_messagesRepository.Update(messageEntityWithImage));
+            }
+            return _mapper.Map<MessageViewModel>(_messagesRepository.Update(messageEntity));
         }
 
         public bool DeleteMessage(int messageId)

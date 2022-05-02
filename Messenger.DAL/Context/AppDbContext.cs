@@ -31,7 +31,7 @@ namespace Messenger.DAL.Context
             modelBuilder.Entity<Chat>().Navigation(u => u.Messages).AutoInclude();
             modelBuilder.Entity<Chat>().Navigation(u => u.Users).AutoInclude();
 
-            modelBuilder.Entity<MessageImage>().Navigation(u => u.Message).AutoInclude();
+            modelBuilder.Entity<Message>().Navigation(u => u.Images).AutoInclude();
 
             modelBuilder.Entity<User>().Navigation(u => u.Messages).AutoInclude();
 
