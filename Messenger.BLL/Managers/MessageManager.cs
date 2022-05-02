@@ -61,7 +61,8 @@ namespace Messenger.BLL.Managers
 
         public async Task<MessageViewModel> EditMessage(MessageUpdateModel messageModel)
         {
-            var messageEntity = _mapper.Map<Message>(messageModel);
+            var messageEntity = _messagesRepository.GetById(messageModel.Id);
+            messageEntity.Text = messageModel.Text;
             var messageFile = messageModel.File; 
             if (messageFile != null)
             {
@@ -72,8 +73,6 @@ namespace Messenger.BLL.Managers
                 await messageFile.CopyToAsync(fileStream);
                 messageImageEntity.Path = filePath;
                 _messageImagesRepository.Update(messageImageEntity);
-                var messageEntityWithImage = _mapper.Map<Message>(messageModel);
-                return _mapper.Map<MessageViewModel>(_messagesRepository.Update(messageEntityWithImage));
             }
             return _mapper.Map<MessageViewModel>(_messagesRepository.Update(messageEntity));
         }
