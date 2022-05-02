@@ -10,7 +10,7 @@ namespace Messenger.BLL.Managers
 {
     public interface IMessageManager
     {
-        public Task<MessageViewModel> SendMessage(MessageCreateModel messageModel);
+        public Task<MessageViewModel> SendMessage(MessageCreateModel messageModel, string userId);
 
         public MessageViewModel EditMessage(MessageUpdateModel messageModel);
         public bool DeleteMessage(int messageId);

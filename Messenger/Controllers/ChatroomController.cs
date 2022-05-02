@@ -22,7 +22,12 @@ namespace Messenger.WEB.Controllers
         [HttpPost]
         public ActionResult<ChatViewModel> CreateChatroom(ChatCreateModel chat)
         {
-            return _chatroomManager.CreateChatroom(chat);
+            var httpContext = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier);
+            if (httpContext == null)
+                throw new KeyNotFoundException();
+
+            var userId = httpContext.Value;
+            return _chatroomManager.CreateChatroom(chat, userId);
         }
 
         [HttpPost]

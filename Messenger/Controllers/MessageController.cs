@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Messenger.BLL.Messages;
 using Microsoft.AspNetCore.Http;
 using System.Threading.Tasks;
+using System.Security.Claims;
 
 namespace Messenger.WEB.Controllers
 {
@@ -21,7 +22,12 @@ namespace Messenger.WEB.Controllers
         [HttpPost]
         public async Task<ActionResult<MessageViewModel>> SendMessage([FromQuery] MessageCreateModel messageModel)
         {
-            return await _messageManager.SendMessage(messageModel);
+            var httpContext = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier);
+            if (httpContext == null)
+                throw new KeyNotFoundException();
+
+            var userId = httpContext.Value;
+            return await _messageManager.SendMessage(messageModel, userId);
         }
 
         [HttpPost]
