@@ -15,26 +15,34 @@ using System.Threading.Tasks;
 
 namespace Messenger.BLL.Managers
 {
-    public class MessageManager: IMessageManager
+    public class MessageManager : IMessageManager 
     {
         private readonly IMapper _mapper;
         private readonly IMessagesRepository _messagesRepository;
         private readonly IMessageImagesRepository _messageImagesRepository;
+        private readonly IUserAccountsRepository _userAccountsRepository;
         private const string PathToSave = "..\\Messenger.BLL\\Images\\";
         
         public MessageManager(IMapper mapper, 
                               IMessagesRepository messagesRepository, 
-                              IMessageImagesRepository messageImagesRepository)
+                              IMessageImagesRepository messageImagesRepository,
+                              IUserAccountsRepository userAccountsRepository)
         {
             _mapper = mapper;
             _messagesRepository = messagesRepository;
             _messageImagesRepository = messageImagesRepository;
+            _userAccountsRepository = userAccountsRepository;
         }
 
         public async Task<MessageViewModel> SendMessage (MessageCreateModel messageModel, string userId)
         {
-            if (messageModel.UserId != userId)
-                throw new NotAllowedException("Incorrect user ID");
+            var userAccountEntity = _userAccountsRepository
+                .GetAll()
+                .Where(u => u.User.Id == userId)
+                .SingleOrDefault();
+
+            if (messageModel.UserId != userId || userAccountEntity.IsBanned)
+                throw new NotAllowedException("Method isn't allowed");
 
             var messageEntity = _mapper.Map<Message>(messageModel);
             var messageViewModel = _mapper.Map<MessageViewModel>(_messagesRepository.Create(messageEntity));
@@ -57,34 +65,63 @@ namespace Messenger.BLL.Managers
                     _messageImagesRepository.Create(messageImageEntity);
                 }
             }
-
             messageViewModel.Images = imageViewModelCollection;
-
             return messageViewModel;
         }
 
-        public MessageViewModel EditMessage(MessageUpdateModel messageModel)
+        public MessageViewModel EditMessage(MessageUpdateModel messageModel, string userId)
         {
-            var msgEntity = _mapper.Map<Message>(messageModel);
-            return _mapper.Map<MessageViewModel>(_messagesRepository.Update(msgEntity));
+            var userAccountEntity = _userAccountsRepository
+                .GetAll()
+                .Where(u => u.User.Id == userId)
+                .SingleOrDefault();
+
+            var messageEntity = _mapper.Map<Message>(messageModel);
+
+            if (userAccountEntity.IsBanned || messageEntity.UserId != userId)
+                throw new NotAllowedException("Method isn't allowed");
+
+            return _mapper.Map<MessageViewModel>(_messagesRepository.Update(messageEntity));
         }
 
-        public bool DeleteMessage(int messageId)
+        public bool DeleteMessage(int messageId, string userId)
         {
+            var userAccountEntity = _userAccountsRepository
+                .GetAll()
+                .Where(u => u.User.Id == userId)
+                .SingleOrDefault();
+
+            var messageEntity = _messagesRepository.GetById(messageId);
+
+            if (userAccountEntity.IsBanned || messageEntity.UserId != userId)
+                throw new NotAllowedException("Method isn't allowed");
+
             return _messagesRepository.DeleteById(messageId);
         }
 
         public MessageViewModel GetMessage(int messageId)
         {
-            Message messageEntity = _messagesRepository.GetById(messageId);
+            var messageEntity = _messagesRepository.GetById(messageId);
             return _mapper.Map<MessageViewModel>(messageEntity);
         }
 
-        public IEnumerable<MessageViewModel> GetAllMessages()
+        public IEnumerable<MessageViewModel> GetMessagesFromChat(int chatId, string userId, DateTime? date = null)
         {
-            var messageEntityList = _messagesRepository.GetAll().ToList();
+            var userAccountEntity = _userAccountsRepository
+                .GetAll() 
+                .Where(u => u.User.Id == userId)
+                .SingleOrDefault();
+            if (userAccountEntity.ChatId != chatId)
+                throw new NotAllowedException("Method isn't allowed");
+
+            var messageEntityList = _messagesRepository
+                .GetAll()
+                .Where(predicate: u => u.ChatId == chatId && 
+                (date == null || u.CreatedTime.Date == date.Value.Date) )
+                .ToList();
+
             var messageModelList = _mapper.Map<List<MessageViewModel>>(messageEntityList);
-            return messageModelList;
+            return messageModelList;   
         }
     }
 }

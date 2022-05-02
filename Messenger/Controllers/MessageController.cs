@@ -5,6 +5,7 @@ using Messenger.BLL.Messages;
 using Microsoft.AspNetCore.Http;
 using System.Threading.Tasks;
 using System.Security.Claims;
+using System;
 
 namespace Messenger.WEB.Controllers
 {
@@ -22,24 +23,22 @@ namespace Messenger.WEB.Controllers
         [HttpPost]
         public async Task<ActionResult<MessageViewModel>> SendMessage([FromQuery] MessageCreateModel messageModel)
         {
-            var httpContext = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier);
-            if (httpContext == null)
-                throw new KeyNotFoundException();
-
-            var userId = httpContext.Value;
+            var userId = GetUserIdFromHttpContext().Value;
             return await _messageManager.SendMessage(messageModel, userId);
         }
 
         [HttpPost]
         public ActionResult<MessageViewModel> EditMessage(MessageUpdateModel messageModel)
         {
-            return _messageManager.EditMessage(messageModel);
+            var userId = GetUserIdFromHttpContext().Value;
+            return _messageManager.EditMessage(messageModel, userId);
         }
 
         [HttpDelete]
         public ActionResult<bool> DeleteMessage(int messageId)
         {
-            return _messageManager.DeleteMessage(messageId);
+            var userId = GetUserIdFromHttpContext().Value;
+            return _messageManager.DeleteMessage(messageId, userId);
         }
 
         [HttpGet]
@@ -49,9 +48,18 @@ namespace Messenger.WEB.Controllers
         }
 
         [HttpGet]
-        public IEnumerable<MessageViewModel> GetAllMessages()
+        public IEnumerable<MessageViewModel> GetMessagesFromChat(int chatId, DateTime? date = null)
         {
-            return _messageManager.GetAllMessages();
+            var userId = GetUserIdFromHttpContext().Value;
+            return _messageManager.GetMessagesFromChat(chatId, userId, date);
+        }
+
+        private Claim GetUserIdFromHttpContext()
+        {
+            var httpContext = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier);
+            if (httpContext == null)
+                throw new KeyNotFoundException();
+            return httpContext;
         }
     }
 }

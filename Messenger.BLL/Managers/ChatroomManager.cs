@@ -11,7 +11,7 @@ using System.Linq;
 
 namespace Messenger.BLL.Managers
 {
-    public class ChatroomManager: IChatroomManager
+    public class ChatroomManager : IChatroomManager
     {
         private readonly IMapper _mapper;
         private readonly IChatsRepository _chatsRepository;
