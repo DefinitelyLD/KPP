@@ -26,8 +26,11 @@ namespace Messenger.BLL.Managers
             _userAccountsRepository = userAccountsRepository;
         }
 
-        public ChatViewModel CreateChatroom(ChatCreateModel chatModel)
+        public ChatViewModel CreateChatroom(ChatCreateModel chatModel, string userId)
         {
+            if (chatModel.UserId != userId)
+                throw new NotAllowedException("Incorrect user ID");
+
             var chatEntity = _mapper.Map<Chat>(chatModel);
             var chatViewModel = _mapper.Map<ChatViewModel>(_chatsRepository.Create(chatEntity));
             
@@ -76,7 +79,6 @@ namespace Messenger.BLL.Managers
                 .SingleOrDefault();
 
             if (userAccountExistingEntity != null)
-                //TODO: should be done in #12 issue
                 throw new BadRequestException("The user is already in the chat."); 
 
             UserAccountCreateModel userAccountModel = new()

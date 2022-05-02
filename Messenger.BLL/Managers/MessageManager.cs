@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Messenger.BLL.Exceptions;
 using Messenger.BLL.MessageImages;
 using Messenger.BLL.Messages;
 using Messenger.DAL.Entities;
@@ -30,8 +31,11 @@ namespace Messenger.BLL.Managers
             _messageImagesRepository = messageImagesRepository;
         }
 
-        public async Task<MessageViewModel> SendMessage (MessageCreateModel messageModel)
+        public async Task<MessageViewModel> SendMessage (MessageCreateModel messageModel, string userId)
         {
+            if (messageModel.UserId != userId)
+                throw new NotAllowedException("Incorrect user ID");
+
             var messageEntity = _mapper.Map<Message>(messageModel);
             var messageViewModel = _mapper.Map<MessageViewModel>(_messagesRepository.Create(messageEntity));
             var imageViewModelCollection = new List<MessageImageViewModel>();

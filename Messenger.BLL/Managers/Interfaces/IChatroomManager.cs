@@ -11,12 +11,11 @@ namespace Messenger.BLL.Managers
 {
     public interface IChatroomManager
     {
-        public ChatViewModel CreateChatroom(ChatCreateModel chatModel);
+        public ChatViewModel CreateChatroom(ChatCreateModel chatModel, string userId);
         public ChatUpdateModel EditChatroom(ChatUpdateModel chatModel);
         public bool DeleteChatroom(int chatId);
         public ChatViewModel GetChatroom(int chatId);
         public IEnumerable<ChatViewModel> GetAllChatrooms();
-
         public UserAccountCreateModel AddToChatroom(string userId, int chatId);
         public bool LeaveFromChatroom(int userAccountId);
         public bool KickUser(UserAccountViewModel userAccountModel, string admin);
