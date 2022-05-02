@@ -59,7 +59,7 @@ namespace Messenger.DAL.Repositories
 
         public virtual IQueryable<T> GetAll()
         {
-            return _dbSet;
+            return _dbSet.AsNoTracking();
         }
 
         public virtual T GetById(TId id)
