@@ -34,7 +34,6 @@ namespace Messenger.BLL.Managers
         {
             var messageEntity = _mapper.Map<Message>(messageModel);
             var messageViewModel = _mapper.Map<MessageViewModel>(_messagesRepository.Create(messageEntity));
-            var imageViewModelCollection = new List<MessageImageViewModel>();
 
             if (messageModel.Files != null)
             {
@@ -49,12 +48,9 @@ namespace Messenger.BLL.Managers
                         MessageId = messageViewModel.Id
                     };
                     var messageImageEntity = _mapper.Map<MessageImage>(imageModel);
-                    imageViewModelCollection.Add(_mapper.Map<MessageImageViewModel>(messageImageEntity));
                     _messageImagesRepository.Create(messageImageEntity);
                 }
             }
-
-            messageViewModel.Images = imageViewModelCollection;
 
             return messageViewModel;
         }
@@ -79,7 +75,7 @@ namespace Messenger.BLL.Managers
         public IEnumerable<MessageViewModel> GetAllMessages()
         {
             var messageEntityList = _messagesRepository.GetAll().ToList();
-            var messageModelList = _mapper.Map<List<MessageViewModel>>(messageEntityList);
+            var messageModelList = _mapper.Map<IEnumerable<MessageViewModel>>(messageEntityList);
             return messageModelList;
         }
     }
