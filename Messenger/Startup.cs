@@ -27,8 +27,10 @@ using Messenger.BLL.Token;
 using Messenger.BLL.Validators.UserAccounts;
 using Messenger.WEB.SignalR;
 using Messenger.Middleware;
+using Serilog;
 using System.Text.Json.Serialization;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using Messenger.WEB.Logger;
 
 namespace Messenger.WEB
 {
@@ -116,8 +118,8 @@ namespace Messenger.WEB
                 .RequireAuthorization();
                 endpoints.MapHub<ChatHub>("/hubs/chat");
             });
+
+            LoggerConfig.ConfigureLogger(Configuration);
         }
-
     }
-
 }
