@@ -20,12 +20,15 @@ namespace Messenger.BLL.Managers
         private readonly SignInManager<User> _signInManager;
         private readonly IMapper _mapper;
         private readonly ITokenService _tokenService;
-        public AccountManager (UserManager<User> userManager, SignInManager<User> signInManager, IMapper mapper, ITokenService tokenService)
+        private readonly IUsersRepository _usersRepository;
+        public AccountManager (UserManager<User> userManager, SignInManager<User> signInManager, IMapper mapper, ITokenService tokenService,
+            IUsersRepository usersRepository)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _mapper = mapper;
             _tokenService = tokenService;
+            _usersRepository = usersRepository;
         }
 
         public async Task<UserViewModel> RegisterUser(UserCreateModel model)
@@ -65,8 +68,11 @@ namespace Messenger.BLL.Managers
             return result.Succeeded;
         }
 
-        public async Task<bool> ChangeUserPassword(UserChangePasswordModel model)
+        public async Task<bool> ChangeUserPassword(UserChangePasswordModel model, string userId)
         {
+            if (model.Id != userId)
+                throw new BadRequestException("Wtf man this account ID is not yours.");
+
             var user = await _userManager.FindByIdAsync(model.Id);
             if (user == null)
                 throw new KeyNotFoundException();
@@ -81,6 +87,88 @@ namespace Messenger.BLL.Managers
             if (generatedToken == null)
                 throw new BadRequestException("Failed generate token");
             return generatedToken;
+        }
+
+        public UserViewModel AddFriend(string userId, string friendId)
+        {
+            if (userId == friendId)
+                throw new BadRequestException("You cannot add yourself to your friends list :(");
+
+            var userEntity = _usersRepository.GetById(userId);
+            var friendEntity = _usersRepository.GetById(friendId);
+
+            if (userEntity.FriendsFrom.Where(x => x.Id == friendId).SingleOrDefault() != null)
+                throw new BadRequestException("You are friends already.");
+
+            userEntity.FriendsFrom.Add(friendEntity);
+            friendEntity.FriendsTo.Add(userEntity);
+
+            _usersRepository.Update(friendEntity);
+            var userUpdatedEntity = _usersRepository.Update(userEntity);
+
+            return _mapper.Map<UserViewModel>(userUpdatedEntity);
+        }
+
+        public UserViewModel DeleteFriend(string userId, string friendId)
+        {
+            var userEntity = _usersRepository.GetById(userId);
+            var friendEntity = _usersRepository.GetById(friendId);
+
+            if (userEntity.FriendsFrom.Where(x => x.Id == friendId).SingleOrDefault() == null)
+                throw new BadRequestException("You are not friends.");
+
+            userEntity.FriendsFrom.Remove(friendEntity);
+            friendEntity.FriendsTo.Remove(userEntity);
+
+            _usersRepository.Update(friendEntity);
+            var userUpdatedEntity = _usersRepository.Update(userEntity);
+
+            return _mapper.Map<UserViewModel>(userUpdatedEntity);
+        }
+
+        public UserViewModel BlockUser(string userId, string blockedUserId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public UserViewModel UnblockUser(string userId, string blockedUserId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IEnumerable<UserViewModel> GetAllUsers()
+        {
+            var userEntityList = _usersRepository.GetAll().ToList();
+            var userViewModelList = _mapper.Map<IEnumerable<UserViewModel>>(userEntityList);
+            return userViewModelList;
+        }
+
+        public UserViewModel GetUser(string id)
+        {
+            var userEntity = _usersRepository.GetById(id);
+            return _mapper.Map<UserViewModel>(userEntity);
+        }
+
+        public UserViewModel GetUserByUserName(string userName)
+        {
+            var userEntity = _usersRepository.GetAll().Where(x => x.UserName == userName).SingleOrDefault();
+            if (userEntity == null)
+            {
+                throw new KeyNotFoundException();
+            }
+            return _mapper.Map<UserViewModel>(userEntity);
+        }
+
+        public UserViewModel UpdateUser(UserUpdateModel userModel, string userId)
+        {
+            if (userModel.Id != userId)
+                throw new BadRequestException("Wtf man this account ID is not yours.");
+
+            var userEntity = _usersRepository.GetById(userModel.Id);
+            userEntity.UserName = userModel.UserName;
+            userEntity.Email = userModel.Email;
+            var result = _usersRepository.Update(userEntity);
+            return _mapper.Map<UserViewModel>(result);
         }
     }
 }
