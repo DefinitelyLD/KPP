@@ -13,11 +13,8 @@ namespace Messenger.Mapping.Profiles
     {
         public ChatProfile()
         {
-            CreateMap<ChatCreateModel, Chat>();
             CreateMap<ChatCreateModel, Chat>().ReverseMap();
-            CreateMap<ChatUpdateModel, Chat>();
             CreateMap<ChatUpdateModel, Chat>().ReverseMap();
-            CreateMap<ChatViewModel, Chat>();
             CreateMap<ChatViewModel, Chat>().ReverseMap();
         }
     }

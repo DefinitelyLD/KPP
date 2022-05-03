@@ -1,10 +1,10 @@
 ﻿using Messenger.BLL.Chats;
 using Messenger.BLL.Managers;
-using Messenger.BLL.Models.UserAccounts;
 using Messenger.BLL.UserAccounts;
 using Messenger.BLL.Users;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
+using System.Security.Claims;
 
 namespace Messenger.WEB.Controllers
 {
@@ -17,6 +17,12 @@ namespace Messenger.WEB.Controllers
         public ChatroomController(IChatroomManager chatroomManager)
         {
             _chatroomManager = chatroomManager;
+        }
+
+        [HttpPost]
+        public ActionResult<ChatViewModel> CreateChatroom(ChatCreateModel chat)
+        {
+            return _chatroomManager.CreateChatroom(chat);
         }
 
         [HttpPost]
@@ -56,39 +62,79 @@ namespace Messenger.WEB.Controllers
         }
 
         [HttpDelete]
-        public ActionResult<bool> KickUser(UserAccountActionModel actionModel)
+        public ActionResult<bool> KickUser(UserAccountViewModel userModel)
         {
-            return _chatroomManager.KickUser(actionModel.user, actionModel.admin);
+            var httpContext = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier);
+            if (httpContext == null)
+                throw new KeyNotFoundException();
+
+            var adminId = httpContext.Value;
+            return _chatroomManager.KickUser(userModel, adminId);
         }
 
         [HttpPost]
-        public ActionResult<UserAccountUpdateModel> BanUser(UserAccountActionModel actionModel)
+        public ActionResult<UserAccountUpdateModel> BanUser(UserAccountViewModel userModel)
         {
-            return _chatroomManager.BanUser(actionModel.user, actionModel.admin);
+            var httpContext = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier);
+            if (httpContext == null)
+                throw new KeyNotFoundException();
+
+            var adminId = httpContext.Value;
+            return _chatroomManager.BanUser(userModel, adminId);
         }
 
         [HttpPost]
-        public ActionResult<UserAccountUpdateModel> UnbanUser(UserAccountActionModel actionModel)
+        public ActionResult<UserAccountUpdateModel> UnbanUser(UserAccountViewModel userModel)
         {
-            return _chatroomManager.UnbanUser(actionModel.user, actionModel.admin);
+            var httpContext = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier);
+            if (httpContext == null)
+                throw new KeyNotFoundException();
+
+            var adminId = httpContext.Value;
+            return _chatroomManager.UnbanUser(userModel, adminId);
         }
 
         [HttpPost]
-        public ActionResult<UserAccountUpdateModel> SetAdmin(UserAccountActionModel actionModel)
+        public ActionResult<UserAccountUpdateModel> SetAdmin(UserAccountViewModel userModel)
         {
-            return _chatroomManager.SetAdmin(actionModel.user, actionModel.admin);
+            var httpContext = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier);
+            if (httpContext == null)
+                throw new KeyNotFoundException();
+
+            var adminId = httpContext.Value;
+            return _chatroomManager.SetAdmin(userModel, adminId);
         }
 
         [HttpPost]
-        public ActionResult<UserAccountUpdateModel> UnsetAdmin(UserAccountActionModel actionModel)
+        public ActionResult<UserAccountUpdateModel> UnsetAdmin(UserAccountViewModel userModel)
         {
-            return _chatroomManager.UnsetAdmin(actionModel.user, actionModel.admin);
+            var httpContext = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier);
+            if (httpContext == null)
+                throw new KeyNotFoundException();
+
+            var adminId = httpContext.Value;
+            return _chatroomManager.UnsetAdmin(userModel, adminId);
         }
 
         [HttpGet]
-        public IEnumerable<UserViewModel> GetAllAdmins(ChatViewModel chatModel)
+        public IEnumerable<UserAccountViewModel> GetAllBannedUsers(int chatId)
         {
-            return _chatroomManager.GetAllAdmins(chatModel);
+            var userName = HttpContext.User.Identity.Name;
+            return _chatroomManager.GetAllBannedUsers(chatId, userName);
+        }
+
+        [HttpGet]
+        public IEnumerable<UserAccountViewModel> GetAllAdmins(int chatId)
+        {
+            var userName = HttpContext.User.Identity.Name;
+            return _chatroomManager.GetAllAdmins(chatId, userName);
+        }
+
+        [HttpGet]
+        public IEnumerable<UserAccountViewModel> GetAllUsers(int chatId)
+        {
+            var userName = HttpContext.User.Identity.Name;
+            return _chatroomManager.GetAllUsers(chatId, userName);
         }
     }
 }

@@ -13,9 +13,7 @@ namespace Messenger.BLL.Validators.UserAccounts
         public UserAccountCreateModelValidator() 
         {
             RuleFor(x => x.ChatId).NotNull();
-            RuleFor(x => x.Chat).NotNull();
             RuleFor(x => x.UserId).NotNull();
-            RuleFor(x => x.User).NotNull();
         }
     }
 }

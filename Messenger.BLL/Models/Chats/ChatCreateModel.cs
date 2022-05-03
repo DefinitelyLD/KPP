@@ -12,7 +12,6 @@ namespace Messenger.BLL.Chats
     {
         public string Topic { get; set; }
         public string? Password { get; set; }
-        public IEnumerable<MessageViewModel> Messages { get; set; }
-        public IEnumerable<UserAccountViewModel> Users { get; set; }
+        public string UserId { get; set; }
     }
 }

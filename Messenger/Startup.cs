@@ -17,7 +17,6 @@ using Messenger.Mapping;
 using Messenger.BLL;
 using FluentValidation;
 using FluentValidation.AspNetCore;
-using Messenger.BLL.Models.UserAccounts;
 using Microsoft.AspNetCore.Identity;
 using Messenger.DAL.Entities;
 using Messenger.DAL.Context;
@@ -25,6 +24,11 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Http;
 using Messenger.BLL.Token;
+using Messenger.BLL.Validators.UserAccounts;
+using Messenger.WEB.SignalR;
+using Messenger.Middleware;
+using System.Text.Json.Serialization;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace Messenger.WEB
 {
@@ -40,7 +44,6 @@ namespace Messenger.WEB
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddManagers();
             services.AddRepository(Configuration);
             services.AddMappers();
             services.AddManagers();
@@ -57,8 +60,12 @@ namespace Messenger.WEB
             services.AddJwtToken(Configuration);
             services.AddDistributedMemoryCache();
             services.AddSession();
-            services.AddControllers();
-            services.AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<UserAccountActionModelValidator>());
+          
+            services.AddControllers().AddJsonOptions(x => x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve);
+          
+            services.AddSignalR();
+
+            services.AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<UserAccountCreateModelValidator>());
 
             services.AddSwaggerGen(c =>
             {
@@ -101,10 +108,13 @@ namespace Messenger.WEB
             app.UseAuthentication();
             app.UseAuthorization();
 
+            app.UseMiddleware<ErrorHandlerMiddleware>();
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers()
                 .RequireAuthorization();
+                endpoints.MapHub<ChatHub>("/hubs/chat");
             });
         }
 

@@ -19,6 +19,7 @@ namespace Messenger.DAL
         public static IServiceCollection AddRepository(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddTransient<IMessagesRepository, MessagesRepository>();
+            services.AddTransient<IMessageImagesRepository, MessageImagesRepository>();
             services.AddTransient<IChatsRepository, ChatsRepository>();
             services.AddTransient<IUsersRepository, UsersRepository>();
             services.AddTransient<IUnitOfWork, UnitOfWork>();
