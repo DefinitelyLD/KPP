@@ -12,7 +12,7 @@ namespace Messenger.BLL.Managers
     {
         public Task<MessageViewModel> SendMessage(MessageCreateModel messageModel, string userId);
 
-        public MessageViewModel EditMessage(MessageUpdateModel messageModel);
+        public Task<MessageViewModel> EditMessage(MessageUpdateModel messageModel);
         public bool DeleteMessage(int messageId);
         public MessageViewModel GetMessage(int messageId);
         public IEnumerable<MessageViewModel> GetAllMessages();
