@@ -1,5 +1,4 @@
 ﻿using Messenger.BLL.Managers;
-using Messenger.BLL.Models;
 using Messenger.BLL.Users;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;

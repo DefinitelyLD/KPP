@@ -2,6 +2,9 @@
 using Messenger.BLL.Managers;
 using System.Collections.Generic;
 using Messenger.BLL.Messages;
+using Microsoft.AspNetCore.Http;
+using System.Threading.Tasks;
+using System.Security.Claims;
 
 namespace Messenger.WEB.Controllers
 {
@@ -11,19 +14,24 @@ namespace Messenger.WEB.Controllers
     {
         private readonly IMessageManager _messageManager;
 
-        public MessageController (IMessageManager messageManager)
+        public MessageController(IMessageManager messageManager)
         {
             _messageManager = messageManager;
         }
 
         [HttpPost]
-        public ActionResult<MessageCreateModel> SendMessage(MessageCreateModel messageModel)
+        public async Task<ActionResult<MessageViewModel>> SendMessage([FromQuery] MessageCreateModel messageModel)
         {
-            return  _messageManager.SendMessage(messageModel);
+            var httpContext = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier);
+            if (httpContext == null)
+                throw new KeyNotFoundException();
+
+            var userId = httpContext.Value;
+            return await _messageManager.SendMessage(messageModel, userId);
         }
 
         [HttpPost]
-        public ActionResult<MessageUpdateModel> EditMessage(MessageUpdateModel messageModel)
+        public ActionResult<MessageViewModel> EditMessage(MessageUpdateModel messageModel)
         {
             return _messageManager.EditMessage(messageModel);
         }

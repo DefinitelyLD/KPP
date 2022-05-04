@@ -10,7 +10,6 @@ namespace Messenger.BLL.MessageImages
     public class MessageImageCreateModel
     {
         public string Path { get; set; }
-        public MessageCreateModel Message { get; set; }
-
+        public int MessageId { get; set; }
     }
 }
