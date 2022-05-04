@@ -15,7 +15,7 @@ using System.Threading.Tasks;
 
 namespace Messenger.BLL.Managers
 {
-    public class MessageManager : IMessageManager 
+    public class MessageManager : IMessageManager
     {
         private readonly IMapper _mapper;
         private readonly IMessagesRepository _messagesRepository;
@@ -38,11 +38,12 @@ namespace Messenger.BLL.Managers
         {
             var userAccountEntity = _userAccountsRepository
                 .GetAll()
-                .Where(u => u.User.Id == userId)
+                .Where(u => u.User.Id == userId && 
+                u.User.Id == messageModel.UserId && !u.IsBanned)
                 .SingleOrDefault();
 
-            if (messageModel.UserId != userId || userAccountEntity.IsBanned)
-                throw new NotAllowedException("Method isn't allowed");
+            if (userAccountEntity == null)
+                throw new KeyNotFoundException();
 
             var messageEntity = _mapper.Map<Message>(messageModel);
             var messageViewModel = _mapper.Map<MessageViewModel>(_messagesRepository.Create(messageEntity));
@@ -71,30 +72,32 @@ namespace Messenger.BLL.Managers
 
         public MessageViewModel EditMessage(MessageUpdateModel messageModel, string userId)
         {
-            var userAccountEntity = _userAccountsRepository
-                .GetAll()
-                .Where(u => u.User.Id == userId)
-                .SingleOrDefault();
-
             var messageEntity = _mapper.Map<Message>(messageModel);
 
-            if (userAccountEntity.IsBanned || messageEntity.UserId != userId)
-                throw new NotAllowedException("Method isn't allowed");
+            var userAccountEntity = _userAccountsRepository
+                .GetAll()
+                .Where(u => u.User.Id == userId && 
+                u.User.Id == messageEntity.UserId && !u.IsBanned)
+                .SingleOrDefault();
+
+            if (userAccountEntity == null)
+                throw new KeyNotFoundException();
 
             return _mapper.Map<MessageViewModel>(_messagesRepository.Update(messageEntity));
         }
 
         public bool DeleteMessage(int messageId, string userId)
         {
-            var userAccountEntity = _userAccountsRepository
-                .GetAll()
-                .Where(u => u.User.Id == userId)
-                .SingleOrDefault();
-
             var messageEntity = _messagesRepository.GetById(messageId);
 
-            if (userAccountEntity.IsBanned || messageEntity.UserId != userId)
-                throw new NotAllowedException("Method isn't allowed");
+            var userAccountEntity = _userAccountsRepository
+                .GetAll()
+                .Where(u => u.User.Id == userId &&
+                u.User.Id == messageEntity.UserId && !u.IsBanned)
+                .SingleOrDefault();
+
+            if (userAccountEntity == null)
+                throw new KeyNotFoundException();
 
             return _messagesRepository.DeleteById(messageId);
         }
@@ -109,19 +112,20 @@ namespace Messenger.BLL.Managers
         {
             var userAccountEntity = _userAccountsRepository
                 .GetAll() 
-                .Where(u => u.User.Id == userId)
+                .Where(u => u.User.Id == userId && u.Chat.Id == chatId)
                 .SingleOrDefault();
-            if (userAccountEntity.ChatId != chatId)
-                throw new NotAllowedException("Method isn't allowed");
 
             var messageEntityList = _messagesRepository
                 .GetAll()
                 .Where(predicate: u => u.ChatId == chatId && 
-                (date == null || u.CreatedTime.Date == date.Value.Date) )
+                (date == null || u.CreatedTime.Date == date.Value.Date))
                 .ToList();
 
+            if (userAccountEntity == null || messageEntityList == null)
+                throw new KeyNotFoundException();
+
             var messageModelList = _mapper.Map<List<MessageViewModel>>(messageEntityList);
-            return messageModelList;   
+            return messageModelList;
         }
     }
 }

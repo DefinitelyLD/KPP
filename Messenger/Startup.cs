@@ -105,7 +105,7 @@ namespace Messenger.WEB
                 await next();
             });
 
-            app.UseHttpsRedirection();
+            //app.UseHttpsRedirection();
             app.UseRouting();
             app.UseAuthentication();
             app.UseAuthorization();
