@@ -100,6 +100,10 @@ namespace Messenger.BLL.Managers
             if (userEntity.FriendsFrom.Where(x => x.Id == friendId).SingleOrDefault() != null)
                 throw new BadRequestException("You are friends already.");
 
+            if (userEntity.BlockedUsersFrom.Where(x => x.Id == friendId).SingleOrDefault() != null ||
+                userEntity.BlockedUsersTo.Where(x => x.Id == friendId).SingleOrDefault() != null)
+                throw new BadRequestException("You cannot add this user to your friends list");
+
             userEntity.FriendsFrom.Add(friendEntity);
             friendEntity.FriendsTo.Add(userEntity);
 
@@ -128,12 +132,39 @@ namespace Messenger.BLL.Managers
 
         public UserViewModel BlockUser(string userId, string blockedUserId)
         {
-            throw new NotImplementedException();
+            if (userId == blockedUserId)
+                throw new BadRequestException("You cannot block yourself");
+
+            var userEntity = _usersRepository.GetById(userId);
+            var blockedUserEntity = _usersRepository.GetById(blockedUserId);
+
+            if (userEntity.BlockedUsersFrom.Where(x => x.Id == blockedUserId).SingleOrDefault() != null)
+                throw new BadRequestException("This user is already blocked.");
+
+            userEntity.BlockedUsersFrom.Add(blockedUserEntity);
+            blockedUserEntity.BlockedUsersTo.Add(userEntity);
+
+            _usersRepository.Update(blockedUserEntity);
+            var userUpdatedEntity = _usersRepository.Update(userEntity);
+
+            return _mapper.Map<UserViewModel>(userUpdatedEntity);
         }
 
         public UserViewModel UnblockUser(string userId, string blockedUserId)
         {
-            throw new NotImplementedException();
+            var userEntity = _usersRepository.GetById(userId);
+            var blockedUserEntity = _usersRepository.GetById(blockedUserId);
+
+            if (userEntity.BlockedUsersFrom.Where(x => x.Id == blockedUserId).SingleOrDefault() == null)
+                throw new BadRequestException("This user is not blocked.");
+
+            userEntity.BlockedUsersFrom.Remove(blockedUserEntity);
+            blockedUserEntity.BlockedUsersTo.Remove(userEntity);
+
+            _usersRepository.Update(blockedUserEntity);
+            var userUpdatedEntity = _usersRepository.Update(userEntity);
+
+            return _mapper.Map<UserViewModel>(userUpdatedEntity);
         }
 
         public IEnumerable<UserViewModel> GetAllUsers()

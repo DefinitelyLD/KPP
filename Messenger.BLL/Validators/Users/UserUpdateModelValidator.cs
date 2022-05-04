@@ -14,7 +14,6 @@ namespace Messenger.BLL.Validators.Users
         {
             RuleFor(x => x.Id).NotNull();
             RuleFor(x => x.UserName).NotEmpty().MaximumLength(25);
-            RuleFor(x => x.Password).NotEmpty().MinimumLength(8).MaximumLength(20);
             RuleFor(x => x.Email).NotEmpty().EmailAddress();
         }
     }

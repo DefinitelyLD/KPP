@@ -57,7 +57,12 @@ namespace Messenger.WEB.Controllers
         [HttpPost]
         public ActionResult<UserAccountCreateModel> AddToChatroom(string userId, int chatId)
         {
-            return _chatroomManager.AddToChatroom(userId, chatId);
+            var httpContext = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier);
+            if (httpContext == null)
+                throw new KeyNotFoundException();
+
+            var currentUserId = httpContext.Value;
+            return _chatroomManager.AddToChatroom(userId, chatId, currentUserId);
         }
 
         [HttpDelete]

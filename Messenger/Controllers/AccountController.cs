@@ -98,6 +98,28 @@ namespace Messenger.WEB.Controllers
         }
 
         [HttpPost]
+        public UserViewModel BlockUser(string blockedUserId)
+        {
+            var httpContext = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier);
+            if (httpContext == null)
+                throw new KeyNotFoundException();
+
+            var userId = httpContext.Value;
+            return _accountManager.BlockUser(userId, blockedUserId);
+        }
+
+        [HttpPost]
+        public UserViewModel UnblockUser(string blockedUserId)
+        {
+            var httpContext = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier);
+            if (httpContext == null)
+                throw new KeyNotFoundException();
+
+            var userId = httpContext.Value;
+            return _accountManager.UnblockUser(userId, blockedUserId);
+        }
+
+        [HttpPost]
         public UserViewModel UpdateUser(UserUpdateModel userModel)
         {
             var httpContext = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier);
