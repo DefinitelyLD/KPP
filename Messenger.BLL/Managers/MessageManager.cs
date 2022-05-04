@@ -53,7 +53,7 @@ namespace Messenger.BLL.Managers
             {
                 foreach (var file in messageModel.Files)
                 {
-                    string filePath = PathToSave + Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
+                    string filePath = FilePath + Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
                     using (Stream fileStream = new FileStream(filePath, FileMode.Create))
                         await file.CopyToAsync(fileStream);
                     MessageImageCreateModel imageModel = new()
@@ -72,7 +72,21 @@ namespace Messenger.BLL.Managers
 
         public MessageViewModel EditMessage(MessageUpdateModel messageModel, string userId)
         {
-            var messageEntity = _mapper.Map<Message>(messageModel);
+            var userAccountEntity = _userAccountsRepository
+                .GetAll()
+                .Where(u => u.User.Id == userId &&
+                u.User.Id == messageEntity.UserId && !u.IsBanned)
+                .SingleOrDefault();
+
+            if (userAccountEntity == null)
+                throw new KeyNotFoundException();
+
+            var messageEntity = _messagesRepository.GetById(messageModel.Id);
+            messageEntity.Text = messageModel.Text;
+            var messageFile = messageModel.File; 
+            if (messageFile != null)
+            {
+                var messageEntity = _mapper.Map<Message>(messageModel);
 
             var userAccountEntity = _userAccountsRepository
                 .GetAll()
@@ -82,7 +96,14 @@ namespace Messenger.BLL.Managers
 
             if (userAccountEntity == null)
                 throw new KeyNotFoundException();
-
+                var messageImageEntity = _messageImagesRepository.GetById(messageModel.ImageId);
+                File.Delete(messageImageEntity.Path);
+                string filePath = FilePath + Guid.NewGuid().ToString() + Path.GetExtension(messageFile.FileName);
+                using Stream fileStream = new FileStream(filePath, FileMode.Create);
+                await messageFile.CopyToAsync(fileStream);
+                messageImageEntity.Path = filePath;
+                _messageImagesRepository.Update(messageImageEntity);
+            }
             return _mapper.Map<MessageViewModel>(_messagesRepository.Update(messageEntity));
         }
 

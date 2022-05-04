@@ -28,7 +28,7 @@ namespace Messenger.WEB.Controllers
         }
 
         [HttpPost]
-        public ActionResult<MessageViewModel> EditMessage(MessageUpdateModel messageModel)
+        public async Task<ActionResult<MessageViewModel>> EditMessage([FromQuery] MessageUpdateModel messageModel)
         {
             var userId = GetUserIdFromHttpContext();
             return _messageManager.EditMessage(messageModel, userId);
