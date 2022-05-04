@@ -30,8 +30,12 @@ namespace Messenger.WEB.Controllers
         [HttpPost]
         public async Task<ActionResult<MessageViewModel>> EditMessage([FromQuery] MessageUpdateModel messageModel)
         {
+<<<<<<< HEAD
             var userId = GetUserIdFromHttpContext();
-            return _messageManager.EditMessage(messageModel, userId);
+            return _messageManager.EditMessageAsync(messageModel, userId);
+=======
+            return await _messageManager.EditMessage(messageModel);
+>>>>>>> release/0.1.2
         }
 
         [HttpDelete]
