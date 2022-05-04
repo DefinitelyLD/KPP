@@ -33,7 +33,7 @@ namespace Messenger.WEB.Controllers
         [HttpPost]
         public ActionResult<ChatUpdateModel> EditChatroom(ChatUpdateModel chat)
         {
-            var adminId = GetUserIdFromHttpContext().Value;
+            var adminId = GetUserIdFromHttpContext();
             return _chatroomManager.EditChatroom(chat, adminId);
         }
 
@@ -46,14 +46,14 @@ namespace Messenger.WEB.Controllers
         [HttpGet]
         public ActionResult<ChatViewModel> GetChatroom(int chatId)
         {
-            var userId = GetUserIdFromHttpContext().Value;
+            var userId = GetUserIdFromHttpContext();
             return _chatroomManager.GetChatroom(chatId, userId);
         }
 
         [HttpGet]
         public IEnumerable<ChatViewModel> GetAllChatrooms()
         {
-            var userId = GetUserIdFromHttpContext().Value;
+            var userId = GetUserIdFromHttpContext();
             return _chatroomManager.GetAllChatrooms(userId);
         }
 
@@ -66,72 +66,72 @@ namespace Messenger.WEB.Controllers
         [HttpDelete]
         public ActionResult<bool> LeaveFromChatroom(int chatId)
         {
-            var userId = GetUserIdFromHttpContext().Value;
+            var userId = GetUserIdFromHttpContext();
             return _chatroomManager.LeaveFromChatroom(chatId, userId);
         }
 
         [HttpDelete]
         public ActionResult<bool> KickUser(UserAccountViewModel userModel)
         {
-            var adminId = GetUserIdFromHttpContext().Value;
+            var adminId = GetUserIdFromHttpContext();
             return _chatroomManager.KickUser(userModel, adminId);
         }
 
         [HttpPost]
         public ActionResult<UserAccountUpdateModel> BanUser(UserAccountViewModel userModel)
         {
-            var adminId = GetUserIdFromHttpContext().Value;
+            var adminId = GetUserIdFromHttpContext();
             return _chatroomManager.BanUser(userModel, adminId);
         }
 
         [HttpPost]
         public ActionResult<UserAccountUpdateModel> UnbanUser(UserAccountViewModel userModel)
         {
-            var adminId = GetUserIdFromHttpContext().Value;
+            var adminId = GetUserIdFromHttpContext();
             return _chatroomManager.UnbanUser(userModel, adminId);
         }
 
         [HttpPost]
         public ActionResult<UserAccountUpdateModel> SetAdmin(UserAccountViewModel userModel)
         {
-            var adminId = GetUserIdFromHttpContext().Value;
+            var adminId = GetUserIdFromHttpContext();
             return _chatroomManager.SetAdmin(userModel, adminId);
         }
 
         [HttpPost]
         public ActionResult<UserAccountUpdateModel> UnsetAdmin(UserAccountViewModel userModel)
         {
-            var adminId = GetUserIdFromHttpContext().Value;
+            var adminId = GetUserIdFromHttpContext();
             return _chatroomManager.UnsetAdmin(userModel, adminId);
         }
 
         [HttpGet]
         public IEnumerable<UserAccountViewModel> GetAllBannedUsers(int chatId)
         {
-            var userId = GetUserIdFromHttpContext().Value;
+            var userId = GetUserIdFromHttpContext();
             return _chatroomManager.GetAllBannedUsers(chatId, userId);
         }
 
         [HttpGet]
         public IEnumerable<UserAccountViewModel> GetAllAdmins(int chatId)
         {
-            var userId = GetUserIdFromHttpContext().Value;
+            var userId = GetUserIdFromHttpContext();
             return _chatroomManager.GetAllAdmins(chatId, userId);
         }
 
         [HttpGet]
         public IEnumerable<UserAccountViewModel> GetAllUsers(int chatId)
         {
-            var userId = GetUserIdFromHttpContext().Value;
+            var userId = GetUserIdFromHttpContext();
             return _chatroomManager.GetAllUsers(chatId, userId);
         }
 
-        private Claim GetUserIdFromHttpContext()
+        private string GetUserIdFromHttpContext()
         {
             var httpContext = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier);
             if (httpContext == null)
                 throw new KeyNotFoundException();
-            return httpContext;
+            return httpContext.Value;
         }
     }
 }
