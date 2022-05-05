@@ -59,15 +59,6 @@ namespace Messenger.BLL.Managers
             await _signInManager.SignOutAsync();
         }
 
-        public async Task<bool> DeleteUser(string id)
-        {
-            var user = await _userManager.FindByIdAsync(id);
-            if (user == null)
-                throw new KeyNotFoundException();
-            var result = await _userManager.DeleteAsync(user);
-            return result.Succeeded;
-        }
-
         public async Task<bool> ChangeUserPassword(UserChangePasswordModel model, string userId)
         {
             if (model.Id != userId)
