@@ -54,6 +54,13 @@ namespace Messenger.WEB.Controllers
             var userId = httpContext.Value;
             return await _accountManager.ChangeUserPassword(model, userId);
         }
+        
+        [HttpGet]
+        public IEnumerable<UserViewModel> GetAllUsers()
+        {
+            return _accountManager.GetAllUsers();
+        }
+        
         [HttpPost]
         public UserViewModel GetUser([FromBody]string id)
         {
