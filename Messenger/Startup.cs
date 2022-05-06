@@ -69,6 +69,8 @@ namespace Messenger.WEB
 
             services.AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<UserAccountCreateModelValidator>());
 
+            services.AddHttpContextAccessor();
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Messenger", Version = "v1" });
@@ -119,7 +121,7 @@ namespace Messenger.WEB
                 endpoints.MapHub<ChatHub>("/hubs/chat");
             });
 
-            LoggerConfig.ConfigureLogger(Configuration);
+            //LoggerConfig.ConfigureLogger(Configuration);
         }
     }
 }

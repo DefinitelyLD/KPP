@@ -26,7 +26,7 @@ namespace Messenger.WEB.Controllers
         [HttpPost]
         public async Task<ActionResult<UserViewModel>> Register(UserCreateModel model)
         {
-            var result = await _accountManager.RegisterUser(model, HttpContext, Url);
+            var result = await _accountManager.RegisterUser(model);
             HttpContext.Session.SetString("Token", result.Token);
             return result;
         }
@@ -35,7 +35,7 @@ namespace Messenger.WEB.Controllers
         [HttpGet]
         public async Task<ActionResult<bool>> ConfirmEmail(string userId, string code)
         {
-            var result = await _accountManager.ConfirmUserEmail(userId, code);
+            var result = await _accountManager.ConfirmEmail(userId, code);
             return result;
         }
 

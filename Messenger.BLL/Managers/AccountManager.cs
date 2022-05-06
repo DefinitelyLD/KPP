@@ -13,7 +13,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Web;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Routing;
+using Microsoft.AspNetCore.Routing;
 
 namespace Messenger.BLL.Managers
 {
@@ -23,16 +23,20 @@ namespace Messenger.BLL.Managers
         private readonly SignInManager<User> _signInManager;
         private readonly IMapper _mapper;
         private readonly ITokenService _tokenService;
+        private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly LinkGenerator _linkGenerator;
 
-        public AccountManager (UserManager<User> userManager, SignInManager<User> signInManager, IMapper mapper, ITokenService tokenService)
+        public AccountManager (UserManager<User> userManager, SignInManager<User> signInManager, IMapper mapper, ITokenService tokenService, IHttpContextAccessor httpContextAccessor, LinkGenerator linkGenerator)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _mapper = mapper;
             _tokenService = tokenService;
+            _httpContextAccessor = httpContextAccessor;
+            _linkGenerator = linkGenerator;
         }
 
-        public async Task<UserViewModel> RegisterUser(UserCreateModel model, HttpContext httpContext, IUrlHelper url)
+        public async Task<UserViewModel> RegisterUser(UserCreateModel model)
         {
             User user = _mapper.Map<User>(model);
             var result = await _userManager.CreateAsync(user, model.Password);
@@ -42,11 +46,12 @@ namespace Messenger.BLL.Managers
                 
                 var emailToken = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                 
-                var callbackUrl = url.Action(
-                        "ConfirmEmail", 
-                        "Account",
-                        new { userId = user.Id, code = emailToken },
-                        protocol: httpContext.Request.Scheme);
+                var callbackUrl = _linkGenerator.GetUriByAction(
+                    _httpContextAccessor.HttpContext, 
+                    "ConfirmEmail",
+                    "Account",
+                    new { userId = user.Id, code = emailToken });
+               
                 EmailManager emailService = new EmailManager();
                 await emailService.SendEmailAsync(model.Email, "Confirm new account", emailService.RegistrationMessageTemplate(model.UserName, callbackUrl));
             }
@@ -57,7 +62,7 @@ namespace Messenger.BLL.Managers
             return userModel;
         }
 
-        public async Task<bool> ConfirmUserEmail(string userId, string code)
+        public async Task<bool> ConfirmEmail(string userId, string code)
         {
             var user = await _userManager.FindByIdAsync(userId);
             var result = await _userManager.ConfirmEmailAsync(user, code);
@@ -68,7 +73,7 @@ namespace Messenger.BLL.Managers
         {
             var user = await _userManager.FindByNameAsync(model.UserName);
             if (!await _userManager.IsEmailConfirmedAsync(user))
-                throw new Exception("Email is not confirmed");
+                throw new BadRequestException("Email is not confirmed");
             
             var result = await _signInManager.PasswordSignInAsync(model.UserName, model.Password, model.RememberMe, false);
             if (!result.Succeeded)
