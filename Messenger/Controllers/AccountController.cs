@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections;
 using System.Collections.Generic;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace Messenger.WEB.Controllers
@@ -53,7 +54,6 @@ namespace Messenger.WEB.Controllers
             var userId = httpContext.Value;
             return await _accountManager.ChangeUserPassword(model, userId);
         }
-
         [HttpPost]
         public UserViewModel GetUser([FromBody]string id)
         {
