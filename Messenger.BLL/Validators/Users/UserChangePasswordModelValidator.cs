@@ -8,13 +8,12 @@ using Messenger.BLL.Users;
 
 namespace Messenger.BLL.Validators.Users
 {
-    public class UserUpdateModelValidator : AbstractValidator<UserUpdateModel>
+    public class UserChangePasswordModelValidator : AbstractValidator<UserChangePasswordModel>
     {
-        public UserUpdateModelValidator() 
+        public UserChangePasswordModelValidator() 
         {
             RuleFor(x => x.Id).NotNull();
-            RuleFor(x => x.UserName).NotEmpty().MaximumLength(25);
-            RuleFor(x => x.Email).NotEmpty().EmailAddress();
+            RuleFor(x => x.NewPassword).NotEmpty().MinimumLength(8).MaximumLength(20);
         }
     }
 }

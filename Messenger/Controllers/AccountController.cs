@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections;
 using System.Collections.Generic;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace Messenger.WEB.Controllers
@@ -46,15 +47,87 @@ namespace Messenger.WEB.Controllers
         }
 
         [HttpPost]
-        public async Task<bool> DeleteUser(string id)
+        public async Task<bool> ChangePassword(UserChangePasswordModel model)
         {
-            return await _accountManager.DeleteUser(id);
+            var httpContext = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier);
+            if (httpContext == null)
+                throw new KeyNotFoundException();
+
+            var userId = httpContext.Value;
+            return await _accountManager.ChangeUserPassword(model, userId);
+        }
+
+        [HttpGet]
+        public IEnumerable<UserViewModel> GetAllUsers()
+        {
+            return _accountManager.GetAllUsers();
         }
 
         [HttpPost]
-        public async Task<bool> ChangePassword(UserChangePasswordModel model)
+        public UserViewModel GetUser(string id)
         {
-            return await _accountManager.ChangeUserPassword(model);
+            return _accountManager.GetUser(id);
+        }
+
+        [HttpPost]
+        public UserViewModel GetUserByUserName(string userName)
+        {
+            return _accountManager.GetUserByUserName(userName);
+        }
+
+        [HttpPost]
+        public UserViewModel AddFriend(string friendId)
+        {
+            var httpContext = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier);
+            if (httpContext == null)
+                throw new KeyNotFoundException();
+
+            var userId = httpContext.Value;
+            return _accountManager.AddFriend(userId, friendId);
+        }
+
+        [HttpPost]
+        public UserViewModel DeleteFriend(string friendId)
+        {
+            var httpContext = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier);
+            if (httpContext == null)
+                throw new KeyNotFoundException();
+
+            var userId = httpContext.Value;
+            return _accountManager.DeleteFriend(userId, friendId);
+        }
+
+        [HttpPost]
+        public UserViewModel BlockUser(string blockedUserId)
+        {
+            var httpContext = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier);
+            if (httpContext == null)
+                throw new KeyNotFoundException();
+
+            var userId = httpContext.Value;
+            return _accountManager.BlockUser(userId, blockedUserId);
+        }
+
+        [HttpPost]
+        public UserViewModel UnblockUser(string blockedUserId)
+        {
+            var httpContext = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier);
+            if (httpContext == null)
+                throw new KeyNotFoundException();
+
+            var userId = httpContext.Value;
+            return _accountManager.UnblockUser(userId, blockedUserId);
+        }
+
+        [HttpPost]
+        public UserViewModel UpdateUser(UserUpdateModel userModel)
+        {
+            var httpContext = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier);
+            if (httpContext == null)
+                throw new KeyNotFoundException();
+
+            var userId = httpContext.Value;
+            return _accountManager.UpdateUser(userModel, userId);
         }
     }
 }
