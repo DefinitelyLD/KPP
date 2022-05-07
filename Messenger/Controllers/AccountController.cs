@@ -1,5 +1,7 @@
-﻿using Messenger.BLL.Managers;
+﻿using Messenger.BLL;
+using Messenger.BLL.Managers;
 using Messenger.BLL.Users;
+using Messenger.DAL.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -8,6 +10,7 @@ using Microsoft.AspNetCore.Mvc.Routing;
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Messenger.BLL.Managers.Interfaces;
 
 namespace Messenger.WEB.Controllers
 {
@@ -16,10 +19,14 @@ namespace Messenger.WEB.Controllers
     public class AccountController : Controller
     {
         private readonly IAccountManager _accountManager;
-
-        public AccountController(IAccountManager accountManager)
+        private readonly IEmailManager _emailManager;
+        private readonly UserManager<User> _userManager;
+        
+        public AccountController(IAccountManager accountManager, IEmailManager emailManager, UserManager<User> userManager)
         {
             _accountManager = accountManager;
+            _userManager = userManager;
+            _emailManager = emailManager;
         }
 
         [AllowAnonymous]
@@ -27,6 +34,17 @@ namespace Messenger.WEB.Controllers
         public async Task<ActionResult<UserViewModel>> Register(UserCreateModel model)
         {
             var result = await _accountManager.RegisterUser(model);
+            
+            var user = await _userManager.FindByNameAsync(model.UserName);
+
+            var emailToken = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+            var callbackUrl = Url.Action(
+                "ConfirmEmail",
+                "Account",
+                new { userId = user.Id, code = emailToken },
+                HttpContext.Request.Scheme);
+            await _emailManager.SendEmailAsync(model.Email, "Confirm new account", _emailManager.RegistrationMessageTemplate(model.UserName, callbackUrl));
+
             HttpContext.Session.SetString("Token", result.Token);
             return result;
         }

@@ -1,4 +1,5 @@
 ﻿using Messenger.BLL.Managers;
+using Messenger.BLL.Managers.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -15,6 +16,7 @@ namespace Messenger.BLL
             services.AddTransient<IAccountManager, AccountManager>();
             services.AddTransient<IMessageManager, MessageManager>();
             services.AddTransient<IChatroomManager, ChatroomManager>();
+            services.AddTransient<IEmailManager, EmailManager>();
 
             return services;
         }

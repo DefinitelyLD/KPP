@@ -23,17 +23,13 @@ namespace Messenger.BLL.Managers
         private readonly SignInManager<User> _signInManager;
         private readonly IMapper _mapper;
         private readonly ITokenService _tokenService;
-        private readonly IHttpContextAccessor _httpContextAccessor;
-        private readonly LinkGenerator _linkGenerator;
 
-        public AccountManager (UserManager<User> userManager, SignInManager<User> signInManager, IMapper mapper, ITokenService tokenService, IHttpContextAccessor httpContextAccessor, LinkGenerator linkGenerator)
+        public AccountManager (UserManager<User> userManager, SignInManager<User> signInManager, IMapper mapper, ITokenService tokenService)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _mapper = mapper;
             _tokenService = tokenService;
-            _httpContextAccessor = httpContextAccessor;
-            _linkGenerator = linkGenerator;
         }
 
         public async Task<UserViewModel> RegisterUser(UserCreateModel model)
@@ -43,19 +39,7 @@ namespace Messenger.BLL.Managers
             if (result.Succeeded)
             {
                 await _signInManager.SignInAsync(user, false);
-                
-                var emailToken = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-                
-                var callbackUrl = _linkGenerator.GetUriByAction(
-                    _httpContextAccessor.HttpContext, 
-                    "ConfirmEmail",
-                    "Account",
-                    new { userId = user.Id, code = emailToken });
-               
-                EmailManager emailService = new EmailManager();
-                await emailService.SendEmailAsync(model.Email, "Confirm new account", emailService.RegistrationMessageTemplate(model.UserName, callbackUrl));
-            }
-                
+            }    
             var userEntity = await _userManager.FindByNameAsync(model.UserName);
             var userModel = _mapper.Map<UserViewModel>(userEntity);
             userModel.Token = GenerateToken(userEntity);

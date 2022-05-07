@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Messenger.BLL.Managers.Interfaces
 {
-    interface IEmailManager
+    public interface IEmailManager
     {
         public Task SendEmailAsync(string email, string subject, string message);
 
