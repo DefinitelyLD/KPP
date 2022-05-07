@@ -16,7 +16,7 @@ namespace Messenger.BLL.Managers
         public Task<bool> DeleteChatroom(int chatId, string userId);
         public ChatViewModel GetChatroom(int chatId, string userId);
         public IEnumerable<ChatViewModel> GetAllChatrooms(string userId);
-        public Task<UserAccountCreateModel> AddToChatroom(string userId, int chatId);
+        public Task<UserAccountCreateModel> AddToChatroom(string userId, int chatId, string currentUserId);
         public Task<bool> LeaveFromChatroom(int chatId, string userId);
         public Task<bool> KickUser(int userAccountId, string admin);
         public Task<UserAccountUpdateModel> BanUser(int userAccountId, string adminId);

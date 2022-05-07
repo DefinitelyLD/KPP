@@ -17,14 +17,17 @@ namespace Messenger.BLL.Managers
         private readonly IMapper _mapper;
         private readonly IChatsRepository _chatsRepository;
         private readonly IUserAccountsRepository _userAccountsRepository;
+        private readonly IUsersRepository _usersRepository;
 
         public ChatroomManager(IMapper mapper, 
                                IChatsRepository chatsRepository, 
-                               IUserAccountsRepository userAccountsRepository)
+                               IUserAccountsRepository userAccountsRepository,
+                               IUsersRepository usersRepository)
         {
             _mapper = mapper;
             _chatsRepository = chatsRepository;
             _userAccountsRepository = userAccountsRepository;
+            _usersRepository = usersRepository;
         }
 
         public async Task<ChatViewModel> CreateChatroom(ChatCreateModel chatModel, string userId)
@@ -108,8 +111,14 @@ namespace Messenger.BLL.Managers
             return chatModelList;
         }
 
-        public async Task<UserAccountCreateModel> AddToChatroom(string userId, int chatId)
+        public async Task<UserAccountCreateModel> AddToChatroom(string userId, int chatId, string currentUserId)
         {
+            var currentUserEntity = _usersRepository.GetById(currentUserId);
+
+            if (currentUserEntity.BlockedUsersFrom.Where(x => x.Id == userId).SingleOrDefault() != null
+                || currentUserEntity.BlockedUsersTo.Where(x => x.Id == userId).SingleOrDefault() != null)
+                throw new BadRequestException("You cannot add this user to the chat.");
+
             var userAccountExistingEntity = _userAccountsRepository.GetAll()
                 .Where(p => p.UserId == userId && p.ChatId == chatId)
                 .SingleOrDefault();
