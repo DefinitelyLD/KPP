@@ -36,11 +36,10 @@ namespace Messenger.BLL.Managers
         {
             User user = _mapper.Map<User>(model);
             var result = await _userManager.CreateAsync(user, model.Password);
-            if (result.Succeeded)
-            {
-                await _signInManager.SignInAsync(user, false);
-            }    
-            var userEntity = await _userManager.FindByNameAsync(model.UserName);
+            if (!result.Succeeded)
+                throw new BadRequestException(result.Errors.ToString());
+
+            var userEntity = _usersRepository.GetAll().Where(x => x.UserName == model.UserName).SingleOrDefault();
             var userModel = _mapper.Map<UserViewModel>(userEntity);
             userModel.Token = GenerateToken(userEntity);
             return userModel;
@@ -55,12 +54,15 @@ namespace Messenger.BLL.Managers
 
         public async Task<UserViewModel> LoginUser(UserLoginModel model)
         {
-            var userEntity = await _userManager.FindByNameAsync(model.UserName);
+            var userEntity = _usersRepository.GetAll().Where(x => x.UserName == model.UserName).SingleOrDefault();
+            
             if (!await _userManager.IsEmailConfirmedAsync(user))
                 throw new BadRequestException("Email is not confirmed");
-            var result = await _signInManager.PasswordSignInAsync(model.UserName, model.Password, model.RememberMe, false);
-            if (!result.Succeeded)
+            if (userEntity == null)
                 throw new BadRequestException("Login error");
+            if (!await _userManager.CheckPasswordAsync(userEntity, model.Password))
+                throw new BadRequestException("Incorrect Password");
+
             var userModel = _mapper.Map<UserViewModel>(userEntity);
             userModel.Token = GenerateToken(userEntity);
             return userModel;
