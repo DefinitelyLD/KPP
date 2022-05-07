@@ -45,7 +45,7 @@ namespace Messenger.BLL.Managers
 
         public async Task<UserViewModel> LoginUser(UserLoginModel model)
         {
-            var userEntity = _usersRepository.GetAll().Where(x => x.UserName == model.UserName).SingleOrDefault();
+            var userEntity = await _userManager.FindByNameAsync(model.UserName);
             if (userEntity == null)
                 throw new BadRequestException("Login error");
             if (!await _userManager.CheckPasswordAsync(userEntity, model.Password))
