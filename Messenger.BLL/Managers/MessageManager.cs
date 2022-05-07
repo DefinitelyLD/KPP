@@ -46,7 +46,9 @@ namespace Messenger.BLL.Managers
                 throw new KeyNotFoundException();
 
             var messageEntity = _mapper.Map<Message>(messageModel);
-            var messageViewModel = _mapper.Map<MessageViewModel>(_messagesRepository.Create(messageEntity));
+            var messageViewModel = _mapper.Map<MessageViewModel>
+                (await _messagesRepository.CreateAsync(messageEntity));
+
             var imageViewModelCollection = new List<MessageImageViewModel>();
 
             if (messageModel.Files != null)
@@ -63,7 +65,7 @@ namespace Messenger.BLL.Managers
                     };
                     var messageImageEntity = _mapper.Map<MessageImage>(imageModel);
                     imageViewModelCollection.Add(_mapper.Map<MessageImageViewModel>(messageImageEntity));
-                    _messageImagesRepository.Create(messageImageEntity);
+                    await _messageImagesRepository.CreateAsync(messageImageEntity);
                 }
             }
             messageViewModel.Images = imageViewModelCollection;
@@ -93,14 +95,14 @@ namespace Messenger.BLL.Managers
                 using Stream fileStream = new FileStream(filePath, FileMode.Create);
                 await messageFile.CopyToAsync(fileStream);
                 messageImageEntity.Path = filePath;
-                _messageImagesRepository.Update(messageImageEntity);
+                await _messageImagesRepository.UpdateAsync(messageImageEntity);
             }
-            return _mapper.Map<MessageViewModel>(_messagesRepository.Update(messageEntity));
+            return _mapper.Map<MessageViewModel>(await _messagesRepository.UpdateAsync(messageEntity));
         }
 
-        public bool DeleteMessage(int messageId, string userId)
+        public async Task<bool> DeleteMessage(int messageId, string userId)
         {
-            var messageEntity = _messagesRepository.GetById(messageId);
+            var messageEntity = await _messagesRepository.GetByIdAsync(messageId);
 
             var userAccountEntity = _userAccountsRepository
                 .GetAll()
@@ -111,12 +113,16 @@ namespace Messenger.BLL.Managers
             if (userAccountEntity == null)
                 throw new KeyNotFoundException();
 
-            return _messagesRepository.DeleteById(messageId);
+            return await _messagesRepository.DeleteByIdAsync(messageId);
         }
 
         public MessageViewModel GetMessage(int messageId)
         {
-            var messageEntity = _messagesRepository.GetById(messageId);
+            //var messageEntity = _messagesRepository.GetById(messageId);
+            var messageEntity = _messagesRepository.GetAll()
+                .Where(u => u.Id == messageId)
+                .SingleOrDefault();
+
             return _mapper.Map<MessageViewModel>(messageEntity);
         }
 

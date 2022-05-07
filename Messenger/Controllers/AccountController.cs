@@ -23,7 +23,7 @@ namespace Messenger.WEB.Controllers
 
         [AllowAnonymous]
         [HttpPost]
-        public async Task<ActionResult<UserViewModel>> Register(UserCreateModel model)
+        public async Task<ActionResult<UserViewModel>> Register([FromForm] UserCreateModel model)
         {
             var result = await _accountManager.RegisterUser(model);
             HttpContext.Session.SetString("Token", result.Token);
@@ -32,7 +32,7 @@ namespace Messenger.WEB.Controllers
 
         [AllowAnonymous]
         [HttpPost]
-        public async Task<ActionResult<UserViewModel>> Login(UserLoginModel model)
+        public async Task<ActionResult<UserViewModel>> Login([FromForm] UserLoginModel model)
         {
             var result = await _accountManager.LoginUser(model);
             HttpContext.Session.SetString("Token", result.Token);
@@ -46,13 +46,13 @@ namespace Messenger.WEB.Controllers
         }
 
         [HttpPost]
-        public async Task<bool> DeleteUser(string id)
+        public async Task<bool> DeleteUser([FromForm] string id)
         {
             return await _accountManager.DeleteUser(id);
         }
 
         [HttpPost]
-        public async Task<bool> ChangePassword(UserChangePasswordModel model)
+        public async Task<bool> ChangePassword([FromForm] UserChangePasswordModel model)
         {
             return await _accountManager.ChangeUserPassword(model);
         }

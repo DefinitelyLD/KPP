@@ -64,7 +64,8 @@ namespace Messenger.WEB
             services.AddSession();
           
             services.AddControllers().AddJsonOptions(x => x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve);
-          
+            services.AddHttpContextAccessor();
+
             services.AddSignalR();
 
             services.AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<UserAccountCreateModelValidator>());
@@ -105,6 +106,7 @@ namespace Messenger.WEB
                 await next();
             });
 
+            //app.UseHttpsRedirection();
             app.UseRouting();
             app.UseAuthentication();
             app.UseAuthorization();
@@ -113,8 +115,7 @@ namespace Messenger.WEB
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapControllers()
-                .RequireAuthorization();
+                endpoints.MapControllers().RequireAuthorization();
                 endpoints.MapHub<ChatHub>("/hubs/chat");
             });
 
