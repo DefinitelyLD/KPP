@@ -84,6 +84,12 @@ namespace Messenger.WEB.Controllers
         }
 
         [HttpPost]
+        public IEnumerable<UserViewModel> GetAllFriends([FromBody] string userId)
+        {
+            return _accountManager.GetAllFriends(userId);
+        }
+
+        [HttpPost]
         public UserViewModel BlockUser([FromBody]string blockedUserId)
         {
             var userId = GetUserIdFromHttpContext();
@@ -95,6 +101,12 @@ namespace Messenger.WEB.Controllers
         {
             var userId = GetUserIdFromHttpContext();
             return _accountManager.UnblockUser(userId, blockedUserId);
+        }
+
+        [HttpPost]
+        public IEnumerable<UserViewModel> GetAllBlockedUsers([FromBody] string userId)
+        {
+            return _accountManager.GetAllBlockedUsers(userId);
         }
 
         [HttpPost]

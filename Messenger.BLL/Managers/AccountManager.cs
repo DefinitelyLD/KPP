@@ -35,9 +35,10 @@ namespace Messenger.BLL.Managers
         {
             User user = _mapper.Map<User>(model);
             var result = await _userManager.CreateAsync(user, model.Password);
-            if (result.Succeeded)
-                await _signInManager.SignInAsync(user, false);
-            var userEntity = await _userManager.FindByNameAsync(model.UserName);
+            if (!result.Succeeded)
+                throw new BadRequestException(result.Errors.ToString());
+
+            var userEntity = _usersRepository.GetAll().Where(x => x.UserName == model.UserName).SingleOrDefault();
             var userModel = _mapper.Map<UserViewModel>(userEntity);
             userModel.Token = GenerateToken(userEntity);
             return userModel;
@@ -45,7 +46,7 @@ namespace Messenger.BLL.Managers
 
         public async Task<UserViewModel> LoginUser(UserLoginModel model)
         {
-            var userEntity = await _userManager.FindByNameAsync(model.UserName);
+            var userEntity = _usersRepository.GetAll().Where(x => x.UserName == model.UserName).SingleOrDefault();
             if (userEntity == null)
                 throw new BadRequestException("Login error");
             if (!await _userManager.CheckPasswordAsync(userEntity, model.Password))
@@ -123,6 +124,13 @@ namespace Messenger.BLL.Managers
             return _mapper.Map<UserViewModel>(userUpdatedEntity);
         }
 
+        public IEnumerable<UserViewModel> GetAllFriends(string userId)
+        {
+            var userEntity = _usersRepository.GetById(userId);
+            var friendsModels = _mapper.Map<IEnumerable<UserViewModel>>(userEntity.FriendsFrom);
+            return friendsModels;
+        }
+
         public UserViewModel BlockUser(string userId, string blockedUserId)
         {
             if (userId == blockedUserId)
@@ -158,6 +166,13 @@ namespace Messenger.BLL.Managers
             var userUpdatedEntity = _usersRepository.Update(userEntity);
 
             return _mapper.Map<UserViewModel>(userUpdatedEntity);
+        }
+
+        public IEnumerable<UserViewModel> GetAllBlockedUsers(string userId)
+        {
+            var userEntity = _usersRepository.GetById(userId);
+            var blockedUsersModels = _mapper.Map<IEnumerable<UserViewModel>>(userEntity.BlockedUsersFrom);
+            return blockedUsersModels;
         }
 
         public IEnumerable<UserViewModel> GetAllUsers()
