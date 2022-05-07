@@ -35,10 +35,9 @@ namespace Messenger.BLL.Managers
         {
             User user = _mapper.Map<User>(model);
             var result = await _userManager.CreateAsync(user, model.Password);
-            if (!result.Succeeded)
-                throw new BadRequestException(result.Errors.ToString());
-
-            var userEntity = _usersRepository.GetAll().Where(x => x.UserName == model.UserName).SingleOrDefault();
+            if (result.Succeeded)
+                await _signInManager.SignInAsync(user, false);
+            var userEntity = await _userManager.FindByNameAsync(model.UserName);
             var userModel = _mapper.Map<UserViewModel>(userEntity);
             userModel.Token = GenerateToken(userEntity);
             return userModel;
