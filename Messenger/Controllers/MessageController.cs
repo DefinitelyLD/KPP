@@ -5,6 +5,7 @@ using Messenger.BLL.Messages;
 using Microsoft.AspNetCore.Http;
 using System.Threading.Tasks;
 using System.Security.Claims;
+using System;
 
 namespace Messenger.WEB.Controllers
 {
@@ -20,38 +21,46 @@ namespace Messenger.WEB.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<MessageViewModel>> SendMessage([FromQuery] MessageCreateModel messageModel)
+        public async Task<ActionResult<MessageViewModel>> SendMessage([FromBody] MessageCreateModel messageModel)
         {
-            var httpContext = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier);
-            if (httpContext == null)
-                throw new KeyNotFoundException();
-
-            var userId = httpContext.Value;
+            var userId = GetUserIdFromHttpContext();
             return await _messageManager.SendMessage(messageModel, userId);
         }
 
         [HttpPost]
-        public ActionResult<MessageViewModel> EditMessage(MessageUpdateModel messageModel)
+        public async Task<ActionResult<MessageViewModel>> EditMessage([FromBody] MessageUpdateModel messageModel)
         {
-            return _messageManager.EditMessage(messageModel);
+            var userId = GetUserIdFromHttpContext();
+            return await _messageManager.EditMessage(messageModel, userId);
+
         }
 
         [HttpDelete]
-        public ActionResult<bool> DeleteMessage(int messageId)
+        public ActionResult<bool> DeleteMessage([FromBody] int messageId)
         {
-            return _messageManager.DeleteMessage(messageId);
+            var userId = GetUserIdFromHttpContext();
+            return _messageManager.DeleteMessage(messageId, userId);
         }
 
-        [HttpGet]
-        public ActionResult<MessageViewModel> GetMessage(int messageId)
+        [HttpPost]
+        public ActionResult<MessageViewModel> GetMessage([FromBody] int messageId)
         {
             return _messageManager.GetMessage(messageId);
         }
 
-        [HttpGet]
-        public IEnumerable<MessageViewModel> GetAllMessages()
+        [HttpPost]
+        public IEnumerable<MessageViewModel> GetMessagesFromChat([FromBody] int chatId, DateTime? date = null)
         {
-            return _messageManager.GetAllMessages();
+            var userId = GetUserIdFromHttpContext();
+            return _messageManager.GetMessagesFromChat(chatId, userId, date);
+        }
+
+        private string GetUserIdFromHttpContext()
+        {
+            var httpContext = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier);
+            if (httpContext == null)
+                throw new KeyNotFoundException();
+            return httpContext.Value;
         }
     }
 }

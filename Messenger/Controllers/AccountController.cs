@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Routing;
 using System.Collections;
 using System.Collections.Generic;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Messenger.BLL.Managers.Interfaces;
 
@@ -31,12 +32,11 @@ namespace Messenger.WEB.Controllers
 
         [AllowAnonymous]
         [HttpPost]
-        public async Task<ActionResult<UserViewModel>> Register(UserCreateModel model)
+        public async Task<ActionResult<UserViewModel>> Register([FromBody]UserCreateModel model)
         {
             var result = await _accountManager.RegisterUser(model);
             
             var user = await _userManager.FindByNameAsync(model.UserName);
-
             var emailToken = await _userManager.GenerateEmailConfirmationTokenAsync(user);
             var callbackUrl = Url.Action(
                 "ConfirmEmail",
@@ -59,29 +59,100 @@ namespace Messenger.WEB.Controllers
 
         [AllowAnonymous]
         [HttpPost]
-        public async Task<ActionResult<UserViewModel>> Login(UserLoginModel model)
+        public async Task<ActionResult<UserViewModel>> Login([FromBody]UserLoginModel model)
         {
             var result = await _accountManager.LoginUser(model);
-            HttpContext.Session.SetString("Token", result.Token);
             return result;
         }
 
-        [HttpPost]
+        [HttpGet]
         public async Task Logout()
         {
             await _accountManager.LogoutUser();
         }
 
         [HttpPost]
-        public async Task<bool> DeleteUser(string id)
+        public async Task<bool> ChangePassword([FromBody]UserChangePasswordModel model)
         {
-            return await _accountManager.DeleteUser(id);
+            var httpContext = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier);
+            if (httpContext == null)
+                throw new KeyNotFoundException();
+
+            var userId = httpContext.Value;
+            return await _accountManager.ChangeUserPassword(model, userId);
+        }
+        
+        [HttpGet]
+        public IEnumerable<UserViewModel> GetAllUsers()
+        {
+            return _accountManager.GetAllUsers();
+        }
+        
+        [HttpPost]
+        public UserViewModel GetUser([FromBody]string id)
+        {
+            return _accountManager.GetUser(id);
         }
 
         [HttpPost]
-        public async Task<bool> ChangePassword(UserChangePasswordModel model)
+        public UserViewModel GetUserByUserName([FromBody]string userName)
         {
-            return await _accountManager.ChangeUserPassword(model);
+            return _accountManager.GetUserByUserName(userName);
+        }
+
+        [HttpPost]
+        public UserViewModel AddFriend([FromBody]string friendId)
+        {
+            var httpContext = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier);
+            if (httpContext == null)
+                throw new KeyNotFoundException();
+
+            var userId = httpContext.Value;
+            return _accountManager.AddFriend(userId, friendId);
+        }
+
+        [HttpPost]
+        public UserViewModel DeleteFriend([FromBody]string friendId)
+        {
+            var httpContext = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier);
+            if (httpContext == null)
+                throw new KeyNotFoundException();
+
+            var userId = httpContext.Value;
+            return _accountManager.DeleteFriend(userId, friendId);
+        }
+
+        [HttpPost]
+        public UserViewModel BlockUser([FromBody]string blockedUserId)
+        {
+            var httpContext = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier);
+            if (httpContext == null)
+                throw new KeyNotFoundException();
+
+            var userId = httpContext.Value;
+            return _accountManager.BlockUser(userId, blockedUserId);
+        }
+
+        [HttpPost]
+        public UserViewModel UnblockUser([FromBody]string blockedUserId)
+        {
+            var httpContext = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier);
+            if (httpContext == null)
+                throw new KeyNotFoundException();
+
+            var userId = httpContext.Value;
+            return _accountManager.UnblockUser(userId, blockedUserId);
+        }
+
+        [HttpPost]
+        public UserViewModel UpdateUser([FromBody]UserUpdateModel userModel)
+        {
+            var httpContext = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier);
+            if (httpContext == null)
+                throw new KeyNotFoundException();
+
+            var userId = httpContext.Value;
+            return _accountManager.UpdateUser(userModel, userId);
         }
     }
 }

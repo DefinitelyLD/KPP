@@ -18,7 +18,14 @@ namespace Messenger.BLL.Managers
         public Task<bool> ConfirmEmail(string userId, string code);
         public Task<UserViewModel> LoginUser(UserLoginModel model);
         public Task LogoutUser();
-        public Task<bool> DeleteUser(string id);
-        public Task<bool> ChangeUserPassword(UserChangePasswordModel model);
+        public Task<bool> ChangeUserPassword(UserChangePasswordModel model, string userId);
+        public IEnumerable<UserViewModel> GetAllUsers();
+        public UserViewModel GetUser(string id);
+        public UserViewModel GetUserByUserName(string userName);
+        public UserViewModel AddFriend(string userId, string friendId);
+        public UserViewModel DeleteFriend(string userId, string friendId);
+        public UserViewModel BlockUser(string userId, string blockedUserId);
+        public UserViewModel UnblockUser(string userId, string blockedUserId);
+        public UserViewModel UpdateUser(UserUpdateModel userModel, string userId);
     }
 }

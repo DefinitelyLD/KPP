@@ -17,6 +17,7 @@ namespace Messenger.Mapping.Profiles
             CreateMap<UserChangePasswordModel, User>().ReverseMap();
             CreateMap<UserLoginModel, User>().ReverseMap();
             CreateMap<UserViewModel, User>().ReverseMap();
+            CreateMap<UserUpdateModel, User>().ReverseMap();
         }
     }
 }
