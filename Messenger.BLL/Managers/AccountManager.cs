@@ -45,10 +45,12 @@ namespace Messenger.BLL.Managers
 
         public async Task<UserViewModel> LoginUser(UserLoginModel model)
         {
-            var result = await _signInManager.PasswordSignInAsync(model.UserName, model.Password, model.RememberMe, false);
-            if (!result.Succeeded)
-                throw new BadRequestException("Login error");
             var userEntity = await _userManager.FindByNameAsync(model.UserName);
+            if (userEntity == null)
+                throw new BadRequestException("Login error");
+            if (!await _userManager.CheckPasswordAsync(userEntity, model.Password))
+                throw new BadRequestException("Incorrect Password");
+
             var userModel = _mapper.Map<UserViewModel>(userEntity);
             userModel.Token = GenerateToken(userEntity);
             return userModel;

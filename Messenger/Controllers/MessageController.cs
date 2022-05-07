@@ -21,14 +21,14 @@ namespace Messenger.WEB.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<MessageViewModel>> SendMessage([FromQuery] MessageCreateModel messageModel)
+        public async Task<ActionResult<MessageViewModel>> SendMessage([FromBody] MessageCreateModel messageModel)
         {
             var userId = GetUserIdFromHttpContext();
             return await _messageManager.SendMessage(messageModel, userId);
         }
 
         [HttpPost]
-        public async Task<ActionResult<MessageViewModel>> EditMessage([FromQuery] MessageUpdateModel messageModel)
+        public async Task<ActionResult<MessageViewModel>> EditMessage([FromBody] MessageUpdateModel messageModel)
         {
             var userId = GetUserIdFromHttpContext();
             return await _messageManager.EditMessage(messageModel, userId);
@@ -36,20 +36,20 @@ namespace Messenger.WEB.Controllers
         }
 
         [HttpDelete]
-        public ActionResult<bool> DeleteMessage(int messageId)
+        public ActionResult<bool> DeleteMessage([FromBody] int messageId)
         {
             var userId = GetUserIdFromHttpContext();
             return _messageManager.DeleteMessage(messageId, userId);
         }
 
-        [HttpGet]
-        public ActionResult<MessageViewModel> GetMessage(int messageId)
+        [HttpPost]
+        public ActionResult<MessageViewModel> GetMessage([FromBody] int messageId)
         {
             return _messageManager.GetMessage(messageId);
         }
 
-        [HttpGet]
-        public IEnumerable<MessageViewModel> GetMessagesFromChat(int chatId, DateTime? date = null)
+        [HttpPost]
+        public IEnumerable<MessageViewModel> GetMessagesFromChat([FromBody] int chatId, DateTime? date = null)
         {
             var userId = GetUserIdFromHttpContext();
             return _messageManager.GetMessagesFromChat(chatId, userId, date);

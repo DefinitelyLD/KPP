@@ -20,7 +20,7 @@ namespace Messenger.WEB.Controllers
         }
 
         [HttpPost]
-        public ActionResult<ChatViewModel> CreateChatroom(ChatCreateModel chat)
+        public ActionResult<ChatViewModel> CreateChatroom([FromBody] ChatCreateModel chat)
         {
             var httpContext = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier);
             if (httpContext == null)
@@ -31,20 +31,20 @@ namespace Messenger.WEB.Controllers
         }
 
         [HttpPost]
-        public ActionResult<ChatUpdateModel> EditChatroom(ChatUpdateModel chat)
+        public ActionResult<ChatUpdateModel> EditChatroom([FromBody] ChatUpdateModel chat)
         {
             var adminId = GetUserIdFromHttpContext();
             return _chatroomManager.EditChatroom(chat, adminId);
         }
 
         [HttpDelete]
-        public ActionResult<bool> DeleteChatroom(int chatId)
+        public ActionResult<bool> DeleteChatroom([FromBody] int chatId)
         {
             return _chatroomManager.DeleteChatroom(chatId);
         }
 
-        [HttpGet]
-        public ActionResult<ChatViewModel> GetChatroom(int chatId)
+        [HttpPost]
+        public ActionResult<ChatViewModel> GetChatroom([FromBody] int chatId)
         {
             var userId = GetUserIdFromHttpContext();
             return _chatroomManager.GetChatroom(chatId, userId);
@@ -58,7 +58,7 @@ namespace Messenger.WEB.Controllers
         }
 
         [HttpPost]
-        public ActionResult<UserAccountCreateModel> AddToChatroom(string userId, int chatId)
+        public ActionResult<UserAccountCreateModel> AddToChatroom([FromBody] string userId, int chatId)
         {
             var httpContext = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier);
             if (httpContext == null)
@@ -69,63 +69,63 @@ namespace Messenger.WEB.Controllers
         }
 
         [HttpDelete]
-        public ActionResult<bool> LeaveFromChatroom(int chatId)
+        public ActionResult<bool> LeaveFromChatroom([FromBody] int chatId)
         {
             var userId = GetUserIdFromHttpContext();
             return _chatroomManager.LeaveFromChatroom(chatId, userId);
         }
 
         [HttpDelete]
-        public ActionResult<bool> KickUser(UserAccountViewModel userModel)
+        public ActionResult<bool> KickUser([FromBody] UserAccountViewModel userModel)
         {
             var adminId = GetUserIdFromHttpContext();
             return _chatroomManager.KickUser(userModel, adminId);
         }
 
         [HttpPost]
-        public ActionResult<UserAccountUpdateModel> BanUser(UserAccountViewModel userModel)
+        public ActionResult<UserAccountUpdateModel> BanUser([FromBody] UserAccountViewModel userModel)
         {
             var adminId = GetUserIdFromHttpContext();
             return _chatroomManager.BanUser(userModel, adminId);
         }
 
         [HttpPost]
-        public ActionResult<UserAccountUpdateModel> UnbanUser(UserAccountViewModel userModel)
+        public ActionResult<UserAccountUpdateModel> UnbanUser([FromBody] UserAccountViewModel userModel)
         {
             var adminId = GetUserIdFromHttpContext();
             return _chatroomManager.UnbanUser(userModel, adminId);
         }
 
         [HttpPost]
-        public ActionResult<UserAccountUpdateModel> SetAdmin(UserAccountViewModel userModel)
+        public ActionResult<UserAccountUpdateModel> SetAdmin([FromBody] UserAccountViewModel userModel)
         {
             var adminId = GetUserIdFromHttpContext();
             return _chatroomManager.SetAdmin(userModel, adminId);
         }
 
         [HttpPost]
-        public ActionResult<UserAccountUpdateModel> UnsetAdmin(UserAccountViewModel userModel)
+        public ActionResult<UserAccountUpdateModel> UnsetAdmin([FromBody] UserAccountViewModel userModel)
         {
             var adminId = GetUserIdFromHttpContext();
             return _chatroomManager.UnsetAdmin(userModel, adminId);
         }
 
-        [HttpGet]
-        public IEnumerable<UserAccountViewModel> GetAllBannedUsers(int chatId)
+        [HttpPost]
+        public IEnumerable<UserAccountViewModel> GetAllBannedUsers([FromBody] int chatId)
         {
             var userId = GetUserIdFromHttpContext();
             return _chatroomManager.GetAllBannedUsers(chatId, userId);
         }
 
-        [HttpGet]
-        public IEnumerable<UserAccountViewModel> GetAllAdmins(int chatId)
+        [HttpPost]
+        public IEnumerable<UserAccountViewModel> GetAllAdmins([FromBody] int chatId)
         {
             var userId = GetUserIdFromHttpContext();
             return _chatroomManager.GetAllAdmins(chatId, userId);
         }
 
-        [HttpGet]
-        public IEnumerable<UserAccountViewModel> GetAllUsers(int chatId)
+        [HttpPost]
+        public IEnumerable<UserAccountViewModel> GetAllUsers([FromBody] int chatId)
         {
             var userId = GetUserIdFromHttpContext();
             return _chatroomManager.GetAllUsers(chatId, userId);

@@ -20,7 +20,7 @@ namespace Messenger.BLL.Token
                             ValidateAudience = false,
                             ValidateLifetime = true,
                             IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(configuration["Jwt:Key"])),
-                        ValidateIssuerSigningKey = true,
+                            ValidateIssuerSigningKey = true,
                         };
                     });
 

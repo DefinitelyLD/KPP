@@ -24,30 +24,28 @@ namespace Messenger.WEB.Controllers
 
         [AllowAnonymous]
         [HttpPost]
-        public async Task<ActionResult<UserViewModel>> Register(UserCreateModel model)
+        public async Task<ActionResult<UserViewModel>> Register([FromBody]UserCreateModel model)
         {
             var result = await _accountManager.RegisterUser(model);
-            HttpContext.Session.SetString("Token", result.Token);
             return result;
         }
 
         [AllowAnonymous]
         [HttpPost]
-        public async Task<ActionResult<UserViewModel>> Login(UserLoginModel model)
+        public async Task<ActionResult<UserViewModel>> Login([FromBody]UserLoginModel model)
         {
             var result = await _accountManager.LoginUser(model);
-            HttpContext.Session.SetString("Token", result.Token);
             return result;
         }
 
-        [HttpPost]
+        [HttpGet]
         public async Task Logout()
         {
             await _accountManager.LogoutUser();
         }
 
         [HttpPost]
-        public async Task<bool> ChangePassword(UserChangePasswordModel model)
+        public async Task<bool> ChangePassword([FromBody]UserChangePasswordModel model)
         {
             var httpContext = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier);
             if (httpContext == null)
@@ -56,27 +54,27 @@ namespace Messenger.WEB.Controllers
             var userId = httpContext.Value;
             return await _accountManager.ChangeUserPassword(model, userId);
         }
-
+        
         [HttpGet]
         public IEnumerable<UserViewModel> GetAllUsers()
         {
             return _accountManager.GetAllUsers();
         }
-
+        
         [HttpPost]
-        public UserViewModel GetUser(string id)
+        public UserViewModel GetUser([FromBody]string id)
         {
             return _accountManager.GetUser(id);
         }
 
         [HttpPost]
-        public UserViewModel GetUserByUserName(string userName)
+        public UserViewModel GetUserByUserName([FromBody]string userName)
         {
             return _accountManager.GetUserByUserName(userName);
         }
 
         [HttpPost]
-        public UserViewModel AddFriend(string friendId)
+        public UserViewModel AddFriend([FromBody]string friendId)
         {
             var httpContext = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier);
             if (httpContext == null)
@@ -87,7 +85,7 @@ namespace Messenger.WEB.Controllers
         }
 
         [HttpPost]
-        public UserViewModel DeleteFriend(string friendId)
+        public UserViewModel DeleteFriend([FromBody]string friendId)
         {
             var httpContext = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier);
             if (httpContext == null)
@@ -98,7 +96,7 @@ namespace Messenger.WEB.Controllers
         }
 
         [HttpPost]
-        public UserViewModel BlockUser(string blockedUserId)
+        public UserViewModel BlockUser([FromBody]string blockedUserId)
         {
             var httpContext = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier);
             if (httpContext == null)
@@ -109,7 +107,7 @@ namespace Messenger.WEB.Controllers
         }
 
         [HttpPost]
-        public UserViewModel UnblockUser(string blockedUserId)
+        public UserViewModel UnblockUser([FromBody]string blockedUserId)
         {
             var httpContext = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier);
             if (httpContext == null)
@@ -120,7 +118,7 @@ namespace Messenger.WEB.Controllers
         }
 
         [HttpPost]
-        public UserViewModel UpdateUser(UserUpdateModel userModel)
+        public UserViewModel UpdateUser([FromBody]UserUpdateModel userModel)
         {
             var httpContext = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier);
             if (httpContext == null)
