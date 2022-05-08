@@ -47,11 +47,7 @@ namespace Messenger.WEB.Controllers
         [HttpPost]
         public async Task<bool> ChangePassword([FromBody] UserChangePasswordModel model)
         {
-            var httpContext = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier);
-            if (httpContext == null)
-                throw new KeyNotFoundException();
-
-            var userId = httpContext.Value;
+            var userId = GetUserIdFromHttpContext();
             return await _accountManager.ChangeUserPassword(model, userId);
         }
         
@@ -76,56 +72,56 @@ namespace Messenger.WEB.Controllers
         [HttpPost]
         public UserViewModel AddFriend([FromBody] string friendId)
         {
-            var httpContext = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier);
-            if (httpContext == null)
-                throw new KeyNotFoundException();
-
-            var userId = httpContext.Value;
+            var userId = GetUserIdFromHttpContext();
             return _accountManager.AddFriend(userId, friendId);
         }
 
         [HttpPost]
         public UserViewModel DeleteFriend([FromBody] string friendId)
         {
-            var httpContext = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier);
-            if (httpContext == null)
-                throw new KeyNotFoundException();
-
-            var userId = httpContext.Value;
+            var userId = GetUserIdFromHttpContext();
             return _accountManager.DeleteFriend(userId, friendId);
+        }
+
+        [HttpPost]
+        public IEnumerable<UserViewModel> GetAllFriends([FromBody] string userId)
+        {
+            return _accountManager.GetAllFriends(userId);
         }
 
         [HttpPost]
         public UserViewModel BlockUser([FromBody] string blockedUserId)
         {
-            var httpContext = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier);
-            if (httpContext == null)
-                throw new KeyNotFoundException();
-
-            var userId = httpContext.Value;
+            var userId = GetUserIdFromHttpContext();
             return _accountManager.BlockUser(userId, blockedUserId);
         }
 
         [HttpPost]
         public UserViewModel UnblockUser([FromBody] string blockedUserId)
         {
-            var httpContext = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier);
-            if (httpContext == null)
-                throw new KeyNotFoundException();
-
-            var userId = httpContext.Value;
+            var userId = GetUserIdFromHttpContext();
             return _accountManager.UnblockUser(userId, blockedUserId);
         }
 
         [HttpPost]
-        public UserViewModel UpdateUser([FromBody]UserUpdateModel userModel)
+        public IEnumerable<UserViewModel> GetAllBlockedUsers([FromBody] string userId)
+        {
+            return _accountManager.GetAllBlockedUsers(userId);
+        }
+
+        [HttpPost]
+        public UserViewModel UpdateUser([FromBody] UserUpdateModel userModel)
+        {
+            var userId = GetUserIdFromHttpContext();
+            return _accountManager.UpdateUser(userModel, userId);
+        }
+
+        private string GetUserIdFromHttpContext()
         {
             var httpContext = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier);
             if (httpContext == null)
                 throw new KeyNotFoundException();
-
-            var userId = httpContext.Value;
-            return _accountManager.UpdateUser(userModel, userId);
+            return httpContext.Value;
         }
     }
 }

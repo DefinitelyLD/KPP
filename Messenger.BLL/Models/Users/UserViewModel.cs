@@ -13,11 +13,5 @@ namespace Messenger.BLL.Users
         public string Password { get; set; }
         public string Email { get; set; }
         public string Token { get; set; }
-
-        public virtual ICollection<UserViewModel> FriendsTo { get; set; }
-        public virtual ICollection<UserViewModel> FriendsFrom { get; set; }
-
-        public virtual ICollection<UserViewModel> BlockedUsersTo { get; set; }
-        public virtual ICollection<UserViewModel> BlockedUsersFrom { get; set; }
     }
 }
