@@ -24,7 +24,7 @@ namespace Messenger.WEB.Controllers
 
         [AllowAnonymous]
         [HttpPost]
-        public async Task<ActionResult<UserViewModel>> Register([FromForm] UserCreateModel model)
+        public async Task<ActionResult<UserViewModel>> Register([FromBody] UserCreateModel model)
         {
             var result = await _accountManager.RegisterUser(model);
             return result;
@@ -32,7 +32,7 @@ namespace Messenger.WEB.Controllers
 
         [AllowAnonymous]
         [HttpPost]
-        public async Task<ActionResult<UserViewModel>> Login([FromForm] UserLoginModel model)
+        public async Task<ActionResult<UserViewModel>> Login([FromBody] UserLoginModel model)
         {
             var result = await _accountManager.LoginUser(model);
             return result;
