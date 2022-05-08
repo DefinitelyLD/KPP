@@ -80,7 +80,7 @@ namespace Messenger.BLL.Managers
         public ChatViewModel GetChatroom(int chatId, string userId)
         {
             var userAccountEntity = _userAccountsRepository.GetAll()
-                .Where(u => u.User.Id == userId)
+                .Where(u => u.User.Id == userId && u.Chat.Id == chatId)
                 .SingleOrDefault();
 
             var chatEntity = _chatsRepository.GetAll()
@@ -95,17 +95,20 @@ namespace Messenger.BLL.Managers
 
         public IEnumerable<ChatViewModel> GetAllChatrooms(string userId)
         {
-            var userAccountEntity = _userAccountsRepository.GetAll()
+            var userAccountEntityList = _userAccountsRepository.GetAll()
                 .Where(u => u.User.Id == userId)
-                .SingleOrDefault();
+                .ToList();
+
+            var chatIdList = new List<int>();
+            foreach (var userAccountEntity in userAccountEntityList)
+            {
+                chatIdList.Add(userAccountEntity.ChatId);
+            }
 
             var chatEntityList = _chatsRepository
                 .GetAll()
-                .Where(u => u.Users.Contains(userAccountEntity))
+                .Where(u => chatIdList.Contains(u.Id))
                 .ToList();
-
-            if (userAccountEntity == null || chatEntityList == null)
-                throw new KeyNotFoundException();
 
             var chatModelList = _mapper.Map<List<ChatViewModel>>(chatEntityList);
             return chatModelList;
