@@ -124,6 +124,13 @@ namespace Messenger.BLL.Managers
             return _mapper.Map<UserViewModel>(userUpdatedEntity);
         }
 
+        public IEnumerable<UserViewModel> GetAllFriends(string userId)
+        {
+            var userEntity = _usersRepository.GetById(userId);
+            var friendsModels = _mapper.Map<IEnumerable<UserViewModel>>(userEntity.FriendsFrom);
+            return friendsModels;
+        }
+
         public UserViewModel BlockUser(string userId, string blockedUserId)
         {
             if (userId == blockedUserId)
@@ -159,6 +166,13 @@ namespace Messenger.BLL.Managers
             var userUpdatedEntity = _usersRepository.Update(userEntity);
 
             return _mapper.Map<UserViewModel>(userUpdatedEntity);
+        }
+
+        public IEnumerable<UserViewModel> GetAllBlockedUsers(string userId)
+        {
+            var userEntity = _usersRepository.GetById(userId);
+            var blockedUsersModels = _mapper.Map<IEnumerable<UserViewModel>>(userEntity.BlockedUsersFrom);
+            return blockedUsersModels;
         }
 
         public IEnumerable<UserViewModel> GetAllUsers()

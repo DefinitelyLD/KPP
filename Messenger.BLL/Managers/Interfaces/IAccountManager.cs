@@ -20,8 +20,10 @@ namespace Messenger.BLL.Managers
         public UserViewModel GetUserByUserName(string userName);
         public UserViewModel AddFriend(string userId, string friendId);
         public UserViewModel DeleteFriend(string userId, string friendId);
+        public IEnumerable<UserViewModel> GetAllFriends(string userId);
         public UserViewModel BlockUser(string userId, string blockedUserId);
         public UserViewModel UnblockUser(string userId, string blockedUserId);
+        public IEnumerable<UserViewModel> GetAllBlockedUsers(string userId);
         public UserViewModel UpdateUser(UserUpdateModel userModel, string userId);
     }
 }
