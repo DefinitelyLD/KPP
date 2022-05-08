@@ -24,7 +24,7 @@ namespace Messenger.WEB.Controllers
 
         [AllowAnonymous]
         [HttpPost]
-        public async Task<ActionResult<UserViewModel>> Register([FromBody]UserCreateModel model)
+        public async Task<ActionResult<UserViewModel>> Register([FromBody] UserCreateModel model)
         {
             var result = await _accountManager.RegisterUser(model);
             return result;
@@ -32,7 +32,7 @@ namespace Messenger.WEB.Controllers
 
         [AllowAnonymous]
         [HttpPost]
-        public async Task<ActionResult<UserViewModel>> Login([FromBody]UserLoginModel model)
+        public async Task<ActionResult<UserViewModel>> Login([FromBody] UserLoginModel model)
         {
             var result = await _accountManager.LoginUser(model);
             return result;
@@ -45,7 +45,7 @@ namespace Messenger.WEB.Controllers
         }
 
         [HttpPost]
-        public async Task<bool> ChangePassword([FromBody]UserChangePasswordModel model)
+        public async Task<bool> ChangePassword([FromBody] UserChangePasswordModel model)
         {
             var userId = GetUserIdFromHttpContext();
             return await _accountManager.ChangeUserPassword(model, userId);
@@ -58,26 +58,26 @@ namespace Messenger.WEB.Controllers
         }
         
         [HttpPost]
-        public UserViewModel GetUser([FromBody]string id)
+        public UserViewModel GetUser([FromBody] string id)
         {
             return _accountManager.GetUser(id);
         }
 
         [HttpPost]
-        public UserViewModel GetUserByUserName([FromBody]string userName)
+        public UserViewModel GetUserByUserName([FromBody] string userName)
         {
             return _accountManager.GetUserByUserName(userName);
         }
 
         [HttpPost]
-        public UserViewModel AddFriend([FromBody]string friendId)
+        public UserViewModel AddFriend([FromBody] string friendId)
         {
             var userId = GetUserIdFromHttpContext();
             return _accountManager.AddFriend(userId, friendId);
         }
 
         [HttpPost]
-        public UserViewModel DeleteFriend([FromBody]string friendId)
+        public UserViewModel DeleteFriend([FromBody] string friendId)
         {
             var userId = GetUserIdFromHttpContext();
             return _accountManager.DeleteFriend(userId, friendId);
@@ -90,14 +90,14 @@ namespace Messenger.WEB.Controllers
         }
 
         [HttpPost]
-        public UserViewModel BlockUser([FromBody]string blockedUserId)
+        public UserViewModel BlockUser([FromBody] string blockedUserId)
         {
             var userId = GetUserIdFromHttpContext();
             return _accountManager.BlockUser(userId, blockedUserId);
         }
 
         [HttpPost]
-        public UserViewModel UnblockUser([FromBody]string blockedUserId)
+        public UserViewModel UnblockUser([FromBody] string blockedUserId)
         {
             var userId = GetUserIdFromHttpContext();
             return _accountManager.UnblockUser(userId, blockedUserId);
@@ -110,7 +110,7 @@ namespace Messenger.WEB.Controllers
         }
 
         [HttpPost]
-        public UserViewModel UpdateUser([FromBody]UserUpdateModel userModel)
+        public UserViewModel UpdateUser([FromBody] UserUpdateModel userModel)
         {
             var userId = GetUserIdFromHttpContext();
             return _accountManager.UpdateUser(userModel, userId);

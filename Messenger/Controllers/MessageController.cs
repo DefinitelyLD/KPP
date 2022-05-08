@@ -14,10 +14,12 @@ namespace Messenger.WEB.Controllers
     public class MessageController : Controller
     {
         private readonly IMessageManager _messageManager;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public MessageController(IMessageManager messageManager)
+        public MessageController(IMessageManager messageManager, IHttpContextAccessor httpContextAccessor)
         {
             _messageManager = messageManager;
+            _httpContextAccessor = httpContextAccessor;
         }
 
         [HttpPost]
@@ -36,20 +38,20 @@ namespace Messenger.WEB.Controllers
         }
 
         [HttpDelete]
-        public ActionResult<bool> DeleteMessage([FromBody] int messageId)
+        public async Task<ActionResult<bool>> DeleteMessage([FromQuery] int messageId)
         {
             var userId = GetUserIdFromHttpContext();
-            return _messageManager.DeleteMessage(messageId, userId);
+            return await _messageManager.DeleteMessage(messageId, userId);
         }
 
-        [HttpPost]
-        public ActionResult<MessageViewModel> GetMessage([FromBody] int messageId)
+        [HttpGet]
+        public ActionResult<MessageViewModel> GetMessage([FromQuery] int messageId)
         {
             return _messageManager.GetMessage(messageId);
         }
 
-        [HttpPost]
-        public IEnumerable<MessageViewModel> GetMessagesFromChat([FromBody] int chatId, DateTime? date = null)
+        [HttpGet]
+        public IEnumerable<MessageViewModel> GetMessagesFromChat([FromQuery] int chatId, DateTime? date = null)
         {
             var userId = GetUserIdFromHttpContext();
             return _messageManager.GetMessagesFromChat(chatId, userId, date);
@@ -57,7 +59,7 @@ namespace Messenger.WEB.Controllers
 
         private string GetUserIdFromHttpContext()
         {
-            var httpContext = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier);
+            var httpContext = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier);
             if (httpContext == null)
                 throw new KeyNotFoundException();
             return httpContext.Value;

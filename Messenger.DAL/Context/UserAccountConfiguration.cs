@@ -14,8 +14,6 @@ namespace Messenger.DAL.Context
         public void Configure(EntityTypeBuilder<UserAccount> modelBuilder)
         {
             // chat user
-            modelBuilder.HasKey(t => new { t.ChatId, t.UserId });
-
             modelBuilder.HasOne(pt => pt.Chat)
                 .WithMany(t => t.Users)
                 .HasForeignKey(pt => pt.ChatId);

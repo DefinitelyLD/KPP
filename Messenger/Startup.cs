@@ -78,7 +78,8 @@ namespace Messenger.WEB
             services.AddDistributedMemoryCache();
           
             services.AddControllers().AddJsonOptions(x => x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve);
-          
+            services.AddHttpContextAccessor();
+
             services.AddSignalR();
 
             services.AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<UserAccountCreateModelValidator>());
