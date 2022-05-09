@@ -11,6 +11,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Routing;
 
 namespace Messenger.BLL.Managers
 {
@@ -21,8 +24,7 @@ namespace Messenger.BLL.Managers
         private readonly IMapper _mapper;
         private readonly ITokenService _tokenService;
         private readonly IUsersRepository _usersRepository;
-        public AccountManager (UserManager<User> userManager, SignInManager<User> signInManager, IMapper mapper, ITokenService tokenService,
-            IUsersRepository usersRepository)
+        public AccountManager (UserManager<User> userManager, SignInManager<User> signInManager, IMapper mapper, ITokenService tokenService, IUsersRepository usersRepository)
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -44,9 +46,19 @@ namespace Messenger.BLL.Managers
             return userModel;
         }
 
+        public async Task<bool> ConfirmEmail(string userId, string code)
+        {
+            var user = await _userManager.FindByIdAsync(userId);
+            var result = await _userManager.ConfirmEmailAsync(user, code);
+            return result.Succeeded;
+        }
+
         public async Task<UserViewModel> LoginUser(UserLoginModel model)
         {
             var userEntity = _usersRepository.GetAll().Where(x => x.UserName == model.UserName).SingleOrDefault();
+            
+            if (!await _userManager.IsEmailConfirmedAsync(userEntity))
+                throw new BadRequestException("Email is not confirmed");
             if (userEntity == null)
                 throw new BadRequestException("Login error");
             if (!await _userManager.CheckPasswordAsync(userEntity, model.Password))
