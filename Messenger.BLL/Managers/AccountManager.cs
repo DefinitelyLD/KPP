@@ -42,7 +42,6 @@ namespace Messenger.BLL.Managers
 
             var userEntity = _usersRepository.GetAll().Where(x => x.UserName == model.UserName).SingleOrDefault();
             var userModel = _mapper.Map<UserViewModel>(userEntity);
-            userModel.Token = GenerateToken(userEntity);
             return userModel;
         }
 

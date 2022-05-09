@@ -67,7 +67,8 @@ namespace Messenger.WEB
                 .WithOrigins("http://localhost:4200");
             }));
 
-            var builder = services.AddIdentityCore<User>();
+            var builder = services.AddIdentityCore<User>()
+                .AddTokenProvider<DataProtectorTokenProvider<User>>(TokenOptions.DefaultProvider);
             var identityBuilder = new IdentityBuilder(builder.UserType, builder.Services);
             identityBuilder.AddEntityFrameworkStores<AppDbContext>();
             identityBuilder.AddSignInManager<SignInManager<User>>();
