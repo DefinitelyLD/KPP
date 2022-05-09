@@ -63,14 +63,14 @@ namespace Messenger.WEB.Controllers
         }
 
         [HttpPost]
-        public ActionResult<UserAccountCreateModel> AddToChatroom([FromBody] string userId, int chatId)
+        public async Task<ActionResult<UserAccountCreateModel>> AddToChatroom([FromBody] string userId, int chatId)
         {
             var httpContext = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier);
             if (httpContext == null)
                 throw new KeyNotFoundException();
 
             var currentUserId = httpContext.Value;
-            return _chatroomManager.AddToChatroom(userId, chatId, currentUserId);
+            return await _chatroomManager.AddToChatroom(userId, chatId, currentUserId);
         }
 
         [HttpDelete]
