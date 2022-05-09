@@ -59,6 +59,14 @@ namespace Messenger.WEB
                 options.Filters.Add(new AuthorizeFilter(police));
             });
 
+            services.AddCors(o => o.AddPolicy("CorsPolicy", builder => {
+                builder
+                .AllowAnyMethod()
+                .AllowAnyHeader()
+                .AllowCredentials()
+                .WithOrigins("http://localhost:4200");
+            }));
+
             var builder = services.AddIdentityCore<User>();
             var identityBuilder = new IdentityBuilder(builder.UserType, builder.Services);
             identityBuilder.AddEntityFrameworkStores<AppDbContext>();
@@ -124,6 +132,8 @@ namespace Messenger.WEB
             }
             app.UseAuthentication();
             app.UseRouting();
+
+            app.UseCors("CorsPolicy");
 
             app.UseMiddleware<ErrorHandlerMiddleware>();
 

@@ -65,12 +65,6 @@ namespace Messenger.WEB.Controllers
             return result;
         }
 
-        [HttpGet]
-        public async Task Logout()
-        {
-            await _accountManager.LogoutUser();
-        }
-
         [HttpPost]
         public async Task<bool> ChangePassword([FromBody] UserChangePasswordModel model)
         {

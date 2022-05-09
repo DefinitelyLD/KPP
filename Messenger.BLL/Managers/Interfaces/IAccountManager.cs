@@ -17,7 +17,6 @@ namespace Messenger.BLL.Managers
         public Task<UserViewModel> RegisterUser(UserCreateModel model);
         public Task<bool> ConfirmEmail(string userId, string code);
         public Task<UserViewModel> LoginUser(UserLoginModel model);
-        public Task LogoutUser();
         public Task<bool> ChangeUserPassword(UserChangePasswordModel model, string userId);
         public IEnumerable<UserViewModel> GetAllUsers();
         public UserViewModel GetUser(string id);

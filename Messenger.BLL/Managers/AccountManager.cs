@@ -69,11 +69,6 @@ namespace Messenger.BLL.Managers
             return userModel;
         }
 
-        public async Task LogoutUser()
-        {
-            await _signInManager.SignOutAsync();
-        }
-
         public async Task<bool> ChangeUserPassword(UserChangePasswordModel model, string userId)
         {
             if (model.Id != userId)
@@ -82,8 +77,7 @@ namespace Messenger.BLL.Managers
             var user = await _userManager.FindByIdAsync(model.Id);
             if (user == null)
                 throw new KeyNotFoundException();
-            var token = await _userManager.GeneratePasswordResetTokenAsync(user);
-            var result = await _userManager.ResetPasswordAsync(user, token, model.NewPassword);
+            var result = await _userManager.ChangePasswordAsync(user, model.OldPassword, model.NewPassword);
             return result.Succeeded;
         }
 
