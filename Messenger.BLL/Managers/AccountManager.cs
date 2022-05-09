@@ -23,13 +23,14 @@ namespace Messenger.BLL.Managers
         private readonly SignInManager<User> _signInManager;
         private readonly IMapper _mapper;
         private readonly ITokenService _tokenService;
-        
-        public AccountManager (UserManager<User> userManager, SignInManager<User> signInManager, IMapper mapper, ITokenService tokenService)
+        private readonly IUsersRepository _usersRepository;
+        public AccountManager (UserManager<User> userManager, SignInManager<User> signInManager, IMapper mapper, ITokenService tokenService, IUsersRepository usersRepository)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _mapper = mapper;
             _tokenService = tokenService;
+            _usersRepository = usersRepository;
         }
 
         public async Task<UserViewModel> RegisterUser(UserCreateModel model)
@@ -56,7 +57,7 @@ namespace Messenger.BLL.Managers
         {
             var userEntity = _usersRepository.GetAll().Where(x => x.UserName == model.UserName).SingleOrDefault();
             
-            if (!await _userManager.IsEmailConfirmedAsync(user))
+            if (!await _userManager.IsEmailConfirmedAsync(userEntity))
                 throw new BadRequestException("Email is not confirmed");
             if (userEntity == null)
                 throw new BadRequestException("Login error");
