@@ -63,7 +63,13 @@ namespace Messenger.WEB.Controllers
             return result;
         }
 
-        [HttpPost]
+        [HttpGet]
+        public void Logout()
+        {
+            return;
+        }
+
+    [HttpPost]
         public async Task<bool> ChangePassword([FromBody] UserChangePasswordModel model)
         {
             var userId = GetUserIdFromHttpContext();
