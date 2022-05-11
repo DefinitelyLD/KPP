@@ -69,7 +69,7 @@ namespace Messenger.WEB.Controllers
             return;
         }
 
-    [HttpPost]
+        [HttpPost]
         public async Task<bool> ChangePassword([FromBody] UserChangePasswordModel model)
         {
             var userId = GetUserIdFromHttpContext();
