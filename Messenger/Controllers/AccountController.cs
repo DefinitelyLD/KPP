@@ -44,8 +44,6 @@ namespace Messenger.WEB.Controllers
                 new { userId = user.Id, code = emailToken },
                 HttpContext.Request.Scheme);
             await _emailManager.SendEmailAsync(model.Email, "Confirm new account", _emailManager.RegistrationMessageTemplate(model.UserName, callbackUrl));
-
-            HttpContext.Session.SetString("Token", result.Token);
             return result;
         }
 
@@ -66,9 +64,9 @@ namespace Messenger.WEB.Controllers
         }
 
         [HttpGet]
-        public async Task Logout()
+        public void Logout()
         {
-            await _accountManager.LogoutUser();
+            return;
         }
 
         [HttpPost]
