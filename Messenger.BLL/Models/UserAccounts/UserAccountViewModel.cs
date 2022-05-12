@@ -11,7 +11,6 @@ namespace Messenger.BLL.UserAccounts
     public class UserAccountViewModel
     {
         public int Id { get; set; }
-        public ChatViewModel Chat { get; set; }
         public UserViewModel User { get; set; }
         public bool IsBanned { get; set; }
         public bool IsAdmin { get; set; }
