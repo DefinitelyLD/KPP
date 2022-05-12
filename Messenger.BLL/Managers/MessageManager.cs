@@ -39,7 +39,7 @@ namespace Messenger.BLL.Managers
             var userAccountEntity = _userAccountsRepository
                 .GetAll()
                 .Where(u => u.User.Id == userId && 
-                u.User.Id == messageModel.UserId && !u.IsBanned)
+                u.User.Id == messageModel.UserId && !u.IsBanned && u.ChatId == messageModel.ChatId)
                 .SingleOrDefault();
 
             if (userAccountEntity == null)
@@ -78,7 +78,7 @@ namespace Messenger.BLL.Managers
             var userAccountEntity = _userAccountsRepository
                 .GetAll()
                 .Where(u => u.User.Id == userId &&
-                u.User.Id == messageEntity.UserId && !u.IsBanned)
+                u.User.Id == messageEntity.UserId && !u.IsBanned && u.ChatId == messageEntity.ChatId)
                 .SingleOrDefault();
 
             if (userAccountEntity == null)
@@ -107,7 +107,7 @@ namespace Messenger.BLL.Managers
             var userAccountEntity = _userAccountsRepository
                 .GetAll()
                 .Where(u => u.User.Id == userId &&
-                u.User.Id == messageEntity.UserId && !u.IsBanned)
+                u.User.Id == messageEntity.UserId && !u.IsBanned && u.ChatId == messageEntity.ChatId)
                 .SingleOrDefault();
 
             if (userAccountEntity == null)
@@ -122,6 +122,9 @@ namespace Messenger.BLL.Managers
             var messageEntity = _messagesRepository.GetAll()
                 .Where(u => u.Id == messageId)
                 .SingleOrDefault();
+
+            if (messageEntity == null)
+                throw new KeyNotFoundException();
 
             return _mapper.Map<MessageViewModel>(messageEntity);
         }
