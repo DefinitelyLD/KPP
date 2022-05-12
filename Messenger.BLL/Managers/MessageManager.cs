@@ -39,8 +39,8 @@ namespace Messenger.BLL.Managers
             var userAccountEntity = _userAccountsRepository
                 .GetAll()
                 .Where(u => u.User.Id == userId && 
-                u.User.Id == messageModel.UserId && !u.IsBanned)
-                .FirstOrDefault();
+                u.User.Id == messageModel.UserId && !u.IsBanned && u.ChatId == messageModel.ChatId)
+                .SingleOrDefault();
 
             if (userAccountEntity == null)
                 throw new KeyNotFoundException();
