@@ -81,7 +81,7 @@ namespace Messenger.BLL.Managers
                 u.User.Id == messageEntity.UserId && !u.IsBanned && u.ChatId == messageEntity.ChatId)
                 .SingleOrDefault();
 
-            if (userAccountEntity == null || messageEntity == null)
+            if (userAccountEntity == null)
                 throw new KeyNotFoundException();
 
             messageEntity.Text = messageModel.Text;
@@ -110,7 +110,7 @@ namespace Messenger.BLL.Managers
                 u.User.Id == messageEntity.UserId && !u.IsBanned && u.ChatId == messageEntity.ChatId)
                 .SingleOrDefault();
 
-            if (userAccountEntity == null || messageEntity == null)
+            if (userAccountEntity == null)
                 throw new KeyNotFoundException();
 
             return await _messagesRepository.DeleteByIdAsync(messageId);
