@@ -78,7 +78,7 @@ namespace Messenger.BLL.Managers
             var userAccountEntity = _userAccountsRepository
                 .GetAll()
                 .Where(u => u.User.Id == userId &&
-                u.User.Id == messageEntity.UserId && !u.IsBanned)
+                u.User.Id == messageEntity.UserId && !u.IsBanned && u.ChatId == messageEntity.ChatId)
                 .SingleOrDefault();
 
             if (userAccountEntity == null)
@@ -107,7 +107,7 @@ namespace Messenger.BLL.Managers
             var userAccountEntity = _userAccountsRepository
                 .GetAll()
                 .Where(u => u.User.Id == userId &&
-                u.User.Id == messageEntity.UserId && !u.IsBanned)
+                u.User.Id == messageEntity.UserId && !u.IsBanned && u.ChatId == messageEntity.ChatId)
                 .SingleOrDefault();
 
             if (userAccountEntity == null)
