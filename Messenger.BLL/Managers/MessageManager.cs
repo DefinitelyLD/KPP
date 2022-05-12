@@ -40,7 +40,7 @@ namespace Messenger.BLL.Managers
                 .GetAll()
                 .Where(u => u.User.Id == userId && 
                 u.User.Id == messageModel.UserId && !u.IsBanned)
-                .SingleOrDefault();
+                .FirstOrDefault();
 
             if (userAccountEntity == null)
                 throw new KeyNotFoundException();
