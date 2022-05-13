@@ -228,7 +228,7 @@ namespace Messenger.BLL.Managers
         public async Task<UserAccountUpdateModel> UnsetAdmin(int userAccountId, string adminId)
         {
             var userAccountEntity = _userAccountsRepository.GetAll()
-                .Where(u => u.Id == userAccountId)
+                .Where(u => u.Id == userAccountId && !u.IsOwner)
                 .SingleOrDefault();
 
             var adminAccountEntity = _userAccountsRepository.GetAll()
