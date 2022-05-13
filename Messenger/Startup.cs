@@ -133,9 +133,8 @@ namespace Messenger.WEB
             }
             app.UseAuthentication();
             app.UseRouting();
-
+            app.UseStaticFiles();
             app.UseCors("CorsPolicy");
-
             app.UseMiddleware<ErrorHandlerMiddleware>();
 
             app.UseEndpoints(endpoints =>
