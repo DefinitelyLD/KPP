@@ -4,6 +4,7 @@ using Messenger.BLL.MessageImages;
 using Messenger.BLL.Messages;
 using Messenger.DAL.Entities;
 using Messenger.DAL.Repositories.Interfaces;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.VisualBasic;
 using System;
@@ -21,17 +22,21 @@ namespace Messenger.BLL.Managers
         private readonly IMessagesRepository _messagesRepository;
         private readonly IMessageImagesRepository _messageImagesRepository;
         private readonly IUserAccountsRepository _userAccountsRepository;
-        private const string PathToSave = "..\\Messenger.BLL\\Images\\";
+        private readonly IWebHostEnvironment _environment;
+        private readonly string PathToSave;
         
         public MessageManager(IMapper mapper, 
                               IMessagesRepository messagesRepository, 
                               IMessageImagesRepository messageImagesRepository,
-                              IUserAccountsRepository userAccountsRepository)
+                              IUserAccountsRepository userAccountsRepository,
+                              IWebHostEnvironment environment)
         {
             _mapper = mapper;
             _messagesRepository = messagesRepository;
             _messageImagesRepository = messageImagesRepository;
             _userAccountsRepository = userAccountsRepository;
+            _environment = environment;
+            PathToSave = _environment.WebRootPath + "\\Images\\";
         }
 
         public async Task<MessageViewModel> SendMessage (MessageCreateModel messageModel, string userId)
@@ -55,12 +60,13 @@ namespace Messenger.BLL.Managers
             {
                 foreach (var file in messageModel.Files)
                 {
-                    string filePath = PathToSave + Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
+                    var fileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
+                    string filePath = PathToSave + fileName;
                     using (Stream fileStream = new FileStream(filePath, FileMode.Create))
                         await file.CopyToAsync(fileStream);
                     MessageImageCreateModel imageModel = new()
                     {
-                        Path = filePath,
+                        Path = fileName,
                         MessageId = messageViewModel.Id
                     };
                     var messageImageEntity = _mapper.Map<MessageImage>(imageModel);
@@ -90,11 +96,12 @@ namespace Messenger.BLL.Managers
             if (messageFile != null)
             {
                 var messageImageEntity = _messageImagesRepository.GetById(messageModel.ImageId);
-                File.Delete(messageImageEntity.Path);
-                string filePath = PathToSave + Guid.NewGuid().ToString() + Path.GetExtension(messageFile.FileName);
+                File.Delete(PathToSave + messageImageEntity.Path);
+                var fileName = Guid.NewGuid().ToString() + Path.GetExtension(messageFile.FileName);
+                string filePath = PathToSave + fileName;
                 using Stream fileStream = new FileStream(filePath, FileMode.Create);
                 await messageFile.CopyToAsync(fileStream);
-                messageImageEntity.Path = filePath;
+                messageImageEntity.Path = fileName;
                 await _messageImagesRepository.UpdateAsync(messageImageEntity);
             }
             return _mapper.Map<MessageViewModel>(await _messagesRepository.UpdateAsync(messageEntity));

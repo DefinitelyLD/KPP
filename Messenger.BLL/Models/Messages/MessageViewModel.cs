@@ -13,7 +13,6 @@ namespace Messenger.BLL.Messages
     public class MessageViewModel
     {
         public int Id { get; set; }
-        public ChatViewModel Chat { get; set; }
         public UserViewModel User { get; set; }
         public ICollection<MessageImageViewModel> Images { get; set; }
         public string Text { get; set; }
