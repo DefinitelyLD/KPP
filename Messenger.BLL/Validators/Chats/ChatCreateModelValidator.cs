@@ -13,7 +13,6 @@ namespace Messenger.BLL.Validators.Chats
         public ChatCreateModelValidator() 
         {
             RuleFor(x => x.Topic).NotEmpty().MaximumLength(100);
-            RuleFor(x => x.Password).MaximumLength(20);
             RuleFor(x => x.UserId).NotNull();
         }
     }

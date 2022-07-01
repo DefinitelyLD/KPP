@@ -27,8 +27,12 @@ using Messenger.BLL.Token;
 using Messenger.BLL.Validators.UserAccounts;
 using Messenger.WEB.SignalR;
 using Messenger.Middleware;
+using Serilog;
 using System.Text.Json.Serialization;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using Messenger.WEB.Logger;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc.Authorization;
 
 namespace Messenger.WEB
 {
@@ -48,21 +52,43 @@ namespace Messenger.WEB
             services.AddMappers();
             services.AddManagers();
 
-            services.AddIdentity<User, IdentityRole>(opts =>
+            services.AddMvcCore(options =>
             {
-                opts.Password.RequireNonAlphanumeric = false;
-                opts.Password.RequireLowercase = false;
-                opts.Password.RequireUppercase = false;
-                opts.Password.RequireDigit = false;
-            }).AddEntityFrameworkStores<AppDbContext>()
-            .AddDefaultTokenProviders();
+                var police = new AuthorizationPolicyBuilder()
+                    .RequireAuthenticatedUser().Build();
+                options.Filters.Add(new AuthorizeFilter(police));
+            });
+
+            services.AddCors(o => o.AddPolicy("CorsPolicy", builder => {
+                builder
+                .AllowAnyMethod()
+                .AllowAnyHeader()
+                .AllowCredentials()
+                .WithOrigins("http://localhost:4200");
+            }));
+
+            var builder = services.AddIdentityCore<User>()
+                .AddTokenProvider<DataProtectorTokenProvider<User>>(TokenOptions.DefaultProvider);
+            var identityBuilder = new IdentityBuilder(builder.UserType, builder.Services);
+            identityBuilder.AddEntityFrameworkStores<AppDbContext>();
+            identityBuilder.AddSignInManager<SignInManager<User>>();
+            identityBuilder.Services.Configure<IdentityOptions>(opt =>
+            {
+                opt.Password.RequireNonAlphanumeric = false;
+                opt.Password.RequireLowercase = false;
+                opt.Password.RequireUppercase = false;
+                opt.Password.RequireDigit = false;
+            });
+
+            services.AddHttpContextAccessor();
+
 
             services.AddJwtToken(Configuration);
             services.AddDistributedMemoryCache();
-            services.AddSession();
           
             services.AddControllers().AddJsonOptions(x => x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve);
-          
+            services.AddHttpContextAccessor();
+
             services.AddSignalR();
 
             services.AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<UserAccountCreateModelValidator>());
@@ -79,6 +105,20 @@ namespace Messenger.WEB
                     BearerFormat = "JWT",
                     Scheme = "bearer"
                 });
+                c.AddSecurityRequirement(new OpenApiSecurityRequirement
+                {
+                    {
+                        new OpenApiSecurityScheme
+                        {
+                            Reference = new OpenApiReference
+                            {
+                                Type = ReferenceType.SecurityScheme,
+                                Id = "Bearer"
+                            }
+                        },
+                        new string[] { }
+                    }
+                });
             });
         }
 
@@ -91,33 +131,19 @@ namespace Messenger.WEB
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Messenger v1"));
             }
-
-            app.UseSession();
-            app.Use(async (context, next) =>
-            {
-                var token = context.Session.GetString("Token");
-                if (!string.IsNullOrEmpty(token))
-                {
-                    context.Request.Headers.Add("Authorization", "Bearer " + token);
-                }
-                await next();
-            });
-
-            app.UseHttpsRedirection();
-            app.UseRouting();
             app.UseAuthentication();
-            app.UseAuthorization();
-
+            app.UseRouting();
+            app.UseStaticFiles();
+            app.UseCors("CorsPolicy");
             app.UseMiddleware<ErrorHandlerMiddleware>();
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapControllers()
-                .RequireAuthorization();
+                endpoints.MapControllers();
                 endpoints.MapHub<ChatHub>("/hubs/chat");
             });
+
+            LoggerConfig.ConfigureLogger(Configuration);
         }
-
     }
-
 }
