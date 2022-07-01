@@ -24,9 +24,9 @@ namespace Messenger.BLL.Managers
         private readonly IUserAccountsRepository _userAccountsRepository;
         private readonly IWebHostEnvironment _environment;
         private readonly string PathToSave;
-        
-        public MessageManager(IMapper mapper, 
-                              IMessagesRepository messagesRepository, 
+
+        public MessageManager(IMapper mapper,
+                              IMessagesRepository messagesRepository,
                               IMessageImagesRepository messageImagesRepository,
                               IUserAccountsRepository userAccountsRepository,
                               IWebHostEnvironment environment)
@@ -43,7 +43,7 @@ namespace Messenger.BLL.Managers
         {
             var userAccountEntity = _userAccountsRepository
                 .GetAll()
-                .Where(u => u.User.Id == userId && 
+                .Where(u => u.User.Id == userId &&
                 u.User.Id == messageModel.UserId && !u.IsBanned && u.ChatId == messageModel.ChatId)
                 .SingleOrDefault();
 
@@ -91,7 +91,7 @@ namespace Messenger.BLL.Managers
                 throw new KeyNotFoundException();
 
             messageEntity.Text = messageModel.Text;
-            var messageFile = messageModel.File; 
+            var messageFile = messageModel.File;
 
             if (messageFile != null)
             {
@@ -139,13 +139,13 @@ namespace Messenger.BLL.Managers
         public IEnumerable<MessageViewModel> GetMessagesFromChat(int chatId, string userId, DateTime? date = null)
         {
             var userAccountEntity = _userAccountsRepository
-                .GetAll() 
+                .GetAll()
                 .Where(u => u.User.Id == userId && u.Chat.Id == chatId)
                 .SingleOrDefault();
 
             var messageEntityList = _messagesRepository
                 .GetAll()
-                .Where(predicate: u => u.ChatId == chatId && 
+                .Where(predicate: u => u.ChatId == chatId &&
                 (date == null || u.CreatedTime.Date == date.Value.Date))
                 .ToList();
 
