@@ -85,8 +85,8 @@ namespace Messenger.WEB
 
             services.AddJwtToken(Configuration);
             services.AddDistributedMemoryCache();
-          
-            services.AddControllers().AddJsonOptions(x => x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve);
+
+            services.AddControllers();
             services.AddHttpContextAccessor();
 
             services.AddSignalR();
