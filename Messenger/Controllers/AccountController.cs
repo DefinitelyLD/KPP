@@ -48,7 +48,7 @@ namespace Messenger.WEB.Controllers
         }
 
         [AllowAnonymous]
-        [HttpGet]
+        [HttpPatch]
         public async Task<ActionResult<bool>> ConfirmEmail(string userId, string code)
         {
             var result = await _accountManager.ConfirmEmail(userId, code);
@@ -63,13 +63,7 @@ namespace Messenger.WEB.Controllers
             return result;
         }
 
-        [HttpGet]
-        public void Logout()
-        {
-            return;
-        }
-
-        [HttpPost]
+        [HttpPatch]
         public async Task<bool> ChangePassword([FromBody] UserChangePasswordModel model)
         {
             var userId = GetUserIdFromHttpContext();
@@ -82,14 +76,14 @@ namespace Messenger.WEB.Controllers
             return _accountManager.GetAllUsers();
         }
         
-        [HttpPost]
-        public UserViewModel GetUser([FromBody] string id)
+        [HttpGet]
+        public UserViewModel GetUser([FromQuery] string id)
         {
             return _accountManager.GetUser(id);
         }
 
-        [HttpPost]
-        public UserViewModel GetUserByUserName([FromBody] string userName)
+        [HttpGet]
+        public UserViewModel GetUserByUserName([FromQuery] string userName)
         {
             return _accountManager.GetUserByUserName(userName);
         }
@@ -101,15 +95,15 @@ namespace Messenger.WEB.Controllers
             return _accountManager.AddFriend(userId, friendId);
         }
 
-        [HttpPost]
+        [HttpDelete]
         public UserViewModel DeleteFriend([FromBody] string friendId)
         {
             var userId = GetUserIdFromHttpContext();
             return _accountManager.DeleteFriend(userId, friendId);
         }
 
-        [HttpPost]
-        public IEnumerable<UserViewModel> GetAllFriends([FromBody] string userId)
+        [HttpGet]
+        public IEnumerable<UserViewModel> GetAllFriends([FromQuery] string userId)
         {
             return _accountManager.GetAllFriends(userId);
         }
@@ -121,20 +115,20 @@ namespace Messenger.WEB.Controllers
             return _accountManager.BlockUser(userId, blockedUserId);
         }
 
-        [HttpPost]
+        [HttpDelete]
         public UserViewModel UnblockUser([FromBody] string blockedUserId)
         {
             var userId = GetUserIdFromHttpContext();
             return _accountManager.UnblockUser(userId, blockedUserId);
         }
 
-        [HttpPost]
-        public IEnumerable<UserViewModel> GetAllBlockedUsers([FromBody] string userId)
+        [HttpGet]
+        public IEnumerable<UserViewModel> GetAllBlockedUsers([FromQuery] string userId)
         {
             return _accountManager.GetAllBlockedUsers(userId);
         }
 
-        [HttpPost]
+        [HttpPatch]
         public UserViewModel UpdateUser([FromBody] UserUpdateModel userModel)
         {
             var userId = GetUserIdFromHttpContext();

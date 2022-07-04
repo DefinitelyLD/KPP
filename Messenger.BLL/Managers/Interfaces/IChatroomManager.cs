@@ -23,8 +23,9 @@ namespace Messenger.BLL.Managers
         public Task<UserAccountUpdateModel> UnbanUser(int userAccountId, string adminId);
         public Task<UserAccountUpdateModel> SetAdmin(int userAccountId, string adminId);
         public Task<UserAccountUpdateModel> UnsetAdmin(int userAccountId, string adminId);
-        public IEnumerable<UserAccountViewModel> GetAllBannedUsers(int chatId, string userName);
-        public IEnumerable<UserAccountViewModel> GetAllAdmins(int chatId, string userName);
-        public IEnumerable<UserAccountViewModel> GetAllUsers(int chatId, string userName);
+        public UserAccountViewModel GetOwner(int chatId, string userId);
+        public IEnumerable<UserAccountViewModel> GetAllBannedUsers(int chatId, string userId);
+        public IEnumerable<UserAccountViewModel> GetAllAdmins(int chatId, string userId);
+        public IEnumerable<UserAccountViewModel> GetAllUsers(int chatId, string userId);
     }
 }

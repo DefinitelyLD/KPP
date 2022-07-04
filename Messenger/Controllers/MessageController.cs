@@ -23,13 +23,13 @@ namespace Messenger.WEB.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<MessageViewModel>> SendMessage([FromForm] MessageCreateModel messageModel)
+        public async Task<ActionResult<MessageViewModel>> SendMessage([FromBody] MessageCreateModel messageModel)
         {
             var userId = GetUserIdFromHttpContext();
             return await _messageManager.SendMessage(messageModel, userId);
         }
 
-        [HttpPost]
+        [HttpPatch]
         public async Task<ActionResult<MessageViewModel>> EditMessage([FromBody] MessageUpdateModel messageModel)
         {
             var userId = GetUserIdFromHttpContext();
@@ -38,7 +38,7 @@ namespace Messenger.WEB.Controllers
         }
 
         [HttpDelete]
-        public async Task<ActionResult<bool>> DeleteMessage([FromQuery] int messageId)
+        public async Task<ActionResult<bool>> DeleteMessage([FromBody] int messageId)
         {
             var userId = GetUserIdFromHttpContext();
             return await _messageManager.DeleteMessage(messageId, userId);

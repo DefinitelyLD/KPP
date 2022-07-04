@@ -243,6 +243,19 @@ namespace Messenger.BLL.Managers
             return _mapper.Map<UserAccountUpdateModel>(await _userAccountsRepository.UpdateAsync(userAccountEntity));
         }
 
+        public UserAccountViewModel GetOwner(int chatId, string userId)
+        {
+            //throw KeyNotFoundException, if current user isn't in the chat
+            ThrowExceptionIfUserIsNotInChat(chatId, userId);
+
+            var ownerEntity = _userAccountsRepository.GetAll()
+                .Where(u => u.IsOwner && u.ChatId == chatId)
+                .SingleOrDefault();
+
+            var userModel = _mapper.Map<UserAccountViewModel>(ownerEntity);
+            return userModel;
+        }
+
         public IEnumerable<UserAccountViewModel> GetAllBannedUsers(int chatId, string userId)
         {
             //throw KeyNotFoundException, if current user isn't in the chat
