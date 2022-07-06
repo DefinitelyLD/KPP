@@ -44,6 +44,7 @@ namespace Messenger.WEB.Controllers
                 new { userId = user.Id, code = emailToken },
                 HttpContext.Request.Scheme);
             await _emailManager.SendEmailAsync(model.Email, "Confirm new account", _emailManager.RegistrationMessageTemplate(model.UserName, callbackUrl));
+            
             return result;
         }
 
@@ -52,6 +53,7 @@ namespace Messenger.WEB.Controllers
         public async Task<ActionResult<bool>> ConfirmEmail(string userId, string code)
         {
             var result = await _accountManager.ConfirmEmail(userId, code);
+            
             return result;
         }
 
@@ -60,6 +62,7 @@ namespace Messenger.WEB.Controllers
         public async Task<ActionResult<UserViewModel>> Login([FromBody] UserLoginModel model)
         {
             var result = await _accountManager.LoginUser(model);
+            
             return result;
         }
 
@@ -67,6 +70,7 @@ namespace Messenger.WEB.Controllers
         public async Task<bool> ChangePassword([FromBody] UserChangePasswordModel model)
         {
             var userId = GetUserIdFromHttpContext();
+            
             return await _accountManager.ChangeUserPassword(model, userId);
         }
         
@@ -92,6 +96,7 @@ namespace Messenger.WEB.Controllers
         public UserViewModel AddFriend([FromBody] string friendId)
         {
             var userId = GetUserIdFromHttpContext();
+            
             return _accountManager.AddFriend(userId, friendId);
         }
 
@@ -99,6 +104,7 @@ namespace Messenger.WEB.Controllers
         public UserViewModel DeleteFriend([FromBody] string friendId)
         {
             var userId = GetUserIdFromHttpContext();
+            
             return _accountManager.DeleteFriend(userId, friendId);
         }
 
@@ -112,6 +118,7 @@ namespace Messenger.WEB.Controllers
         public UserViewModel BlockUser([FromBody] string blockedUserId)
         {
             var userId = GetUserIdFromHttpContext();
+            
             return _accountManager.BlockUser(userId, blockedUserId);
         }
 
@@ -119,6 +126,7 @@ namespace Messenger.WEB.Controllers
         public UserViewModel UnblockUser([FromBody] string blockedUserId)
         {
             var userId = GetUserIdFromHttpContext();
+            
             return _accountManager.UnblockUser(userId, blockedUserId);
         }
 
@@ -132,6 +140,7 @@ namespace Messenger.WEB.Controllers
         public UserViewModel UpdateUser([FromBody] UserUpdateModel userModel)
         {
             var userId = GetUserIdFromHttpContext();
+            
             return _accountManager.UpdateUser(userModel, userId);
         }
 
@@ -140,6 +149,7 @@ namespace Messenger.WEB.Controllers
             var httpContext = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier);
             if (httpContext == null)
                 throw new KeyNotFoundException();
+            
             return httpContext.Value;
         }
     }

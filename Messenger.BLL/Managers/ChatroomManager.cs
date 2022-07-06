@@ -62,6 +62,7 @@ namespace Messenger.BLL.Managers
                 throw new KeyNotFoundException();
 
             var chatEntity = _mapper.Map<Chat>(chatModel);
+
             return _mapper.Map<ChatUpdateModel>(await _chatsRepository.UpdateAsync(chatEntity));
         }
 
@@ -111,6 +112,7 @@ namespace Messenger.BLL.Managers
                 .ToList();
 
             var chatModelList = _mapper.Map<List<ChatViewModel>>(chatEntityList);
+
             return chatModelList;
         }
 
@@ -135,6 +137,7 @@ namespace Messenger.BLL.Managers
                 UserId = userId
             };
             var userAccountNewEntity = _mapper.Map<UserAccount>(userAccountModel);
+
             return _mapper.Map<UserAccountCreateModel>(await _userAccountsRepository.CreateAsync(userAccountNewEntity));
         }
 
@@ -186,6 +189,7 @@ namespace Messenger.BLL.Managers
 
             userAccountEntity.IsBanned = true;
             userAccountEntity.IsAdmin = false;
+
             return _mapper.Map<UserAccountUpdateModel>(await _userAccountsRepository.UpdateAsync(userAccountEntity));
         }
 
@@ -204,6 +208,7 @@ namespace Messenger.BLL.Managers
                 throw new KeyNotFoundException();
 
             userAccountEntity.IsBanned = false;
+
             return _mapper.Map<UserAccountUpdateModel>(await _userAccountsRepository.UpdateAsync(userAccountEntity));
         }
 
@@ -222,6 +227,7 @@ namespace Messenger.BLL.Managers
                 throw new KeyNotFoundException();
 
             userAccountEntity.IsAdmin = true;
+
             return _mapper.Map<UserAccountUpdateModel>(await _userAccountsRepository.UpdateAsync(userAccountEntity));
         }
 
@@ -240,6 +246,7 @@ namespace Messenger.BLL.Managers
                 throw new KeyNotFoundException();
 
             userAccountEntity.IsAdmin = false;
+
             return _mapper.Map<UserAccountUpdateModel>(await _userAccountsRepository.UpdateAsync(userAccountEntity));
         }
 
@@ -253,6 +260,7 @@ namespace Messenger.BLL.Managers
                 .SingleOrDefault();
 
             var userModel = _mapper.Map<UserAccountViewModel>(ownerEntity);
+
             return userModel;
         }
 
@@ -267,6 +275,7 @@ namespace Messenger.BLL.Managers
                 .ToList();
 
             var userModelList = _mapper.Map<List<UserAccountViewModel>>(bannedUsersEntityList);
+
             return userModelList;
         }
 
@@ -281,6 +290,7 @@ namespace Messenger.BLL.Managers
                 .ToList();
 
             var userModelList = _mapper.Map<List<UserAccountViewModel>>(adminsEntityList);
+
             return userModelList;
         }
 
@@ -295,6 +305,7 @@ namespace Messenger.BLL.Managers
                 .ToList();
 
             var userModelList = _mapper.Map<List<UserAccountViewModel>>(usersEntityList);
+
             return userModelList;
         }
 

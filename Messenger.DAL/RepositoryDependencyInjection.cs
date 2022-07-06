@@ -27,6 +27,7 @@ namespace Messenger.DAL
 
             services.AddDbContext<AppDbContext>(options =>
                 options.UseSqlServer(configuration.GetConnectionString("DatabaseConnection")));
+
             return services;
         }
     }

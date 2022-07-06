@@ -42,6 +42,7 @@ namespace Messenger.BLL.Managers
 
             var userEntity = _usersRepository.GetAll().Where(x => x.UserName == model.UserName).SingleOrDefault();
             var userModel = _mapper.Map<UserViewModel>(userEntity);
+
             return userModel;
         }
 
@@ -49,6 +50,7 @@ namespace Messenger.BLL.Managers
         {
             var user = await _userManager.FindByIdAsync(userId);
             var result = await _userManager.ConfirmEmailAsync(user, code);
+
             return result.Succeeded;
         }
 
@@ -65,6 +67,7 @@ namespace Messenger.BLL.Managers
 
             var userModel = _mapper.Map<UserViewModel>(userEntity);
             userModel.Token = GenerateToken(userEntity);
+
             return userModel;
         }
 
@@ -77,6 +80,7 @@ namespace Messenger.BLL.Managers
             if (user == null)
                 throw new KeyNotFoundException();
             var result = await _userManager.ChangePasswordAsync(user, model.OldPassword, model.NewPassword);
+
             return result.Succeeded;
         }
 
@@ -85,6 +89,7 @@ namespace Messenger.BLL.Managers
             var generatedToken = _tokenService.BuildToken(user);
             if (generatedToken == null)
                 throw new BadRequestException("Failed generate token");
+
             return generatedToken;
         }
 
@@ -133,6 +138,7 @@ namespace Messenger.BLL.Managers
         {
             var userEntity = _usersRepository.GetById(userId);
             var friendsModels = _mapper.Map<IEnumerable<UserViewModel>>(userEntity.FriendsFrom);
+
             return friendsModels;
         }
 
@@ -177,6 +183,7 @@ namespace Messenger.BLL.Managers
         {
             var userEntity = _usersRepository.GetById(userId);
             var blockedUsersModels = _mapper.Map<IEnumerable<UserViewModel>>(userEntity.BlockedUsersFrom);
+
             return blockedUsersModels;
         }
 
@@ -184,12 +191,14 @@ namespace Messenger.BLL.Managers
         {
             var userEntityList = _usersRepository.GetAll().ToList();
             var userViewModelList = _mapper.Map<IEnumerable<UserViewModel>>(userEntityList);
+
             return userViewModelList;
         }
 
         public UserViewModel GetUser(string id)
         {
             var userEntity = _usersRepository.GetById(id);
+
             return _mapper.Map<UserViewModel>(userEntity);
         }
 
@@ -200,6 +209,7 @@ namespace Messenger.BLL.Managers
             {
                 throw new KeyNotFoundException();
             }
+
             return _mapper.Map<UserViewModel>(userEntity);
         }
 
@@ -212,6 +222,7 @@ namespace Messenger.BLL.Managers
             userEntity.UserName = userModel.UserName;
             userEntity.Email = userModel.Email;
             var result = _usersRepository.Update(userEntity);
+
             return _mapper.Map<UserViewModel>(result);
         }
     }

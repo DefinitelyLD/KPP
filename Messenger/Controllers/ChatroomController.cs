@@ -31,6 +31,7 @@ namespace Messenger.WEB.Controllers
                 throw new KeyNotFoundException();
 
             var userId = httpContext.Value;
+
             return await _chatroomManager.CreateChatroom(chat, userId);
         }
 
@@ -38,6 +39,7 @@ namespace Messenger.WEB.Controllers
         public async Task<ActionResult<ChatUpdateModel>> EditChatroom([FromBody] ChatUpdateModel chat)
         {
             var adminId = GetUserIdFromHttpContext();
+
             return await _chatroomManager.EditChatroom(chat, adminId);
         }
 
@@ -45,6 +47,7 @@ namespace Messenger.WEB.Controllers
         public async Task<ActionResult<bool>> DeleteChatroom([FromBody] int chatId)
         {
             var userId = GetUserIdFromHttpContext();
+
             return await _chatroomManager.DeleteChatroom(chatId, userId);
         }
 
@@ -52,6 +55,7 @@ namespace Messenger.WEB.Controllers
         public ActionResult<ChatViewModel> GetChatroom([FromQuery] int chatId)
         {
             var userId = GetUserIdFromHttpContext();
+
             return _chatroomManager.GetChatroom(chatId, userId);
         }
 
@@ -59,6 +63,7 @@ namespace Messenger.WEB.Controllers
         public IEnumerable<ChatViewModel> GetAllChatrooms()
         {
             var userId = GetUserIdFromHttpContext();
+
             return _chatroomManager.GetAllChatrooms(userId);
         }
 
@@ -70,6 +75,7 @@ namespace Messenger.WEB.Controllers
                 throw new KeyNotFoundException();
 
             var currentUserId = httpContext.Value;
+
             return await _chatroomManager.AddToChatroom(userId, chatId, currentUserId);
         }
 
@@ -77,6 +83,7 @@ namespace Messenger.WEB.Controllers
         public async Task<ActionResult<bool>> LeaveFromChatroom([FromBody] int chatId)
         {
             var userId = GetUserIdFromHttpContext();
+
             return await _chatroomManager.LeaveFromChatroom(chatId, userId);
         }
 
@@ -84,6 +91,7 @@ namespace Messenger.WEB.Controllers
         public async Task<ActionResult<bool>> KickUser([FromBody] int userAccountId)
         {
             var adminId = GetUserIdFromHttpContext();
+
             return await _chatroomManager.KickUser(userAccountId, adminId);
         }
 
@@ -91,6 +99,7 @@ namespace Messenger.WEB.Controllers
         public async Task<ActionResult<UserAccountUpdateModel>> BanUser([FromBody] int userAccountId)
         {
             var adminId = GetUserIdFromHttpContext();
+
             return await _chatroomManager.BanUser(userAccountId, adminId);
         }
 
@@ -98,6 +107,7 @@ namespace Messenger.WEB.Controllers
         public async Task<ActionResult<UserAccountUpdateModel>> UnbanUser([FromBody] int userAccountId)
         {
             var adminId = GetUserIdFromHttpContext();
+
             return await _chatroomManager.UnbanUser(userAccountId, adminId);
         }
 
@@ -105,6 +115,7 @@ namespace Messenger.WEB.Controllers
         public async Task<ActionResult<UserAccountUpdateModel>> SetAdmin([FromBody] int userAccountId)
         {
             var adminId = GetUserIdFromHttpContext();
+
             return await _chatroomManager.SetAdmin(userAccountId, adminId);
         }
 
@@ -112,6 +123,7 @@ namespace Messenger.WEB.Controllers
         public async Task<ActionResult<UserAccountUpdateModel>> UnsetAdmin([FromBody] int userAccountId)
         {
             var adminId = GetUserIdFromHttpContext();
+
             return await _chatroomManager.UnsetAdmin(userAccountId, adminId);
         }
 
@@ -119,6 +131,7 @@ namespace Messenger.WEB.Controllers
         public UserAccountViewModel GetOwner([FromQuery] int chatId)
         {
             var userId = GetUserIdFromHttpContext();
+
             return _chatroomManager.GetOwner(chatId, userId);
         }
 
@@ -126,6 +139,7 @@ namespace Messenger.WEB.Controllers
         public IEnumerable<UserAccountViewModel> GetAllBannedUsers([FromQuery] int chatId)
         {
             var userId = GetUserIdFromHttpContext();
+
             return _chatroomManager.GetAllBannedUsers(chatId, userId);
         }
 
@@ -133,6 +147,7 @@ namespace Messenger.WEB.Controllers
         public IEnumerable<UserAccountViewModel> GetAllAdmins([FromQuery] int chatId)
         {
             var userId = GetUserIdFromHttpContext();
+
             return _chatroomManager.GetAllAdmins(chatId, userId);
         }
 
@@ -140,6 +155,7 @@ namespace Messenger.WEB.Controllers
         public IEnumerable<UserAccountViewModel> GetAllUsers([FromQuery] int chatId)
         {
             var userId = GetUserIdFromHttpContext();
+
             return _chatroomManager.GetAllUsers(chatId, userId);
         }
 
@@ -148,6 +164,7 @@ namespace Messenger.WEB.Controllers
             var httpContext = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier);
             if (httpContext == null)
                 throw new KeyNotFoundException();
+
             return httpContext.Value;
         }
     }

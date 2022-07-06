@@ -75,6 +75,7 @@ namespace Messenger.BLL.Managers
                 }
             }
             messageViewModel.Images = imageViewModelCollection;
+
             return messageViewModel;
         }
 
@@ -104,6 +105,7 @@ namespace Messenger.BLL.Managers
                 messageImageEntity.Path = fileName;
                 await _messageImagesRepository.UpdateAsync(messageImageEntity);
             }
+
             return _mapper.Map<MessageViewModel>(await _messagesRepository.UpdateAsync(messageEntity));
         }
 
@@ -153,6 +155,7 @@ namespace Messenger.BLL.Managers
                 throw new KeyNotFoundException();
 
             var messageModelList = _mapper.Map<List<MessageViewModel>>(messageEntityList);
+
             return messageModelList;
         }
     }
