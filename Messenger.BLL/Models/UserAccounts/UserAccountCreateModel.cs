@@ -1,13 +1,4 @@
-﻿using Messenger.BLL.Chats;
-using Messenger.BLL.Users;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-
-namespace Messenger.BLL.UserAccounts
+﻿namespace Messenger.BLL.UserAccounts
 {
     public class UserAccountCreateModel
     {

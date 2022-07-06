@@ -2,10 +2,8 @@
 using Messenger.BLL.Chats;
 using Messenger.BLL.Exceptions;
 using Messenger.BLL.UserAccounts;
-using Messenger.BLL.Users;
 using Messenger.DAL.Entities;
 using Messenger.DAL.Repositories.Interfaces;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -62,6 +60,7 @@ namespace Messenger.BLL.Managers
                 throw new KeyNotFoundException();
 
             var chatEntity = _mapper.Map<Chat>(chatModel);
+
             return _mapper.Map<ChatUpdateModel>(await _chatsRepository.UpdateAsync(chatEntity));
         }
 
@@ -111,6 +110,7 @@ namespace Messenger.BLL.Managers
                 .ToList();
 
             var chatModelList = _mapper.Map<List<ChatViewModel>>(chatEntityList);
+
             return chatModelList;
         }
 
@@ -135,6 +135,7 @@ namespace Messenger.BLL.Managers
                 UserId = userId
             };
             var userAccountNewEntity = _mapper.Map<UserAccount>(userAccountModel);
+
             return _mapper.Map<UserAccountCreateModel>(await _userAccountsRepository.CreateAsync(userAccountNewEntity));
         }
 
@@ -186,6 +187,7 @@ namespace Messenger.BLL.Managers
 
             userAccountEntity.IsBanned = true;
             userAccountEntity.IsAdmin = false;
+
             return _mapper.Map<UserAccountUpdateModel>(await _userAccountsRepository.UpdateAsync(userAccountEntity));
         }
 
@@ -204,6 +206,7 @@ namespace Messenger.BLL.Managers
                 throw new KeyNotFoundException();
 
             userAccountEntity.IsBanned = false;
+
             return _mapper.Map<UserAccountUpdateModel>(await _userAccountsRepository.UpdateAsync(userAccountEntity));
         }
 
@@ -222,6 +225,7 @@ namespace Messenger.BLL.Managers
                 throw new KeyNotFoundException();
 
             userAccountEntity.IsAdmin = true;
+
             return _mapper.Map<UserAccountUpdateModel>(await _userAccountsRepository.UpdateAsync(userAccountEntity));
         }
 
@@ -240,7 +244,22 @@ namespace Messenger.BLL.Managers
                 throw new KeyNotFoundException();
 
             userAccountEntity.IsAdmin = false;
+
             return _mapper.Map<UserAccountUpdateModel>(await _userAccountsRepository.UpdateAsync(userAccountEntity));
+        }
+
+        public UserAccountViewModel GetOwner(int chatId, string userId)
+        {
+            //throw KeyNotFoundException, if current user isn't in the chat
+            ThrowExceptionIfUserIsNotInChat(chatId, userId);
+
+            var ownerEntity = _userAccountsRepository.GetAll()
+                .Where(u => u.IsOwner && u.ChatId == chatId)
+                .SingleOrDefault();
+
+            var userModel = _mapper.Map<UserAccountViewModel>(ownerEntity);
+
+            return userModel;
         }
 
         public IEnumerable<UserAccountViewModel> GetAllBannedUsers(int chatId, string userId)
@@ -254,6 +273,7 @@ namespace Messenger.BLL.Managers
                 .ToList();
 
             var userModelList = _mapper.Map<List<UserAccountViewModel>>(bannedUsersEntityList);
+
             return userModelList;
         }
 
@@ -268,6 +288,7 @@ namespace Messenger.BLL.Managers
                 .ToList();
 
             var userModelList = _mapper.Map<List<UserAccountViewModel>>(adminsEntityList);
+
             return userModelList;
         }
 
@@ -282,6 +303,7 @@ namespace Messenger.BLL.Managers
                 .ToList();
 
             var userModelList = _mapper.Map<List<UserAccountViewModel>>(usersEntityList);
+
             return userModelList;
         }
 

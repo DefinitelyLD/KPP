@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Messenger.DAL.Entities
+﻿namespace Messenger.DAL.Entities
 {
     public class UserAccount: BaseEntity<int>
     {

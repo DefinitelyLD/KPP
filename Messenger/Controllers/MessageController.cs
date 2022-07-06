@@ -23,24 +23,27 @@ namespace Messenger.WEB.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<MessageViewModel>> SendMessage([FromForm] MessageCreateModel messageModel)
+        public async Task<ActionResult<MessageViewModel>> SendMessage([FromBody] MessageCreateModel messageModel)
         {
             var userId = GetUserIdFromHttpContext();
+
             return await _messageManager.SendMessage(messageModel, userId);
         }
 
-        [HttpPost]
+        [HttpPut]
         public async Task<ActionResult<MessageViewModel>> EditMessage([FromBody] MessageUpdateModel messageModel)
         {
             var userId = GetUserIdFromHttpContext();
+
             return await _messageManager.EditMessage(messageModel, userId);
 
         }
 
         [HttpDelete]
-        public async Task<ActionResult<bool>> DeleteMessage([FromQuery] int messageId)
+        public async Task<ActionResult<bool>> DeleteMessage([FromBody] int messageId)
         {
             var userId = GetUserIdFromHttpContext();
+
             return await _messageManager.DeleteMessage(messageId, userId);
         }
 
@@ -54,6 +57,7 @@ namespace Messenger.WEB.Controllers
         public IEnumerable<MessageViewModel> GetMessagesFromChat([FromQuery] int chatId, DateTime? date = null)
         {
             var userId = GetUserIdFromHttpContext();
+
             return _messageManager.GetMessagesFromChat(chatId, userId, date);
         }
 
@@ -62,6 +66,7 @@ namespace Messenger.WEB.Controllers
             var httpContext = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier);
             if (httpContext == null)
                 throw new KeyNotFoundException();
+
             return httpContext.Value;
         }
     }

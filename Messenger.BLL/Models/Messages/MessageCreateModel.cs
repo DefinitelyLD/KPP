@@ -1,13 +1,4 @@
-﻿using Messenger.DAL.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Messenger.BLL.Chats;
-using Messenger.BLL.Users;
-using Messenger.BLL.MessageImages;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 
 namespace Messenger.BLL.Messages
 {
