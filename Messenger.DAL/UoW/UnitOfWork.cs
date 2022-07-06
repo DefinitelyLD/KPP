@@ -7,17 +7,27 @@ namespace Messenger.DAL.UoW
 {
     public class UnitOfWork : IUnitOfWork
     {
-        public IUsersRepository UsersRepository { get; }
-        public IChatsRepository ChatsRepository { get; }
-        public IMessagesRepository MessagesRepository { get; }
+        public IUsersRepository Users { get; }
+        public IChatsRepository Chats { get; }
+        public IMessagesRepository Messages { get; }
+        public IUserAccountsRepository UserAccounts { get; }
+        public IMessageImagesRepository MessageImages { get; }
+
         private readonly AppDbContext _context;
 
-        public UnitOfWork(AppDbContext context, IUsersRepository usersRepository, IChatsRepository chatsRepository, IMessagesRepository messagesRepository)
+        public UnitOfWork(AppDbContext context, 
+            IUsersRepository usersRepository, 
+            IChatsRepository chatsRepository, 
+            IMessagesRepository messagesRepository,
+            IMessageImagesRepository messageImagesRepository,
+            IUserAccountsRepository userAccountsRepository)
         {
             _context = context;
-            UsersRepository = usersRepository;
-            ChatsRepository = chatsRepository;
-            MessagesRepository = messagesRepository;
+            Users = usersRepository;
+            UserAccounts = userAccountsRepository;
+            Chats = chatsRepository;
+            Messages = messagesRepository;
+            MessageImages = messageImagesRepository;
         }
         public int Save()
         {

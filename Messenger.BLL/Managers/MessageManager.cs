@@ -2,7 +2,7 @@
 using Messenger.BLL.MessageImages;
 using Messenger.BLL.Messages;
 using Messenger.DAL.Entities;
-using Messenger.DAL.Repositories.Interfaces;
+using Messenger.DAL.UoW;
 using Microsoft.AspNetCore.Hosting;
 using System;
 using System.Collections.Generic;
@@ -15,29 +15,23 @@ namespace Messenger.BLL.Managers
     public class MessageManager : IMessageManager
     {
         private readonly IMapper _mapper;
-        private readonly IMessagesRepository _messagesRepository;
-        private readonly IMessageImagesRepository _messageImagesRepository;
-        private readonly IUserAccountsRepository _userAccountsRepository;
         private readonly IWebHostEnvironment _environment;
         private readonly string PathToSave;
-        
-        public MessageManager(IMapper mapper, 
-                              IMessagesRepository messagesRepository, 
-                              IMessageImagesRepository messageImagesRepository,
-                              IUserAccountsRepository userAccountsRepository,
-                              IWebHostEnvironment environment)
+        private readonly IUnitOfWork _unitOfWork;
+
+        public MessageManager(IMapper mapper,
+                              IWebHostEnvironment environment,
+                              IUnitOfWork unitOfWork)
         {
             _mapper = mapper;
-            _messagesRepository = messagesRepository;
-            _messageImagesRepository = messageImagesRepository;
-            _userAccountsRepository = userAccountsRepository;
             _environment = environment;
             PathToSave = _environment.WebRootPath + "\\Images\\";
+            _unitOfWork = unitOfWork;
         }
 
         public async Task<MessageViewModel> SendMessage (MessageCreateModel messageModel, string userId)
         {
-            var userAccountEntity = _userAccountsRepository
+            var userAccountEntity = _unitOfWork.UserAccounts
                 .GetAll()
                 .Where(u => u.User.Id == userId && 
                 u.User.Id == messageModel.UserId && !u.IsBanned && u.ChatId == messageModel.ChatId)
@@ -48,7 +42,7 @@ namespace Messenger.BLL.Managers
 
             var messageEntity = _mapper.Map<Message>(messageModel);
             var messageViewModel = _mapper.Map<MessageViewModel>
-                (await _messagesRepository.CreateAsync(messageEntity));
+                (await _unitOfWork.Messages.CreateAsync(messageEntity));
 
             var imageViewModelCollection = new List<MessageImageViewModel>();
 
@@ -67,7 +61,7 @@ namespace Messenger.BLL.Managers
                     };
                     var messageImageEntity = _mapper.Map<MessageImage>(imageModel);
                     imageViewModelCollection.Add(_mapper.Map<MessageImageViewModel>(messageImageEntity));
-                    await _messageImagesRepository.CreateAsync(messageImageEntity);
+                    await _unitOfWork.MessageImages.CreateAsync(messageImageEntity);
                 }
             }
             messageViewModel.Images = imageViewModelCollection;
@@ -77,8 +71,8 @@ namespace Messenger.BLL.Managers
 
         public async Task<MessageViewModel> EditMessage(MessageUpdateModel messageModel, string userId)
         {
-            var messageEntity = _messagesRepository.GetById(messageModel.Id);
-            var userAccountEntity = _userAccountsRepository
+            var messageEntity = _unitOfWork.Messages.GetById(messageModel.Id);
+            var userAccountEntity = _unitOfWork.UserAccounts
                 .GetAll()
                 .Where(u => u.User.Id == userId &&
                 u.User.Id == messageEntity.UserId && !u.IsBanned && u.ChatId == messageEntity.ChatId)
@@ -92,24 +86,24 @@ namespace Messenger.BLL.Managers
 
             if (messageFile != null)
             {
-                var messageImageEntity = _messageImagesRepository.GetById(messageModel.ImageId);
+                var messageImageEntity = _unitOfWork.MessageImages.GetById(messageModel.ImageId);
                 File.Delete(PathToSave + messageImageEntity.Path);
                 var fileName = Guid.NewGuid().ToString() + Path.GetExtension(messageFile.FileName);
                 string filePath = PathToSave + fileName;
                 using Stream fileStream = new FileStream(filePath, FileMode.Create);
                 await messageFile.CopyToAsync(fileStream);
                 messageImageEntity.Path = fileName;
-                await _messageImagesRepository.UpdateAsync(messageImageEntity);
+                await _unitOfWork.MessageImages.UpdateAsync(messageImageEntity);
             }
 
-            return _mapper.Map<MessageViewModel>(await _messagesRepository.UpdateAsync(messageEntity));
+            return _mapper.Map<MessageViewModel>(await _unitOfWork.Messages.UpdateAsync(messageEntity));
         }
 
         public async Task<bool> DeleteMessage(int messageId, string userId)
         {
-            var messageEntity = await _messagesRepository.GetByIdAsync(messageId);
+            var messageEntity = await _unitOfWork.Messages.GetByIdAsync(messageId);
 
-            var userAccountEntity = _userAccountsRepository
+            var userAccountEntity = _unitOfWork.UserAccounts
                 .GetAll()
                 .Where(u => u.User.Id == userId &&
                 u.User.Id == messageEntity.UserId && !u.IsBanned && u.ChatId == messageEntity.ChatId)
@@ -118,13 +112,13 @@ namespace Messenger.BLL.Managers
             if (userAccountEntity == null)
                 throw new KeyNotFoundException();
 
-            return await _messagesRepository.DeleteByIdAsync(messageId);
+            return await _unitOfWork.Messages.DeleteByIdAsync(messageId);
         }
 
         public MessageViewModel GetMessage(int messageId)
         {
             //var messageEntity = _messagesRepository.GetById(messageId);
-            var messageEntity = _messagesRepository.GetAll()
+            var messageEntity = _unitOfWork.Messages.GetAll()
                 .Where(u => u.Id == messageId)
                 .SingleOrDefault();
 
@@ -136,12 +130,12 @@ namespace Messenger.BLL.Managers
 
         public IEnumerable<MessageViewModel> GetMessagesFromChat(int chatId, string userId, DateTime? date = null)
         {
-            var userAccountEntity = _userAccountsRepository
+            var userAccountEntity = _unitOfWork.UserAccounts
                 .GetAll() 
                 .Where(u => u.User.Id == userId && u.Chat.Id == chatId)
                 .SingleOrDefault();
 
-            var messageEntityList = _messagesRepository
+            var messageEntityList = _unitOfWork.Messages
                 .GetAll()
                 .Where(predicate: u => u.ChatId == chatId && 
                 (date == null || u.CreatedTime.Date == date.Value.Date))
