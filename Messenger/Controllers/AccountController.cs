@@ -1,13 +1,10 @@
-﻿using Messenger.BLL;
-using Messenger.BLL.Managers;
+﻿using Messenger.BLL.Managers;
 using Messenger.BLL.Users;
 using Messenger.DAL.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Routing;
-using System.Collections;
 using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading.Tasks;

@@ -1,7 +1,6 @@
 ﻿using Messenger.BLL.Chats;
 using Messenger.BLL.Managers;
 using Messenger.BLL.UserAccounts;
-using Messenger.BLL.Users;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;

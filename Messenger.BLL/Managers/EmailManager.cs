@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
+﻿using System.IO;
 using System.Threading.Tasks;
-using MailKit;
 using MailKit.Net.Smtp;
-using MailKit.Security;
 using Messenger.BLL.Managers.Interfaces;
 using Microsoft.Extensions.Configuration;
 using MimeKit;

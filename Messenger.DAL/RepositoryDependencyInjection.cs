@@ -1,16 +1,10 @@
 ﻿using Messenger.DAL.Context;
-using Messenger.DAL.Entities;
 using Messenger.DAL.Repositories;
 using Messenger.DAL.Repositories.Interfaces;
 using Messenger.DAL.UoW;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Messenger.DAL
 {
