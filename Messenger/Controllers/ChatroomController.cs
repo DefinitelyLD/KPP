@@ -35,7 +35,7 @@ namespace Messenger.WEB.Controllers
             return await _chatroomManager.CreateChatroom(chat, userId);
         }
 
-        [HttpPatch]
+        [HttpPut]
         public async Task<ActionResult<ChatUpdateModel>> EditChatroom([FromBody] ChatUpdateModel chat)
         {
             var adminId = GetUserIdFromHttpContext();

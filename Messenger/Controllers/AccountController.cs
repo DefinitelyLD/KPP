@@ -136,7 +136,7 @@ namespace Messenger.WEB.Controllers
             return _accountManager.GetAllBlockedUsers(userId);
         }
 
-        [HttpPatch]
+        [HttpPut]
         public UserViewModel UpdateUser([FromBody] UserUpdateModel userModel)
         {
             var userId = GetUserIdFromHttpContext();
