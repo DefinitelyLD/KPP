@@ -52,7 +52,9 @@ namespace Messenger.BLL.Managers
         public async Task<UserViewModel> LoginUser(UserLoginModel model)
         {
             var userEntity = _unitOfWork.Users.GetAll().Where(x => x.UserName == model.UserName).SingleOrDefault();
-            
+
+            if (userEntity == null)
+                throw new BadRequestException("This username is not registered");
             if (!await _userManager.IsEmailConfirmedAsync(userEntity))
                 throw new BadRequestException("Email is not confirmed");
             if (userEntity == null)
