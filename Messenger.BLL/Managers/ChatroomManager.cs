@@ -69,10 +69,9 @@ namespace Messenger.BLL.Managers
 
             var chatEntity = await _unitOfWork.Chats.GetByIdAsync(chatId);
             chatEntity.IsDeleted = true;
-            await _unitOfWork.Chats.UpdateAsync(chatEntity);
-            var resultEntity = await _unitOfWork.Chats.GetByIdAsync(chatId);
+            var result = await _unitOfWork.Chats.UpdateAsync(chatEntity);
 
-            return resultEntity.IsDeleted;
+            return result.IsDeleted;
         }
 
         public ChatViewModel GetChatroom(int chatId, string userId)
@@ -149,10 +148,9 @@ namespace Messenger.BLL.Managers
 
             userAccountEntity.IsLeft = true;
             userAccountEntity.IsAdmin = false;
-            await _unitOfWork.UserAccounts.UpdateAsync(userAccountEntity);
-            var resultEntity = await _unitOfWork.UserAccounts.GetByIdAsync(userAccountEntity.Id);
+            var result = await _unitOfWork.UserAccounts.UpdateAsync(userAccountEntity);
 
-            return resultEntity.IsLeft;
+            return result.IsLeft;
         }
 
         public async Task<bool> KickUser(int userAccountId, string adminId)
@@ -174,10 +172,9 @@ namespace Messenger.BLL.Managers
 
             userAccountEntity.IsLeft = true;
             userAccountEntity.IsAdmin = false;
-            await _unitOfWork.UserAccounts.UpdateAsync(userAccountEntity);
-            var resultEntity = await _unitOfWork.UserAccounts.GetByIdAsync(userAccountEntity.Id);
+            var result = await _unitOfWork.UserAccounts.UpdateAsync(userAccountEntity);
 
-            return resultEntity.IsLeft;
+            return result.IsLeft;
         }
 
         public async Task<UserAccountUpdateModel> BanUser(int userAccountId, string adminId)
