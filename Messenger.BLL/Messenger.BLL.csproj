@@ -5,6 +5,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Images\**" />
+    <EmbeddedResource Remove="Images\**" />
+    <None Remove="Images\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="11.0.0" />
     <PackageReference Include="FluentValidation" Version="10.4.0" />
     <PackageReference Include="FluentValidation.AspNetCore" Version="10.4.0" />
@@ -15,10 +21,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Messenger.DAL\Messenger.DAL.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Images\" />
   </ItemGroup>
 
 </Project>
