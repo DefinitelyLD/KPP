@@ -67,7 +67,7 @@ namespace Messenger.WEB.Controllers
         /// <remarks>
         /// Sample request:
         ///
-        ///     DELETE /DeleteMessage
+        ///     PATCH /DeleteMessage
         ///     {
         ///        "messageId": 1,
         ///     }

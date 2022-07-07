@@ -63,7 +63,7 @@ namespace Messenger.WEB.Controllers
         /// <remarks>
         /// Sample request:
         ///
-        ///     DELETE /DelteteChatroom
+        ///     PATCH /DelteteChatroom
         ///     {
         ///        "chatId": 1,
         ///     }
@@ -115,7 +115,7 @@ namespace Messenger.WEB.Controllers
         /// <remarks>
         /// Sample request:
         ///
-        ///     DELETE /LeaveFromChatroom
+        ///     PATCH /LeaveFromChatroom
         ///     {
         ///        "chatId": 1
         ///     }
@@ -131,7 +131,7 @@ namespace Messenger.WEB.Controllers
         /// <remarks>
         /// Sample request:
         ///
-        ///     DELETE /KickUser
+        ///     PATCH /KickUser
         ///     {
         ///        "userAccountId": 1
         ///     }
