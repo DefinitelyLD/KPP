@@ -113,10 +113,9 @@ namespace Messenger.BLL.Managers
                 throw new KeyNotFoundException();
 
             messageEntity.IsDeleted = true;
-            await _unitOfWork.Messages.UpdateAsync(messageEntity);
-            var resultEntity = await _unitOfWork.Messages.GetByIdAsync(messageId);
+            var result = await _unitOfWork.Messages.UpdateAsync(messageEntity);
 
-            return resultEntity.IsDeleted;
+            return result.IsDeleted;
         }
 
         public MessageViewModel GetMessage(int messageId)
