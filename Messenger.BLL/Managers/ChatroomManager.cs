@@ -70,8 +70,9 @@ namespace Messenger.BLL.Managers
             var chatEntity = await _unitOfWork.Chats.GetByIdAsync(chatId);
             chatEntity.IsDeleted = true;
             await _unitOfWork.Chats.UpdateAsync(chatEntity);
+            var resultEntity = await _unitOfWork.Chats.GetByIdAsync(chatId);
 
-            return true;
+            return resultEntity.IsDeleted;
         }
 
         public ChatViewModel GetChatroom(int chatId, string userId)
@@ -146,7 +147,12 @@ namespace Messenger.BLL.Managers
             if (userAccountEntity.IsOwner)
                 throw new BadRequestException("Owner can't leave the chat");
 
-            return await LeaveChat(userAccountEntity);
+            userAccountEntity.IsLeft = true;
+            userAccountEntity.IsAdmin = false;
+            await _unitOfWork.UserAccounts.UpdateAsync(userAccountEntity);
+            var resultEntity = await _unitOfWork.UserAccounts.GetByIdAsync(userAccountEntity.Id);
+
+            return resultEntity.IsLeft;
         }
 
         public async Task<bool> KickUser(int userAccountId, string adminId)
@@ -166,7 +172,12 @@ namespace Messenger.BLL.Managers
             if (userAccountEntity.IsAdmin && !adminAccountEntity.IsOwner)
                 throw new BadRequestException("You can't kick the admin");
 
-            return await LeaveChat(userAccountEntity);
+            userAccountEntity.IsLeft = true;
+            userAccountEntity.IsAdmin = false;
+            await _unitOfWork.UserAccounts.UpdateAsync(userAccountEntity);
+            var resultEntity = await _unitOfWork.UserAccounts.GetByIdAsync(userAccountEntity.Id);
+
+            return resultEntity.IsLeft;
         }
 
         public async Task<UserAccountUpdateModel> BanUser(int userAccountId, string adminId)
@@ -314,14 +325,6 @@ namespace Messenger.BLL.Managers
 
             if (currentUserEntity == null)
                 throw new KeyNotFoundException();
-        }
-
-        private async Task<bool> LeaveChat(UserAccount userAccountEntity)
-        {
-            userAccountEntity.IsLeft = true;
-            userAccountEntity.IsAdmin = false;
-            await _unitOfWork.UserAccounts.UpdateAsync(userAccountEntity);
-            return true;
         }
     }
 }

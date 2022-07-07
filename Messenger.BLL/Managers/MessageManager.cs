@@ -114,8 +114,9 @@ namespace Messenger.BLL.Managers
 
             messageEntity.IsDeleted = true;
             await _unitOfWork.Messages.UpdateAsync(messageEntity);
+            var resultEntity = await _unitOfWork.Messages.GetByIdAsync(messageId);
 
-            return true;
+            return resultEntity.IsDeleted;
         }
 
         public MessageViewModel GetMessage(int messageId)
