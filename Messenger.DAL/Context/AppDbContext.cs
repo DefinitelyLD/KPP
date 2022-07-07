@@ -11,10 +11,7 @@ namespace Messenger.DAL.Context
         public DbSet<MessageImage> MessageImages { get; set; }
         public DbSet<UserAccount> UserAccounts { get; set; }
         public AppDbContext(DbContextOptions<AppDbContext> options)
-            : base(options)
-        {
-            Database.EnsureCreated();
-        }
+            : base(options) {}
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

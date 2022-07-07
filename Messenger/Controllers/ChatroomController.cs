@@ -63,13 +63,13 @@ namespace Messenger.WEB.Controllers
         /// <remarks>
         /// Sample request:
         ///
-        ///     DELETE /DelteteChatroom
+        ///     PATCH /DelteteChatroom
         ///     {
         ///        "chatId": 1,
         ///     }
         /// </remarks>
-        [HttpDelete]
-        public async Task<ActionResult<bool>> DeleteChatroom([FromBody] int chatId)
+        [HttpPatch]
+        public async Task<ActionResult<bool>> SoftDeleteChatroom([FromBody] int chatId)
         {
             var userId = GetUserIdFromHttpContext();
 
@@ -115,12 +115,12 @@ namespace Messenger.WEB.Controllers
         /// <remarks>
         /// Sample request:
         ///
-        ///     DELETE /LeaveFromChatroom
+        ///     PATCH /LeaveFromChatroom
         ///     {
         ///        "chatId": 1
         ///     }
         /// </remarks>
-        [HttpDelete]
+        [HttpPatch]
         public async Task<ActionResult<bool>> LeaveFromChatroom([FromBody] int chatId)
         {
             var userId = GetUserIdFromHttpContext();
@@ -131,12 +131,12 @@ namespace Messenger.WEB.Controllers
         /// <remarks>
         /// Sample request:
         ///
-        ///     DELETE /KickUser
+        ///     PATCH /KickUser
         ///     {
         ///        "userAccountId": 1
         ///     }
         /// </remarks>
-        [HttpDelete]
+        [HttpPatch]
         public async Task<ActionResult<bool>> KickUser([FromBody] int userAccountId)
         {
             var adminId = GetUserIdFromHttpContext();

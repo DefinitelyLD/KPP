@@ -7,5 +7,6 @@
         public bool IsBanned { get; set; }
         public bool IsAdmin { get; set; }
         public bool IsOwner { get; set; }
+        public bool IsLeft { get; set; }
     }
 }

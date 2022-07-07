@@ -63,16 +63,17 @@ namespace Messenger.WEB.Controllers
 
         }
 
+
         /// <remarks>
         /// Sample request:
         ///
-        ///     DELETE /DeleteMessage
+        ///     PATCH /DeleteMessage
         ///     {
         ///        "messageId": 1,
         ///     }
         /// </remarks>
-        [HttpDelete]
-        public async Task<ActionResult<bool>> DeleteMessage([FromBody] int messageId)
+        [HttpPatch]
+        public async Task<ActionResult<bool>> SoftDeleteMessage([FromBody] int messageId)
         {
             var userId = GetUserIdFromHttpContext();
 

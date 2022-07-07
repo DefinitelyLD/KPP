@@ -106,20 +106,24 @@ namespace Messenger.BLL.Managers
             var userAccountEntity = _unitOfWork.UserAccounts
                 .GetAll()
                 .Where(u => u.User.Id == userId &&
-                u.User.Id == messageEntity.UserId && !u.IsBanned && u.ChatId == messageEntity.ChatId)
+                u.User.Id == messageEntity.UserId && !u.IsBanned && !u.IsLeft && u.ChatId == messageEntity.ChatId)
                 .SingleOrDefault();
 
             if (userAccountEntity == null)
                 throw new KeyNotFoundException();
 
-            return await _unitOfWork.Messages.DeleteByIdAsync(messageId);
+            messageEntity.IsDeleted = true;
+            await _unitOfWork.Messages.UpdateAsync(messageEntity);
+            var resultEntity = await _unitOfWork.Messages.GetByIdAsync(messageId);
+
+            return resultEntity.IsDeleted;
         }
 
         public MessageViewModel GetMessage(int messageId)
         {
             //var messageEntity = _messagesRepository.GetById(messageId);
             var messageEntity = _unitOfWork.Messages.GetAll()
-                .Where(u => u.Id == messageId)
+                .Where(u => u.Id == messageId && !u.IsDeleted)
                 .SingleOrDefault();
 
             if (messageEntity == null)
@@ -137,7 +141,7 @@ namespace Messenger.BLL.Managers
 
             var messageEntityList = _unitOfWork.Messages
                 .GetAll()
-                .Where(predicate: u => u.ChatId == chatId && 
+                .Where(predicate: u => u.ChatId == chatId && !u.IsDeleted && 
                 (date == null || u.CreatedTime.Date == date.Value.Date))
                 .ToList();
 

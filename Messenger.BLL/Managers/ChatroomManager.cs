@@ -67,17 +67,22 @@ namespace Messenger.BLL.Managers
             if (userAccountEntity == null)
                 throw new KeyNotFoundException();
 
-            return await _unitOfWork.Chats.DeleteByIdAsync(chatId);
+            var chatEntity = await _unitOfWork.Chats.GetByIdAsync(chatId);
+            chatEntity.IsDeleted = true;
+            await _unitOfWork.Chats.UpdateAsync(chatEntity);
+            var resultEntity = await _unitOfWork.Chats.GetByIdAsync(chatId);
+
+            return resultEntity.IsDeleted;
         }
 
         public ChatViewModel GetChatroom(int chatId, string userId)
         {
             var userAccountEntity = _unitOfWork.UserAccounts.GetAll()
-                .Where(u => u.User.Id == userId && u.Chat.Id == chatId)
+                .Where(u => u.User.Id == userId && u.Chat.Id == chatId && !u.IsLeft)
                 .SingleOrDefault();
 
             var chatEntity = _unitOfWork.Chats.GetAll()
-                .Where(u => u.Id == chatId && u.Users.Contains(userAccountEntity))
+                .Where(u => u.Id == chatId && u.Users.Contains(userAccountEntity) && !u.IsDeleted)
                 .SingleOrDefault();
 
             if (userAccountEntity == null || chatEntity == null)
@@ -89,7 +94,7 @@ namespace Messenger.BLL.Managers
         public IEnumerable<ChatViewModel> GetAllChatrooms(string userId)
         {
             var userAccountEntityList = _unitOfWork.UserAccounts.GetAll()
-                .Where(u => u.User.Id == userId)
+                .Where(u => u.User.Id == userId && !u.IsLeft)
                 .ToList();
 
             var chatIdList = new List<int>();
@@ -100,7 +105,7 @@ namespace Messenger.BLL.Managers
 
             var chatEntityList = _unitOfWork.Chats
                 .GetAll()
-                .Where(u => chatIdList.Contains(u.Id))
+                .Where(u => chatIdList.Contains(u.Id) && !u.IsDeleted)
                 .ToList();
 
             var chatModelList = _mapper.Map<List<ChatViewModel>>(chatEntityList);
@@ -142,7 +147,12 @@ namespace Messenger.BLL.Managers
             if (userAccountEntity.IsOwner)
                 throw new BadRequestException("Owner can't leave the chat");
 
-            return await _unitOfWork.UserAccounts.DeleteByIdAsync(userAccountEntity.Id);
+            userAccountEntity.IsLeft = true;
+            userAccountEntity.IsAdmin = false;
+            await _unitOfWork.UserAccounts.UpdateAsync(userAccountEntity);
+            var resultEntity = await _unitOfWork.UserAccounts.GetByIdAsync(userAccountEntity.Id);
+
+            return resultEntity.IsLeft;
         }
 
         public async Task<bool> KickUser(int userAccountId, string adminId)
@@ -162,7 +172,12 @@ namespace Messenger.BLL.Managers
             if (userAccountEntity.IsAdmin && !adminAccountEntity.IsOwner)
                 throw new BadRequestException("You can't kick the admin");
 
-            return await _unitOfWork.UserAccounts.DeleteByIdAsync(userAccountEntity.Id);
+            userAccountEntity.IsLeft = true;
+            userAccountEntity.IsAdmin = false;
+            await _unitOfWork.UserAccounts.UpdateAsync(userAccountEntity);
+            var resultEntity = await _unitOfWork.UserAccounts.GetByIdAsync(userAccountEntity.Id);
+
+            return resultEntity.IsLeft;
         }
 
         public async Task<UserAccountUpdateModel> BanUser(int userAccountId, string adminId)
@@ -293,7 +308,7 @@ namespace Messenger.BLL.Managers
 
             var usersEntityList = _unitOfWork.UserAccounts
                 .GetAll()
-                .Where(u => u.ChatId == chatId)
+                .Where(u => !u.IsLeft && u.ChatId == chatId)
                 .ToList();
 
             var userModelList = _mapper.Map<List<UserAccountViewModel>>(usersEntityList);
@@ -311,6 +326,5 @@ namespace Messenger.BLL.Managers
             if (currentUserEntity == null)
                 throw new KeyNotFoundException();
         }
-
     }
 }
