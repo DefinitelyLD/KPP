@@ -8,6 +8,5 @@ namespace Messenger.BLL.Messages
         public string Text { get; set; }
         public IFormFile File { get; set; }
         public int ImageId { get; set; }
-        public bool IsDeleted { get; set; }
     }
 }
