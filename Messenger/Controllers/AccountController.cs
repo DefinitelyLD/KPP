@@ -56,7 +56,7 @@ namespace Messenger.WEB.Controllers
         }
 
         [AllowAnonymous]
-        [HttpPatch]
+        [HttpGet]
         public async Task<ActionResult<bool>> ConfirmEmail(string userId, string code)
         {
             var result = await _accountManager.ConfirmEmail(userId, code);
