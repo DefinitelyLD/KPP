@@ -39,7 +39,7 @@ namespace Messenger.WEB.Controllers
 
         }
 
-        [HttpDelete]
+        [HttpPatch]
         public async Task<ActionResult<bool>> DeleteMessage([FromBody] int messageId)
         {
             var userId = GetUserIdFromHttpContext();

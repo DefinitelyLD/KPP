@@ -12,5 +12,6 @@ namespace Messenger.DAL.Entities
         public virtual ICollection<Message> Messages { get; set; }
 
         public virtual ICollection<UserAccount> Users { get; set; }
+        public bool IsDeleted { get; set; } = false;
     }
 }

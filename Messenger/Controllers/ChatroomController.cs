@@ -42,7 +42,7 @@ namespace Messenger.WEB.Controllers
             return await _chatroomManager.EditChatroom(chat, adminId);
         }
 
-        [HttpDelete]
+        [HttpPatch]
         public async Task<ActionResult<bool>> DeleteChatroom([FromBody] int chatId)
         {
             var userId = GetUserIdFromHttpContext();
@@ -78,7 +78,7 @@ namespace Messenger.WEB.Controllers
             return await _chatroomManager.AddToChatroom(userId, chatId, currentUserId);
         }
 
-        [HttpDelete]
+        [HttpPatch]
         public async Task<ActionResult<bool>> LeaveFromChatroom([FromBody] int chatId)
         {
             var userId = GetUserIdFromHttpContext();
@@ -86,7 +86,7 @@ namespace Messenger.WEB.Controllers
             return await _chatroomManager.LeaveFromChatroom(chatId, userId);
         }
 
-        [HttpDelete]
+        [HttpPatch]
         public async Task<ActionResult<bool>> KickUser([FromBody] int userAccountId)
         {
             var adminId = GetUserIdFromHttpContext();
