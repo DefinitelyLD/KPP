@@ -30,9 +30,6 @@ namespace Messenger.BLL.Managers
 
         public async Task<UserViewModel> RegisterUser(UserCreateModel model)
         {
-            var isUserExist = _unitOfWork.Users.GetAll().Where(x => x.UserName == model.UserName).Any();
-            if (isUserExist)
-                throw new BadRequestException("This username is already taken");
             User user = _mapper.Map<User>(model);
             var result = await _userManager.CreateAsync(user, model.Password);
             if (!result.Succeeded)
@@ -58,7 +55,6 @@ namespace Messenger.BLL.Managers
 
             if (userEntity == null)
                 throw new BadRequestException("This username is not registered");
-
             if (!await _userManager.IsEmailConfirmedAsync(userEntity))
                 throw new BadRequestException("Email is not confirmed");
             if (userEntity == null)
