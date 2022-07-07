@@ -22,6 +22,19 @@ namespace Messenger.WEB.Controllers
             _httpContextAccessor = httpContextAccessor;
         }
 
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     POST /SendMessage
+        ///     {
+        ///        "chatId": 1,
+        ///        "userId": "d073e154-282f-4ee1-8a08-1e9d6744e101",
+        ///        files: [
+        ///         "string"
+        ///        ],
+        ///        "text": "Hello, chat!"
+        ///     }
+        /// </remarks>
         [HttpPost]
         public async Task<ActionResult<MessageViewModel>> SendMessage([FromBody] MessageCreateModel messageModel)
         {
@@ -30,6 +43,17 @@ namespace Messenger.WEB.Controllers
             return await _messageManager.SendMessage(messageModel, userId);
         }
 
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     PUT /EditMessage
+        ///     {
+        ///        "id": 1,
+        ///        "text": "Hi, chat!",
+        ///        "file": "string",
+        ///        "imageId": 0
+        ///     }
+        /// </remarks>
         [HttpPut]
         public async Task<ActionResult<MessageViewModel>> EditMessage([FromBody] MessageUpdateModel messageModel)
         {
@@ -39,6 +63,15 @@ namespace Messenger.WEB.Controllers
 
         }
 
+
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     DELETE /DeleteMessage
+        ///     {
+        ///        "messageId": 1,
+        ///     }
+        /// </remarks>
         [HttpPatch]
         public async Task<ActionResult<bool>> DeleteMessage([FromBody] int messageId)
         {

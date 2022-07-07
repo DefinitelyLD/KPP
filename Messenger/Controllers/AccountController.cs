@@ -27,6 +27,16 @@ namespace Messenger.WEB.Controllers
             _emailManager = emailManager;
         }
 
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     POST /Register
+        ///     {
+        ///        "userName": "MainUser",
+        ///        "email": "nazarkinstephan@gmail.com",
+        ///        "password": "12345678"
+        ///     }
+        /// </remarks>
         [AllowAnonymous]
         [HttpPost]
         public async Task<ActionResult<UserViewModel>> Register([FromBody] UserCreateModel model)
@@ -54,6 +64,15 @@ namespace Messenger.WEB.Controllers
             return result;
         }
 
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     POST /Login
+        ///     {
+        ///        "userName": "MainUser",
+        ///        "password": "12345678"
+        ///     }
+        /// </remarks>
         [AllowAnonymous]
         [HttpPost]
         public async Task<ActionResult<UserViewModel>> Login([FromBody] UserLoginModel model)
@@ -63,6 +82,16 @@ namespace Messenger.WEB.Controllers
             return result;
         }
 
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     PATCH /ChangePassword
+        ///     {
+        ///        "id": "d073e154-282f-4ee1-8a08-1e9d6744e101",
+        ///        "oldPassword": "12345678",
+        ///        "newPassword": "123456789"
+        ///     }
+        /// </remarks>
         [HttpPatch]
         public async Task<bool> ChangePassword([FromBody] UserChangePasswordModel model)
         {
@@ -76,7 +105,7 @@ namespace Messenger.WEB.Controllers
         {
             return _accountManager.GetAllUsers();
         }
-        
+
         [HttpGet]
         public UserViewModel GetUser([FromQuery] string id)
         {
@@ -89,6 +118,14 @@ namespace Messenger.WEB.Controllers
             return _accountManager.GetUserByUserName(userName);
         }
 
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     POST /AddFriend
+        ///     {
+        ///        "userId": "acd91b54-7696-4e03-bee0-49f0dde9ad0c"
+        ///     }
+        /// </remarks>
         [HttpPost]
         public UserViewModel AddFriend([FromBody] string friendId)
         {
@@ -97,6 +134,14 @@ namespace Messenger.WEB.Controllers
             return _accountManager.AddFriend(userId, friendId);
         }
 
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     DELETE /DeleteFriend
+        ///     {
+        ///        "userId": "acd91b54-7696-4e03-bee0-49f0dde9ad0c"
+        ///     }
+        /// </remarks>
         [HttpDelete]
         public UserViewModel DeleteFriend([FromBody] string friendId)
         {
@@ -111,6 +156,14 @@ namespace Messenger.WEB.Controllers
             return _accountManager.GetAllFriends(userId);
         }
 
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     POST /BlockUser
+        ///     {
+        ///        "userId": "acd91b54-7696-4e03-bee0-49f0dde9ad0c"
+        ///     }
+        /// </remarks>
         [HttpPost]
         public UserViewModel BlockUser([FromBody] string blockedUserId)
         {
@@ -119,6 +172,14 @@ namespace Messenger.WEB.Controllers
             return _accountManager.BlockUser(userId, blockedUserId);
         }
 
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     DELETE /UnblockUser
+        ///     {
+        ///        "userId": "acd91b54-7696-4e03-bee0-49f0dde9ad0c"
+        ///     }
+        /// </remarks>
         [HttpDelete]
         public UserViewModel UnblockUser([FromBody] string blockedUserId)
         {
@@ -133,6 +194,16 @@ namespace Messenger.WEB.Controllers
             return _accountManager.GetAllBlockedUsers(userId);
         }
 
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     PUT /UpdateUser
+        ///     {
+        ///        "id": "d073e154-282f-4ee1-8a08-1e9d6744e101",
+        ///        "userName": "MainUser2",
+        ///        "email": "stephannazarkin@gmail.com"
+        ///     }
+        /// </remarks>
         [HttpPut]
         public UserViewModel UpdateUser([FromBody] UserUpdateModel userModel)
         {

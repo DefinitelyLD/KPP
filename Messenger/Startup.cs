@@ -18,6 +18,9 @@ using Messenger.Middleware;
 using Messenger.WEB.Logger;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Authorization;
+using System.Reflection;
+using System.IO;
+using System;
 
 namespace Messenger.WEB
 {
@@ -104,6 +107,8 @@ namespace Messenger.WEB
                         new string[] { }
                     }
                 });
+                var xmlFilename = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                c.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
             });
         }
 

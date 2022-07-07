@@ -22,6 +22,15 @@ namespace Messenger.WEB.Controllers
             _httpContextAccessor = httpContextAccessor;
         }
 
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     POST /CreateChatroom
+        ///     {
+        ///        "topic": "TestChat" ,
+        ///        "userdId": "d073e154-282f-4ee1-8a08-1e9d6744e101"
+        ///     }
+        /// </remarks>
         [HttpPost]
         public async Task<ActionResult<ChatViewModel>> CreateChatroom([FromBody] ChatCreateModel chat)
         {
@@ -34,6 +43,15 @@ namespace Messenger.WEB.Controllers
             return await _chatroomManager.CreateChatroom(chat, userId);
         }
 
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     PUT /EditChatroom
+        ///     {
+        ///        "id": 1,
+        ///        "topic": "NewTestChat"
+        ///     }
+        /// </remarks>
         [HttpPut]
         public async Task<ActionResult<ChatUpdateModel>> EditChatroom([FromBody] ChatUpdateModel chat)
         {
@@ -42,6 +60,14 @@ namespace Messenger.WEB.Controllers
             return await _chatroomManager.EditChatroom(chat, adminId);
         }
 
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     DELETE /DelteteChatroom
+        ///     {
+        ///        "chatId": 1,
+        ///     }
+        /// </remarks>
         [HttpPatch]
         public async Task<ActionResult<bool>> DeleteChatroom([FromBody] int chatId)
         {
@@ -66,6 +92,14 @@ namespace Messenger.WEB.Controllers
             return _chatroomManager.GetAllChatrooms(userId);
         }
 
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     POST /AddToChatroom
+        ///     {
+        ///        "userId": "acd91b54-7696-4e03-bee0-49f0dde9ad0c"
+        ///     }
+        /// </remarks>
         [HttpPost]
         public async Task<ActionResult<UserAccountCreateModel>> AddToChatroom([FromBody] string userId, int chatId)
         {
@@ -78,6 +112,14 @@ namespace Messenger.WEB.Controllers
             return await _chatroomManager.AddToChatroom(userId, chatId, currentUserId);
         }
 
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     DELETE /LeaveFromChatroom
+        ///     {
+        ///        "chatId": 1
+        ///     }
+        /// </remarks>
         [HttpPatch]
         public async Task<ActionResult<bool>> LeaveFromChatroom([FromBody] int chatId)
         {
@@ -86,6 +128,14 @@ namespace Messenger.WEB.Controllers
             return await _chatroomManager.LeaveFromChatroom(chatId, userId);
         }
 
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     DELETE /KickUser
+        ///     {
+        ///        "userAccountId": 1
+        ///     }
+        /// </remarks>
         [HttpPatch]
         public async Task<ActionResult<bool>> KickUser([FromBody] int userAccountId)
         {
@@ -94,6 +144,14 @@ namespace Messenger.WEB.Controllers
             return await _chatroomManager.KickUser(userAccountId, adminId);
         }
 
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     PATCH /BanUser
+        ///     {
+        ///        "userAccountId": 1
+        ///     }
+        /// </remarks>
         [HttpPatch]
         public async Task<ActionResult<UserAccountUpdateModel>> BanUser([FromBody] int userAccountId)
         {
@@ -102,6 +160,14 @@ namespace Messenger.WEB.Controllers
             return await _chatroomManager.BanUser(userAccountId, adminId);
         }
 
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     PATCH /UnbanUser
+        ///     {
+        ///        "userAccountId": 1
+        ///     }
+        /// </remarks>
         [HttpPatch]
         public async Task<ActionResult<UserAccountUpdateModel>> UnbanUser([FromBody] int userAccountId)
         {
@@ -110,6 +176,14 @@ namespace Messenger.WEB.Controllers
             return await _chatroomManager.UnbanUser(userAccountId, adminId);
         }
 
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     PATCH /SetAdmin
+        ///     {
+        ///        "userAccountId": 1
+        ///     }
+        /// </remarks>
         [HttpPatch]
         public async Task<ActionResult<UserAccountUpdateModel>> SetAdmin([FromBody] int userAccountId)
         {
@@ -118,6 +192,14 @@ namespace Messenger.WEB.Controllers
             return await _chatroomManager.SetAdmin(userAccountId, adminId);
         }
 
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     PATCH /UnsetAdmin
+        ///     {
+        ///        "userAccountId": 1
+        ///     }
+        /// </remarks>
         [HttpPatch]
         public async Task<ActionResult<UserAccountUpdateModel>> UnsetAdmin([FromBody] int userAccountId)
         {
