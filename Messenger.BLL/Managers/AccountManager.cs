@@ -30,8 +30,8 @@ namespace Messenger.BLL.Managers
 
         public async Task<UserViewModel> RegisterUser(UserCreateModel model)
         {
-            var userWithThisUserName = _unitOfWork.Users.GetAll().Where(x => x.UserName == model.UserName).SingleOrDefault();
-            if (userWithThisUserName != null)
+            var isUserExist = _unitOfWork.Users.GetAll().Where(x => x.UserName == model.UserName).Any();
+            if (isUserExist)
                 throw new BadRequestException("This username is already taken");
             User user = _mapper.Map<User>(model);
             var result = await _userManager.CreateAsync(user, model.Password);
