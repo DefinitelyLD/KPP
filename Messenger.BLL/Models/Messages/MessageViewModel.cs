@@ -12,6 +12,5 @@ namespace Messenger.BLL.Messages
         public ICollection<MessageImageViewModel> Images { get; set; }
         public string Text { get; set; }
         public DateTime CreatedTime { get; set; }
-        public bool IsDeleted { get; set; }
     }
 }

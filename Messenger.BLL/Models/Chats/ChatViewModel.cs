@@ -8,7 +8,6 @@ namespace Messenger.BLL.Chats
     {
         public int Id { get; set; }
         public string Topic { get; set; }
-        public bool IsDeleted { get; set; }
         public ICollection<MessageViewModel> Messages { get; set; }
         public ICollection<UserAccountViewModel> Users { get; set; }
     }

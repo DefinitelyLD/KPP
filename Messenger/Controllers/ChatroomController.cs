@@ -69,7 +69,7 @@ namespace Messenger.WEB.Controllers
         ///     }
         /// </remarks>
         [HttpPatch]
-        public async Task<ActionResult<bool>> DeleteChatroom([FromBody] int chatId)
+        public async Task<ActionResult<bool>> SoftDeleteChatroom([FromBody] int chatId)
         {
             var userId = GetUserIdFromHttpContext();
 
