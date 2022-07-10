@@ -212,7 +212,8 @@ namespace Messenger.WEB.Controllers
             return _accountManager.UpdateUser(userModel, userId);
         }
 
-        private string GetUserIdFromHttpContext()
+        [HttpGet]
+        public string GetUserIdFromHttpContext()
         {
             var httpContext = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier);
             if (httpContext == null)
