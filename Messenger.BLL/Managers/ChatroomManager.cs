@@ -24,16 +24,13 @@ namespace Messenger.BLL.Managers
 
         public async Task<ChatViewModel> CreateChatroom(ChatCreateModel chatModel, string userId)
         {
-            if (chatModel.UserId != userId)
-                throw new NotAllowedException("Incorrect user ID");
-
             var chatEntity = _mapper.Map<Chat>(chatModel);
             var chatViewModel = _mapper.Map<ChatViewModel>(await _unitOfWork.Chats.CreateAsync(chatEntity));
             
             UserAccountCreateModel ownerAccountModel = new()
             {
                 ChatId = chatViewModel.Id,
-                UserId = chatModel.UserId,
+                UserId = userId,
                 IsOwner = true,
                 IsAdmin = true
             };
