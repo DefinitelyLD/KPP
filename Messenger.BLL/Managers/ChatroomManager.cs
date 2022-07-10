@@ -22,8 +22,11 @@ namespace Messenger.BLL.Managers
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<ChatViewModel> CreateChatroom(ChatCreateModel chatModel)
+        public async Task<ChatViewModel> CreateChatroom(ChatCreateModel chatModel, string userId)
         {
+            if (chatModel.UserId != userId)
+                throw new NotAllowedException("Incorrect user ID");
+
             var chatEntity = _mapper.Map<Chat>(chatModel);
             var chatViewModel = _mapper.Map<ChatViewModel>(await _unitOfWork.Chats.CreateAsync(chatEntity));
             

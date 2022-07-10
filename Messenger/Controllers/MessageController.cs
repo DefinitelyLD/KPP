@@ -39,7 +39,6 @@ namespace Messenger.WEB.Controllers
         public async Task<ActionResult<MessageViewModel>> SendMessage([FromBody] MessageCreateModel messageModel)
         {
             var userId = GetUserIdFromHttpContext();
-            messageModel.UserId = userId;
 
             return await _messageManager.SendMessage(messageModel, userId);
         }
