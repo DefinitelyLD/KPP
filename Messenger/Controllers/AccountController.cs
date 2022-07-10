@@ -154,6 +154,7 @@ namespace Messenger.WEB.Controllers
         public IEnumerable<UserViewModel> GetAllFriends()
         {
             var userId = GetUserIdFromHttpContext();
+
             return _accountManager.GetAllFriends(userId);
         }
 
@@ -193,6 +194,7 @@ namespace Messenger.WEB.Controllers
         public IEnumerable<UserViewModel> GetAllBlockedUsers()
         {
             var userId = GetUserIdFromHttpContext();
+
             return _accountManager.GetAllBlockedUsers(userId);
         }
 

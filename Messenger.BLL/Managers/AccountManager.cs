@@ -227,9 +227,7 @@ namespace Messenger.BLL.Managers
         {
             var userEntity = _unitOfWork.Users.GetAll().Where(x => x.Id == userId).SingleOrDefault();
             if (userEntity == null)
-            {
                 throw new KeyNotFoundException();
-            }
 
             return _mapper.Map<UserViewModel>(userEntity);
         }
