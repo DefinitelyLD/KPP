@@ -7,7 +7,7 @@ namespace Messenger.BLL.Managers
 {
     public interface IChatroomManager
     {
-        public Task<ChatViewModel> CreateChatroom(ChatCreateModel chatModel, string userId);
+        public Task<ChatViewModel> CreateChatroom(ChatCreateModel chatModel);
         public Task<ChatUpdateModel> EditChatroom(ChatUpdateModel chatModel, string adminId);
         public Task<bool> DeleteChatroom(int chatId, string userId);
         public ChatViewModel GetChatroom(int chatId, string userId);

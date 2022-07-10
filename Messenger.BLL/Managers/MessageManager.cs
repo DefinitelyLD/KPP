@@ -29,12 +29,11 @@ namespace Messenger.BLL.Managers
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<MessageViewModel> SendMessage (MessageCreateModel messageModel, string userId)
+        public async Task<MessageViewModel> SendMessage (MessageCreateModel messageModel)
         {
             var userAccountEntity = _unitOfWork.UserAccounts
                 .GetAll()
-                .Where(u => u.User.Id == userId && 
-                u.User.Id == messageModel.UserId && !u.IsBanned && u.ChatId == messageModel.ChatId)
+                .Where(u => u.User.Id == messageModel.UserId && !u.IsBanned && u.ChatId == messageModel.ChatId)
                 .SingleOrDefault();
 
             if (userAccountEntity == null)

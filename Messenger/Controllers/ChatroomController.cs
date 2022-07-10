@@ -34,13 +34,10 @@ namespace Messenger.WEB.Controllers
         [HttpPost]
         public async Task<ActionResult<ChatViewModel>> CreateChatroom([FromBody] ChatCreateModel chat)
         {
-            var httpContext = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier);
-            if (httpContext == null)
-                throw new KeyNotFoundException();
+            var userId = GetUserIdFromHttpContext();
+            chat.UserId = userId;
 
-            var userId = httpContext.Value;
-
-            return await _chatroomManager.CreateChatroom(chat, userId);
+            return await _chatroomManager.CreateChatroom(chat);
         }
 
         /// <remarks>
