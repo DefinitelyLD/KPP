@@ -20,5 +20,6 @@ namespace Messenger.BLL.Managers
         public UserViewModel UnblockUser(string userId, string blockedUserId);
         public IEnumerable<UserViewModel> GetAllBlockedUsers(string userId);
         public UserViewModel UpdateUser(UserUpdateModel userModel, string userId);
+        public UserViewModel GetCurrentUser(string userId);
     }
 }

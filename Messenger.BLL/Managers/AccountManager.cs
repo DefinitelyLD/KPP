@@ -33,7 +33,7 @@ namespace Messenger.BLL.Managers
             User user = _mapper.Map<User>(model);
             var result = await _userManager.CreateAsync(user, model.Password);
             if (!result.Succeeded)
-                throw new BadRequestException(result.Errors.ToString());
+                throw new BadRequestException("Registration Error");
 
             var userEntity = _unitOfWork.Users.GetAll().Where(x => x.UserName == model.UserName).SingleOrDefault();
             var userModel = _mapper.Map<UserViewModel>(userEntity);
@@ -221,6 +221,17 @@ namespace Messenger.BLL.Managers
             var result = _unitOfWork.Users.Update(userEntity);
 
             return _mapper.Map<UserViewModel>(result);
+        }
+
+        public UserViewModel GetCurrentUser(string userId)
+        {
+            var userEntity = _unitOfWork.Users.GetAll().Where(x => x.Id == userId).SingleOrDefault();
+            if (userEntity == null)
+            {
+                throw new KeyNotFoundException();
+            }
+
+            return _mapper.Map<UserViewModel>(userEntity);
         }
     }
 }
