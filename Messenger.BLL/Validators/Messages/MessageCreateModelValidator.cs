@@ -8,7 +8,6 @@ namespace Messenger.BLL.Validators.Messages
         public MessageCreateModelValidator() 
         {
             RuleFor(x => x.ChatId).NotNull();
-            RuleFor(x => x.UserId).NotNull();
             RuleForEach(x => x.Files).SetValidator(new FileValidator());
             RuleFor(x => x.Text).MaximumLength(3000);
         }

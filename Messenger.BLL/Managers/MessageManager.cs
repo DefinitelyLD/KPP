@@ -33,14 +33,14 @@ namespace Messenger.BLL.Managers
         {
             var userAccountEntity = _unitOfWork.UserAccounts
                 .GetAll()
-                .Where(u => u.User.Id == userId && 
-                u.User.Id == messageModel.UserId && !u.IsBanned && u.ChatId == messageModel.ChatId)
+                .Where(u => u.User.Id == userId && !u.IsBanned && u.ChatId == messageModel.ChatId)
                 .SingleOrDefault();
 
             if (userAccountEntity == null)
                 throw new KeyNotFoundException();
 
             var messageEntity = _mapper.Map<Message>(messageModel);
+            messageEntity.UserId = userId;
             var messageViewModel = _mapper.Map<MessageViewModel>
                 (await _unitOfWork.Messages.CreateAsync(messageEntity));
 
