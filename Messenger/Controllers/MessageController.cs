@@ -41,7 +41,7 @@ namespace Messenger.WEB.Controllers
             var userId = GetUserIdFromHttpContext();
             messageModel.UserId = userId;
 
-            return await _messageManager.SendMessage(messageModel, userId);
+            return await _messageManager.SendMessage(messageModel);
         }
 
         /// <remarks>
