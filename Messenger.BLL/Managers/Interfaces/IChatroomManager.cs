@@ -15,13 +15,14 @@ namespace Messenger.BLL.Managers
         public Task<UserAccountCreateModel> AddToChatroom(string userId, int chatId, string currentUserId);
         public Task<bool> LeaveFromChatroom(int chatId, string userId);
         public Task<bool> KickUser(int userAccountId, string admin);
-        public Task<UserAccountUpdateModel> BanUser(int userAccountId, string adminId);
-        public Task<UserAccountUpdateModel> UnbanUser(int userAccountId, string adminId);
-        public Task<UserAccountUpdateModel> SetAdmin(int userAccountId, string adminId);
-        public Task<UserAccountUpdateModel> UnsetAdmin(int userAccountId, string adminId);
+        public Task<UserAccountViewModel> BanUser(int userAccountId, string adminId);
+        public Task<UserAccountViewModel> UnbanUser(int userAccountId, string adminId);
+        public Task<UserAccountViewModel> SetAdmin(int userAccountId, string adminId);
+        public Task<UserAccountViewModel> UnsetAdmin(int userAccountId, string adminId);
         public UserAccountViewModel GetOwner(int chatId, string userId);
         public IEnumerable<UserAccountViewModel> GetAllBannedUsers(int chatId, string userId);
         public IEnumerable<UserAccountViewModel> GetAllAdmins(int chatId, string userId);
         public IEnumerable<UserAccountViewModel> GetAllUsers(int chatId, string userId);
+        public UserAccountViewModel GetCurrentUserAccount(int chatId, string userId);
     }
 }

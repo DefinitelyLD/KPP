@@ -153,7 +153,7 @@ namespace Messenger.WEB.Controllers
         ///     }
         /// </remarks>
         [HttpPatch]
-        public async Task<ActionResult<UserAccountUpdateModel>> BanUser([FromBody] int userAccountId)
+        public async Task<ActionResult<UserAccountViewModel>> BanUser([FromBody] int userAccountId)
         {
             var adminId = GetUserIdFromHttpContext();
 
@@ -169,7 +169,7 @@ namespace Messenger.WEB.Controllers
         ///     }
         /// </remarks>
         [HttpPatch]
-        public async Task<ActionResult<UserAccountUpdateModel>> UnbanUser([FromBody] int userAccountId)
+        public async Task<ActionResult<UserAccountViewModel>> UnbanUser([FromBody] int userAccountId)
         {
             var adminId = GetUserIdFromHttpContext();
 
@@ -184,8 +184,8 @@ namespace Messenger.WEB.Controllers
         ///        "userAccountId": 1
         ///     }
         /// </remarks>
-        [HttpPatch]
-        public async Task<ActionResult<UserAccountUpdateModel>> SetAdmin([FromBody] int userAccountId)
+        [HttpPut]
+        public async Task<ActionResult<UserAccountViewModel>> SetAdmin([FromBody] int userAccountId)
         {
             var adminId = GetUserIdFromHttpContext();
 
@@ -201,7 +201,7 @@ namespace Messenger.WEB.Controllers
         ///     }
         /// </remarks>
         [HttpPatch]
-        public async Task<ActionResult<UserAccountUpdateModel>> UnsetAdmin([FromBody] int userAccountId)
+        public async Task<ActionResult<UserAccountViewModel>> UnsetAdmin([FromBody] int userAccountId)
         {
             var adminId = GetUserIdFromHttpContext();
 
@@ -230,6 +230,14 @@ namespace Messenger.WEB.Controllers
             var userId = GetUserIdFromHttpContext();
 
             return _chatroomManager.GetAllAdmins(chatId, userId);
+        }
+
+        [HttpGet]
+        public UserAccountViewModel GetCurrentUserAccount([FromQuery] int chatId)
+        {
+            var userId = GetUserIdFromHttpContext();
+
+            return _chatroomManager.GetCurrentUserAccount(chatId, userId);
         }
 
         [HttpGet]

@@ -174,7 +174,7 @@ namespace Messenger.BLL.Managers
             return result.IsLeft;
         }
 
-        public async Task<UserAccountUpdateModel> BanUser(int userAccountId, string adminId)
+        public async Task<UserAccountViewModel> BanUser(int userAccountId, string adminId)
         {
             var userAccountEntity = _unitOfWork.UserAccounts.GetAll()
                 .Where(u => u.Id == userAccountId)
@@ -191,10 +191,10 @@ namespace Messenger.BLL.Managers
             userAccountEntity.IsBanned = true;
             userAccountEntity.IsAdmin = false;
 
-            return _mapper.Map<UserAccountUpdateModel>(await _unitOfWork.UserAccounts.UpdateAsync(userAccountEntity));
+            return _mapper.Map<UserAccountViewModel>(await _unitOfWork.UserAccounts.UpdateAsync(userAccountEntity));
         }
 
-        public async Task<UserAccountUpdateModel> UnbanUser(int userAccountId, string adminId)
+        public async Task<UserAccountViewModel> UnbanUser(int userAccountId, string adminId)
         {
             var userAccountEntity = _unitOfWork.UserAccounts.GetAll()
                 .Where(u => u.Id == userAccountId)
@@ -210,10 +210,10 @@ namespace Messenger.BLL.Managers
 
             userAccountEntity.IsBanned = false;
 
-            return _mapper.Map<UserAccountUpdateModel>(await _unitOfWork.UserAccounts.UpdateAsync(userAccountEntity));
+            return _mapper.Map<UserAccountViewModel>(await _unitOfWork.UserAccounts.UpdateAsync(userAccountEntity));
         }
 
-        public async Task<UserAccountUpdateModel> SetAdmin(int userAccountId, string adminId)
+        public async Task<UserAccountViewModel> SetAdmin(int userAccountId, string adminId)
         {
             var userAccountEntity = _unitOfWork.UserAccounts.GetAll()
                 .Where(u => u.Id == userAccountId)
@@ -229,10 +229,10 @@ namespace Messenger.BLL.Managers
 
             userAccountEntity.IsAdmin = true;
 
-            return _mapper.Map<UserAccountUpdateModel>(await _unitOfWork.UserAccounts.UpdateAsync(userAccountEntity));
+            return _mapper.Map<UserAccountViewModel>(await _unitOfWork.UserAccounts.UpdateAsync(userAccountEntity));
         }
 
-        public async Task<UserAccountUpdateModel> UnsetAdmin(int userAccountId, string adminId)
+        public async Task<UserAccountViewModel> UnsetAdmin(int userAccountId, string adminId)
         {
             var userAccountEntity = _unitOfWork.UserAccounts.GetAll()
                 .Where(u => u.Id == userAccountId && !u.IsOwner)
@@ -248,7 +248,7 @@ namespace Messenger.BLL.Managers
 
             userAccountEntity.IsAdmin = false;
 
-            return _mapper.Map<UserAccountUpdateModel>(await _unitOfWork.UserAccounts.UpdateAsync(userAccountEntity));
+            return _mapper.Map<UserAccountViewModel>(await _unitOfWork.UserAccounts.UpdateAsync(userAccountEntity));
         }
 
         public UserAccountViewModel GetOwner(int chatId, string userId)
@@ -308,6 +308,21 @@ namespace Messenger.BLL.Managers
             var userModelList = _mapper.Map<List<UserAccountViewModel>>(usersEntityList);
 
             return userModelList;
+        }
+
+        public UserAccountViewModel GetCurrentUserAccount(int chatId, string userId)
+        {
+            //throw KeyNotFoundException, if current user isn't in the chat
+            ThrowExceptionIfUserIsNotInChat(chatId, userId);
+
+            var usersEntityList = _unitOfWork.UserAccounts
+                .GetAll()
+                .Where(u => !u.IsLeft && u.ChatId == chatId && u.User.Id == userId)
+                .SingleOrDefault();
+
+            var userAccount = _mapper.Map<UserAccountViewModel>(usersEntityList);
+
+            return userAccount;
         }
 
         private void ThrowExceptionIfUserIsNotInChat(int chatId, string userId)
