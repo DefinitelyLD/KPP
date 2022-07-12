@@ -39,7 +39,6 @@ namespace Messenger.WEB.Controllers
                 throw new KeyNotFoundException();
 
             var userId = httpContext.Value;
-
             return await _chatroomManager.CreateChatroom(chat, userId);
         }
 
@@ -68,7 +67,7 @@ namespace Messenger.WEB.Controllers
         ///        "chatId": 1,
         ///     }
         /// </remarks>
-        [HttpPatch]
+        [HttpPut]
         public async Task<ActionResult<bool>> SoftDeleteChatroom([FromBody] int chatId)
         {
             var userId = GetUserIdFromHttpContext();
@@ -120,7 +119,7 @@ namespace Messenger.WEB.Controllers
         ///        "chatId": 1
         ///     }
         /// </remarks>
-        [HttpPatch]
+        [HttpPut]
         public async Task<ActionResult<bool>> LeaveFromChatroom([FromBody] int chatId)
         {
             var userId = GetUserIdFromHttpContext();
@@ -136,7 +135,7 @@ namespace Messenger.WEB.Controllers
         ///        "userAccountId": 1
         ///     }
         /// </remarks>
-        [HttpPatch]
+        [HttpPut]
         public async Task<ActionResult<bool>> KickUser([FromBody] int userAccountId)
         {
             var adminId = GetUserIdFromHttpContext();
@@ -152,7 +151,7 @@ namespace Messenger.WEB.Controllers
         ///        "userAccountId": 1
         ///     }
         /// </remarks>
-        [HttpPatch]
+        [HttpPut]
         public async Task<ActionResult<UserAccountUpdateModel>> BanUser([FromBody] int userAccountId)
         {
             var adminId = GetUserIdFromHttpContext();
@@ -168,7 +167,7 @@ namespace Messenger.WEB.Controllers
         ///        "userAccountId": 1
         ///     }
         /// </remarks>
-        [HttpPatch]
+        [HttpPut]
         public async Task<ActionResult<UserAccountUpdateModel>> UnbanUser([FromBody] int userAccountId)
         {
             var adminId = GetUserIdFromHttpContext();
@@ -184,7 +183,7 @@ namespace Messenger.WEB.Controllers
         ///        "userAccountId": 1
         ///     }
         /// </remarks>
-        [HttpPatch]
+        [HttpPut]
         public async Task<ActionResult<UserAccountUpdateModel>> SetAdmin([FromBody] int userAccountId)
         {
             var adminId = GetUserIdFromHttpContext();
@@ -200,7 +199,7 @@ namespace Messenger.WEB.Controllers
         ///        "userAccountId": 1
         ///     }
         /// </remarks>
-        [HttpPatch]
+        [HttpPut]
         public async Task<ActionResult<UserAccountUpdateModel>> UnsetAdmin([FromBody] int userAccountId)
         {
             var adminId = GetUserIdFromHttpContext();

@@ -92,7 +92,7 @@ namespace Messenger.WEB.Controllers
         ///        "newPassword": "123456789"
         ///     }
         /// </remarks>
-        [HttpPatch]
+        [HttpPut]
         public async Task<bool> ChangePassword([FromBody] UserChangePasswordModel model)
         {
             var userId = GetUserIdFromHttpContext();
@@ -143,7 +143,7 @@ namespace Messenger.WEB.Controllers
         ///     }
         /// </remarks>
         [HttpDelete]
-        public UserViewModel DeleteFriend([FromBody] string friendId)
+        public UserViewModel DeleteFriend([FromQuery] string friendId)
         {
             var userId = GetUserIdFromHttpContext();
             
@@ -183,7 +183,7 @@ namespace Messenger.WEB.Controllers
         ///     }
         /// </remarks>
         [HttpDelete]
-        public UserViewModel UnblockUser([FromBody] string blockedUserId)
+        public UserViewModel UnblockUser([FromQuery] string blockedUserId)
         {
             var userId = GetUserIdFromHttpContext();
             
