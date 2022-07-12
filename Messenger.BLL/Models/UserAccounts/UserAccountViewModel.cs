@@ -1,10 +1,10 @@
-﻿using Messenger.BLL.Models;
-using Messenger.BLL.Users;
+﻿using Messenger.BLL.Users;
 
 namespace Messenger.BLL.UserAccounts
 {
-    public class UserAccountViewModel : BaseModel<int>
+    public class UserAccountViewModel
     {
+        public int Id { get; set; }
         public UserViewModel User { get; set; }
         public bool IsBanned { get; set; }
         public bool IsAdmin { get; set; }

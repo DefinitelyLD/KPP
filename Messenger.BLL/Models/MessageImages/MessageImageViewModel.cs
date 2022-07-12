@@ -1,10 +1,10 @@
 ﻿using Messenger.BLL.Messages;
-using Messenger.BLL.Models;
 
 namespace Messenger.BLL.MessageImages
 {
-    public class MessageImageViewModel : BaseModel<int>
+    public class MessageImageViewModel
     {
+        public int Id { get; set; }    
         public string Path { get; set; }
         public MessageViewModel Message { get; set; }
     }

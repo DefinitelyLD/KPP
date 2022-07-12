@@ -1,9 +1,8 @@
-﻿using Messenger.BLL.Models;
-
-namespace Messenger.BLL.Users
+﻿namespace Messenger.BLL.Users
 {
-    public class UserChangePasswordModel : BaseModel<string>
+    public class UserChangePasswordModel
     {
+        public string Id { get; set; }
         public string OldPassword { get; set; }
         public string NewPassword { get; set; }
     }

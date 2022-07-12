@@ -1,9 +1,8 @@
-﻿using Messenger.BLL.Models;
-
-namespace Messenger.BLL.MessageImages
+﻿namespace Messenger.BLL.MessageImages
 {
-    public class MessageImageUpdateModel : BaseModel<int>
+    public class MessageImageUpdateModel
     {
+        public int Id { get; set; }
         public string Path { get; set; }
     }
 }

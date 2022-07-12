@@ -9,7 +9,6 @@ using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Messenger.BLL.Managers.Interfaces;
-using Messenger.BLL.Models;
 
 namespace Messenger.WEB.Controllers
 {
@@ -128,11 +127,11 @@ namespace Messenger.WEB.Controllers
         ///     }
         /// </remarks>
         [HttpPost]
-        public UserViewModel AddFriend([FromBody] BaseModel<string> userFriendBaseModel)
+        public UserViewModel AddFriend([FromBody] string friendId)
         {
             var userId = GetUserIdFromHttpContext();
             
-            return _accountManager.AddFriend(userId, userFriendBaseModel.Id);
+            return _accountManager.AddFriend(userId, friendId);
         }
 
         /// <remarks>
@@ -144,11 +143,11 @@ namespace Messenger.WEB.Controllers
         ///     }
         /// </remarks>
         [HttpDelete]
-        public UserViewModel DeleteFriend([FromBody] BaseModel<string> userFriendBaseModel)
+        public UserViewModel DeleteFriend([FromBody] string friendId)
         {
             var userId = GetUserIdFromHttpContext();
             
-            return _accountManager.DeleteFriend(userId, userFriendBaseModel.Id);
+            return _accountManager.DeleteFriend(userId, friendId);
         }
 
         [HttpGet]
@@ -168,11 +167,11 @@ namespace Messenger.WEB.Controllers
         ///     }
         /// </remarks>
         [HttpPost]
-        public UserViewModel BlockUser([FromBody] BaseModel<string> userBlockedBaseModel)
+        public UserViewModel BlockUser([FromBody] string blockedUserId)
         {
             var userId = GetUserIdFromHttpContext();
             
-            return _accountManager.BlockUser(userId, userBlockedBaseModel.Id);
+            return _accountManager.BlockUser(userId, blockedUserId);
         }
 
         /// <remarks>
@@ -184,11 +183,11 @@ namespace Messenger.WEB.Controllers
         ///     }
         /// </remarks>
         [HttpDelete]
-        public UserViewModel UnblockUser([FromBody] BaseModel<string> userBlockedBaseModel)
+        public UserViewModel UnblockUser([FromBody] string blockedUserId)
         {
             var userId = GetUserIdFromHttpContext();
             
-            return _accountManager.UnblockUser(userId, userBlockedBaseModel.Id);
+            return _accountManager.UnblockUser(userId, blockedUserId);
         }
 
         [HttpGet]
