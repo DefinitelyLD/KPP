@@ -1,5 +1,6 @@
 ﻿using Messenger.BLL.Chats;
 using Messenger.BLL.Managers;
+using Messenger.BLL.Models;
 using Messenger.BLL.UserAccounts;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -69,11 +70,11 @@ namespace Messenger.WEB.Controllers
         ///     }
         /// </remarks>
         [HttpPatch]
-        public async Task<ActionResult<bool>> SoftDeleteChatroom([FromBody] int chatId)
+        public async Task<ActionResult<bool>> SoftDeleteChatroom([FromBody] BaseModel<int> chatBaseModel)
         {
             var userId = GetUserIdFromHttpContext();
 
-            return await _chatroomManager.DeleteChatroom(chatId, userId);
+            return await _chatroomManager.DeleteChatroom(chatBaseModel.Id, userId);
         }
 
         [HttpGet]
@@ -101,7 +102,7 @@ namespace Messenger.WEB.Controllers
         ///     }
         /// </remarks>
         [HttpPost]
-        public async Task<ActionResult<UserAccountCreateModel>> AddToChatroom([FromBody] string userId, int chatId)
+        public async Task<ActionResult<UserAccountCreateModel>> AddToChatroom([FromBody] BaseModel<string> userBaseModel, int chatId)
         {
             var httpContext = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier);
             if (httpContext == null)
@@ -109,7 +110,7 @@ namespace Messenger.WEB.Controllers
 
             var currentUserId = httpContext.Value;
 
-            return await _chatroomManager.AddToChatroom(userId, chatId, currentUserId);
+            return await _chatroomManager.AddToChatroom(userBaseModel.Id, chatId, currentUserId);
         }
 
         /// <remarks>
@@ -121,11 +122,11 @@ namespace Messenger.WEB.Controllers
         ///     }
         /// </remarks>
         [HttpPatch]
-        public async Task<ActionResult<bool>> LeaveFromChatroom([FromBody] int chatId)
+        public async Task<ActionResult<bool>> LeaveFromChatroom([FromBody] BaseModel<int> chatBaseModel)
         {
             var userId = GetUserIdFromHttpContext();
 
-            return await _chatroomManager.LeaveFromChatroom(chatId, userId);
+            return await _chatroomManager.LeaveFromChatroom(chatBaseModel.Id, userId);
         }
 
         /// <remarks>
@@ -137,11 +138,11 @@ namespace Messenger.WEB.Controllers
         ///     }
         /// </remarks>
         [HttpPatch]
-        public async Task<ActionResult<bool>> KickUser([FromBody] int userAccountId)
+        public async Task<ActionResult<bool>> KickUser([FromBody] BaseModel<int> userAccountBaseModel)
         {
             var adminId = GetUserIdFromHttpContext();
 
-            return await _chatroomManager.KickUser(userAccountId, adminId);
+            return await _chatroomManager.KickUser(userAccountBaseModel.Id, adminId);
         }
 
         /// <remarks>
@@ -153,11 +154,11 @@ namespace Messenger.WEB.Controllers
         ///     }
         /// </remarks>
         [HttpPatch]
-        public async Task<ActionResult<UserAccountUpdateModel>> BanUser([FromBody] int userAccountId)
+        public async Task<ActionResult<UserAccountUpdateModel>> BanUser([FromBody] BaseModel<int> userAccountBaseModel)
         {
             var adminId = GetUserIdFromHttpContext();
 
-            return await _chatroomManager.BanUser(userAccountId, adminId);
+            return await _chatroomManager.BanUser(userAccountBaseModel.Id, adminId);
         }
 
         /// <remarks>
@@ -169,11 +170,11 @@ namespace Messenger.WEB.Controllers
         ///     }
         /// </remarks>
         [HttpPatch]
-        public async Task<ActionResult<UserAccountUpdateModel>> UnbanUser([FromBody] int userAccountId)
+        public async Task<ActionResult<UserAccountUpdateModel>> UnbanUser([FromBody] BaseModel<int> userAccountBaseModel)
         {
             var adminId = GetUserIdFromHttpContext();
 
-            return await _chatroomManager.UnbanUser(userAccountId, adminId);
+            return await _chatroomManager.UnbanUser(userAccountBaseModel.Id, adminId);
         }
 
         /// <remarks>
@@ -185,11 +186,11 @@ namespace Messenger.WEB.Controllers
         ///     }
         /// </remarks>
         [HttpPatch]
-        public async Task<ActionResult<UserAccountUpdateModel>> SetAdmin([FromBody] int userAccountId)
+        public async Task<ActionResult<UserAccountUpdateModel>> SetAdmin([FromBody] BaseModel<int> userAccountBaseModel)
         {
             var adminId = GetUserIdFromHttpContext();
 
-            return await _chatroomManager.SetAdmin(userAccountId, adminId);
+            return await _chatroomManager.SetAdmin(userAccountBaseModel.Id, adminId);
         }
 
         /// <remarks>
@@ -201,11 +202,11 @@ namespace Messenger.WEB.Controllers
         ///     }
         /// </remarks>
         [HttpPatch]
-        public async Task<ActionResult<UserAccountUpdateModel>> UnsetAdmin([FromBody] int userAccountId)
+        public async Task<ActionResult<UserAccountUpdateModel>> UnsetAdmin([FromBody] BaseModel<int> userAccountBaseModel)
         {
             var adminId = GetUserIdFromHttpContext();
 
-            return await _chatroomManager.UnsetAdmin(userAccountId, adminId);
+            return await _chatroomManager.UnsetAdmin(userAccountBaseModel.Id, adminId);
         }
 
         [HttpGet]

@@ -1,8 +1,9 @@
-﻿namespace Messenger.BLL.Chats
+﻿using Messenger.BLL.Models;
+
+namespace Messenger.BLL.Chats
 {
-    public class ChatUpdateModel
+    public class ChatUpdateModel : BaseModel<int>
     {
-        public int Id { get; set; }
         public string Topic { get; set; }
     }
 }

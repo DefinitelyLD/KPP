@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using System.Threading.Tasks;
 using System.Security.Claims;
 using System;
+using Messenger.BLL.Models;
 
 namespace Messenger.WEB.Controllers
 {
@@ -73,11 +74,11 @@ namespace Messenger.WEB.Controllers
         ///     }
         /// </remarks>
         [HttpPatch]
-        public async Task<ActionResult<bool>> SoftDeleteMessage([FromBody] int messageId)
+        public async Task<ActionResult<bool>> SoftDeleteMessage([FromBody] BaseModel<int> messageBaseModel)
         {
             var userId = GetUserIdFromHttpContext();
 
-            return await _messageManager.DeleteMessage(messageId, userId);
+            return await _messageManager.DeleteMessage(messageBaseModel.Id, userId);
         }
 
         [HttpGet]

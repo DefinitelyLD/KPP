@@ -1,8 +1,9 @@
-﻿namespace Messenger.BLL.Users
+﻿using Messenger.BLL.Models;
+
+namespace Messenger.BLL.Users
 {
-    public class UserUpdateModel
+    public class UserUpdateModel : BaseModel<string>
     {
-        public string Id { get; set; }
         public string UserName { get; set; }
         public string Email { get; set; }
     }
