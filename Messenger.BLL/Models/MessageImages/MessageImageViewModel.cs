@@ -6,6 +6,5 @@ namespace Messenger.BLL.MessageImages
     {
         public int Id { get; set; }    
         public string Path { get; set; }
-        public MessageViewModel Message { get; set; }
     }
 }

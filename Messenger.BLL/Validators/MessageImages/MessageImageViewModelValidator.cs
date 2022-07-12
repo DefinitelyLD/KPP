@@ -9,7 +9,6 @@ namespace Messenger.BLL.Validators.MessageImages
         {
             RuleFor(x => x.Id).NotNull();
             RuleFor(x => x.Path).NotEmpty();
-            RuleFor(x => x.Message).NotNull();
         }
     }
 }
