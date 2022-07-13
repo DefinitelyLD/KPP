@@ -113,16 +113,24 @@ namespace Messenger.BLL.Managers
         {
             var currentUserEntity = _unitOfWork.Users.GetById(currentUserId);
 
+            ThrowExceptionIfUserIsNotInChat(chatId, currentUserId);
+
             if (currentUserEntity.BlockedUsersFrom.Where(x => x.Id == userId).SingleOrDefault() != null
                 || currentUserEntity.BlockedUsersTo.Where(x => x.Id == userId).SingleOrDefault() != null)
                 throw new BadRequestException("You cannot add this user to the chat.");
 
-            var userAccountExistingEntity = _unitOfWork.UserAccounts.GetAll()
-                .Where(p => p.UserId == userId && p.ChatId == chatId)
-                .SingleOrDefault();
+            var userAccountExistingEntity = FindUserInChat(chatId, userId);
 
-            if (userAccountExistingEntity != null)
-                throw new BadRequestException("The user is already in the chat."); 
+            if (userAccountExistingEntity != null && !userAccountExistingEntity.IsLeft)
+                throw new BadRequestException("The user is already in the chat.");
+
+            if (userAccountExistingEntity != null && userAccountExistingEntity.IsLeft)
+            {
+                userAccountExistingEntity.IsLeft = true;
+                var result = await _unitOfWork.UserAccounts.UpdateAsync(userAccountExistingEntity);
+
+                return _mapper.Map<UserAccountCreateModel>(result);
+            }
 
             UserAccountCreateModel userAccountModel = new()
             {
@@ -315,22 +323,26 @@ namespace Messenger.BLL.Managers
             //throw KeyNotFoundException, if current user isn't in the chat
             ThrowExceptionIfUserIsNotInChat(chatId, userId);
 
-            var usersEntityList = _unitOfWork.UserAccounts
-                .GetAll()
-                .Where(u => !u.IsLeft && u.ChatId == chatId && u.User.Id == userId)
-                .SingleOrDefault();
+            var userAccountEntity = FindUserInChat(chatId, userId);
 
-            var userAccount = _mapper.Map<UserAccountViewModel>(usersEntityList);
+            var userAccount = _mapper.Map<UserAccountViewModel>(userAccountEntity);
 
             return userAccount;
         }
 
+        private UserAccount FindUserInChat(int chatId, string userId)
+        {
+            var userAccountEntity = _unitOfWork.UserAccounts
+                .GetAll()
+                .Where(u => !u.IsLeft && u.ChatId == chatId && u.User.Id == userId)
+                .SingleOrDefault();
+
+            return userAccountEntity;
+        }
+
         private void ThrowExceptionIfUserIsNotInChat(int chatId, string userId)
         {
-            var currentUserEntity = _unitOfWork.UserAccounts
-                .GetAll()
-                .Where(u => u.User.Id == userId && u.ChatId == chatId)
-                .SingleOrDefault();
+            var currentUserEntity = FindUserInChat(chatId, userId);
 
             if (currentUserEntity == null)
                 throw new KeyNotFoundException();

@@ -100,7 +100,7 @@ namespace Messenger.WEB.Controllers
         ///     }
         /// </remarks>
         [HttpPost]
-        public async Task<ActionResult<UserAccountCreateModel>> AddToChatroom([FromBody] string userId, int chatId)
+        public async Task<ActionResult<UserAccountCreateModel>> AddToChatroom([FromBody] ChatInviteModel model)
         {
             var httpContext = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier);
             if (httpContext == null)
@@ -108,7 +108,7 @@ namespace Messenger.WEB.Controllers
 
             var currentUserId = httpContext.Value;
 
-            return await _chatroomManager.AddToChatroom(userId, chatId, currentUserId);
+            return await _chatroomManager.AddToChatroom(model.UserId, model.ChatId, currentUserId);
         }
 
         /// <remarks>
