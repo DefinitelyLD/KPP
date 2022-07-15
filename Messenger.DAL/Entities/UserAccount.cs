@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Messenger.DAL.Entities
+﻿namespace Messenger.DAL.Entities
 {
     public class UserAccount: BaseEntity<int>
     {
@@ -18,5 +11,6 @@ namespace Messenger.DAL.Entities
         public bool IsBanned { get; set; }
         public bool IsAdmin { get; set; }
         public bool IsOwner { get; set; }
+        public bool IsLeft { get; set; } = false;
     }
 }

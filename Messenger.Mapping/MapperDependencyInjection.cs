@@ -1,10 +1,5 @@
 ﻿using Messenger.Mapping.Profiles;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Messenger.Mapping
 {
@@ -15,6 +10,7 @@ namespace Messenger.Mapping
             services.AddAutoMapper(typeof(UserProfile));
             services.AddAutoMapper(typeof(MessageProfile));
             services.AddAutoMapper(typeof(ChatProfile));
+
             return services;
         }
     }

@@ -22,6 +22,19 @@ namespace Messenger.WEB.Controllers
             _httpContextAccessor = httpContextAccessor;
         }
 
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     POST /SendMessage
+        ///     {
+        ///        "chatId": 1,
+        ///        "userId": "d073e154-282f-4ee1-8a08-1e9d6744e101",
+        ///        files: [
+        ///         "string"
+        ///        ],
+        ///        "text": "Hello, chat!"
+        ///     }
+        /// </remarks>
         [HttpPost]
         public async Task<ActionResult<MessageViewModel>> SendMessage([FromForm] MessageCreateModel messageModel)
         {
@@ -29,18 +42,40 @@ namespace Messenger.WEB.Controllers
             return await _messageManager.SendMessage(messageModel, userId);
         }
 
-        [HttpPost]
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     PUT /EditMessage
+        ///     {
+        ///        "id": 1,
+        ///        "text": "Hi, chat!",
+        ///        "file": "string",
+        ///        "imageId": 0
+        ///     }
+        /// </remarks>
+        [HttpPut]
         public async Task<ActionResult<MessageViewModel>> EditMessage([FromBody] MessageUpdateModel messageModel)
         {
             var userId = GetUserIdFromHttpContext();
+
             return await _messageManager.EditMessage(messageModel, userId);
 
         }
 
-        [HttpDelete]
-        public async Task<ActionResult<bool>> DeleteMessage([FromQuery] int messageId)
+
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     PATCH /DeleteMessage
+        ///     {
+        ///        "messageId": 1,
+        ///     }
+        /// </remarks>
+        [HttpPut]
+        public async Task<ActionResult<bool>> SoftDeleteMessage([FromBody] int messageId)
         {
             var userId = GetUserIdFromHttpContext();
+
             return await _messageManager.DeleteMessage(messageId, userId);
         }
 
@@ -54,6 +89,7 @@ namespace Messenger.WEB.Controllers
         public IEnumerable<MessageViewModel> GetMessagesFromChat([FromQuery] int chatId, DateTime? date = null)
         {
             var userId = GetUserIdFromHttpContext();
+
             return _messageManager.GetMessagesFromChat(chatId, userId, date);
         }
 
@@ -62,6 +98,7 @@ namespace Messenger.WEB.Controllers
             var httpContext = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier);
             if (httpContext == null)
                 throw new KeyNotFoundException();
+
             return httpContext.Value;
         }
     }

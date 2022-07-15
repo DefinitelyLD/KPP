@@ -1,11 +1,6 @@
 ﻿using Messenger.BLL.Managers;
 using Messenger.BLL.Managers.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Messenger.BLL
 {

@@ -1,10 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.ComponentModel.DataAnnotations;
-using System.Threading.Tasks;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Messenger.DAL.Entities
 {
@@ -22,5 +18,6 @@ namespace Messenger.DAL.Entities
         public string Text { get; set; }
         [Required]
         public DateTime CreatedTime { get; set; } = DateTime.Now;
+        public bool IsDeleted { get; set; } = false;
     }
 }

@@ -1,13 +1,5 @@
 ﻿using Messenger.BLL.Users;
-using Messenger.DAL.Entities;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Routing;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Messenger.BLL.Managers
@@ -28,5 +20,6 @@ namespace Messenger.BLL.Managers
         public UserViewModel UnblockUser(string userId, string blockedUserId);
         public IEnumerable<UserViewModel> GetAllBlockedUsers(string userId);
         public UserViewModel UpdateUser(UserUpdateModel userModel, string userId);
+        public UserViewModel GetCurrentUser(string userId);
     }
 }

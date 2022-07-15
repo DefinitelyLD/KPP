@@ -1,38 +1,26 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.Extensions.Options;
 using Messenger.DAL;
 using Messenger.Mapping;
 using Messenger.BLL;
-using FluentValidation;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Identity;
 using Messenger.DAL.Entities;
 using Messenger.DAL.Context;
-using Microsoft.IdentityModel.Tokens;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Http;
 using Messenger.BLL.Token;
 using Messenger.BLL.Validators.UserAccounts;
 using Messenger.WEB.SignalR;
 using Messenger.Middleware;
-using Serilog;
-using System.Text.Json.Serialization;
-using Microsoft.Extensions.DependencyInjection.Extensions;
 using Messenger.WEB.Logger;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc.Authorization;
+using System.Reflection;
+using System.IO;
+using System;
 
 namespace Messenger.WEB
 {
@@ -85,8 +73,8 @@ namespace Messenger.WEB
 
             services.AddJwtToken(Configuration);
             services.AddDistributedMemoryCache();
-          
-            services.AddControllers().AddJsonOptions(x => x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve);
+
+            services.AddControllers();
             services.AddHttpContextAccessor();
 
             services.AddSignalR();
@@ -119,6 +107,8 @@ namespace Messenger.WEB
                         new string[] { }
                     }
                 });
+                var xmlFilename = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                c.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
             });
         }
 

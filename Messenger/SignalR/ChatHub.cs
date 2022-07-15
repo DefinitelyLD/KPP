@@ -1,9 +1,5 @@
-﻿using Messenger.BLL.Messages;
-using Messenger.WEB.SignalR.Models;
-using Microsoft.AspNetCore.Http;
+﻿using Messenger.WEB.SignalR.Models;
 using Microsoft.AspNetCore.SignalR;
-using System;
-using System.Threading.Tasks;
 
 namespace Messenger.WEB.SignalR
 {

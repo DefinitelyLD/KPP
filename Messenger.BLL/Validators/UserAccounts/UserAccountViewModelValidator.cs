@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using FluentValidation;
+﻿using FluentValidation;
 using Messenger.BLL.UserAccounts;
 
 namespace Messenger.BLL.Validators.UserAccounts
@@ -13,6 +8,7 @@ namespace Messenger.BLL.Validators.UserAccounts
         public UserAccountViewModelValidator() 
         {
             RuleFor(x => x.Id).NotNull();
+            RuleFor(x => x.ChatId).NotNull();
             RuleFor(x => x.User).NotNull();
         }
     }

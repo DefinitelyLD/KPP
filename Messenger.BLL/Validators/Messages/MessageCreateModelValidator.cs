@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using FluentValidation;
+﻿using FluentValidation;
 using Messenger.BLL.Messages;
 
 namespace Messenger.BLL.Validators.Messages
@@ -13,7 +8,6 @@ namespace Messenger.BLL.Validators.Messages
         public MessageCreateModelValidator() 
         {
             RuleFor(x => x.ChatId).NotNull();
-            RuleFor(x => x.UserId).NotNull();
             RuleForEach(x => x.Files).SetValidator(new FileValidator());
             RuleFor(x => x.Text).MaximumLength(3000);
         }
