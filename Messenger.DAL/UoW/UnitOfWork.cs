@@ -9,6 +9,7 @@ namespace Messenger.DAL.UoW
     {
         public IUsersRepository Users { get; }
         public IChatsRepository Chats { get; }
+        public IChatImagesRepository ChatImages { get; }
         public IMessagesRepository Messages { get; }
         public IUserAccountsRepository UserAccounts { get; }
         public IMessageImagesRepository MessageImages { get; }
@@ -17,7 +18,8 @@ namespace Messenger.DAL.UoW
 
         public UnitOfWork(AppDbContext context, 
             IUsersRepository usersRepository, 
-            IChatsRepository chatsRepository, 
+            IChatsRepository chatsRepository,
+            IChatImagesRepository chatImagesRepository,
             IMessagesRepository messagesRepository,
             IMessageImagesRepository messageImagesRepository,
             IUserAccountsRepository userAccountsRepository)
@@ -26,6 +28,7 @@ namespace Messenger.DAL.UoW
             Users = usersRepository;
             UserAccounts = userAccountsRepository;
             Chats = chatsRepository;
+            ChatImages = chatImagesRepository;
             Messages = messagesRepository;
             MessageImages = messageImagesRepository;
         }

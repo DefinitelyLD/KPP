@@ -1,5 +1,6 @@
 ﻿using FluentValidation;
 using Messenger.BLL.Chats;
+using Messenger.BLL.Validators.Files;
 
 namespace Messenger.BLL.Validators.Chats
 {
@@ -8,6 +9,7 @@ namespace Messenger.BLL.Validators.Chats
         public ChatCreateModelValidator() 
         {
             RuleFor(x => x.Topic).NotEmpty().MaximumLength(100);
+            RuleFor(x => x.File).SetValidator(new ImageValidator());
         }
     }
 }

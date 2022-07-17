@@ -32,13 +32,10 @@ namespace Messenger.WEB.Controllers
         ///     }
         /// </remarks>
         [HttpPost]
-        public async Task<ActionResult<ChatViewModel>> CreateChatroom([FromBody] ChatCreateModel chat)
+        public async Task<ActionResult<ChatViewModel>> CreateChatroom([FromForm] ChatCreateModel chat)
         {
-            var httpContext = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier);
-            if (httpContext == null)
-                throw new KeyNotFoundException();
+            var userId = GetUserIdFromHttpContext();
 
-            var userId = httpContext.Value;
             return await _chatroomManager.CreateChatroom(chat, userId);
         }
 
@@ -52,7 +49,7 @@ namespace Messenger.WEB.Controllers
         ///     }
         /// </remarks>
         [HttpPut]
-        public async Task<ActionResult<ChatUpdateModel>> EditChatroom([FromBody] ChatUpdateModel chat)
+        public async Task<ActionResult<ChatUpdateModel>> EditChatroom([FromForm] ChatUpdateModel chat)
         {
             var adminId = GetUserIdFromHttpContext();
 

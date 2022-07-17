@@ -9,6 +9,7 @@ namespace Messenger.DAL.UoW
         IUsersRepository Users { get; }
         IUserAccountsRepository UserAccounts { get; }
         IChatsRepository Chats { get; }
+        IChatImagesRepository ChatImages { get; }
         IMessagesRepository Messages { get; }
         IMessageImagesRepository MessageImages { get; }
         public int Save();

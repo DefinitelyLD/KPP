@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Messenger.BLL.ChatImages;
 using Messenger.BLL.Chats;
 using Messenger.BLL.Exceptions;
 using Messenger.BLL.UserAccounts;
@@ -14,19 +15,38 @@ namespace Messenger.BLL.Managers
     {
         private readonly IMapper _mapper;
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IImageManager _imageManager;
 
         public ChatroomManager(IMapper mapper,
-            IUnitOfWork unitOfWork)
+            IUnitOfWork unitOfWork,
+            IImageManager imageManager)
         {
             _mapper = mapper;
             _unitOfWork = unitOfWork;
+            _imageManager = imageManager;
         }
 
         public async Task<ChatViewModel> CreateChatroom(ChatCreateModel chatModel, string userId)
         {
             var chatEntity = _mapper.Map<Chat>(chatModel);
+
             var chatViewModel = _mapper.Map<ChatViewModel>(await _unitOfWork.Chats.CreateAsync(chatEntity));
-            
+
+            var filePath = "/DefaultImage/image.png";
+
+            if (chatModel.File != null)
+            {
+                filePath = await _imageManager.UploadImage(chatModel.File);
+            }
+
+            ChatImage imageEntity = new()
+            {
+                Path = filePath,
+                ChatId = chatViewModel.Id
+            };
+
+            await _unitOfWork.ChatImages.CreateAsync(imageEntity);
+
             UserAccountCreateModel ownerAccountModel = new()
             {
                 ChatId = chatViewModel.Id,
@@ -51,6 +71,14 @@ namespace Messenger.BLL.Managers
                 throw new KeyNotFoundException();
 
             var chatEntity = _mapper.Map<Chat>(chatModel);
+
+            if (chatModel.File != null)
+            {
+                var filePath = await _imageManager.UploadImage(chatModel.File);
+                var chatImageEntity = _unitOfWork.ChatImages.GetAll().Where(u => u.ChatId == chatModel.Id).SingleOrDefault();
+                chatImageEntity.Path = filePath;
+                _unitOfWork.ChatImages.Update(chatImageEntity);
+            }
 
             return _mapper.Map<ChatUpdateModel>(await _unitOfWork.Chats.UpdateAsync(chatEntity));
         }
