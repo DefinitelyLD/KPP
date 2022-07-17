@@ -1,5 +1,6 @@
 ﻿using FluentValidation;
 using Messenger.BLL.Messages;
+using Messenger.BLL.Validators.Files;
 
 namespace Messenger.BLL.Validators.Messages
 {

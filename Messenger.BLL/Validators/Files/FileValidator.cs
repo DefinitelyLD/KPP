@@ -1,7 +1,7 @@
 ﻿using FluentValidation;
 using Microsoft.AspNetCore.Http;
 
-namespace Messenger.BLL.Validators
+namespace Messenger.BLL.Validators.Files
 {
     public class FileValidator : AbstractValidator<IFormFile>
     {
