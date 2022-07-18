@@ -33,15 +33,25 @@ namespace Messenger.BLL.Managers
 
         public async Task<UserViewModel> RegisterUser(UserCreateModel model)
         {
+            var filePath = "/DefaultUserImage/image.png";
+
             User user = _mapper.Map<User>(model);
             var result = await _userManager.CreateAsync(user, model.Password);
             if (!result.Succeeded)
                 throw new BadRequestException("Registration Error");
 
             var userEntity = _unitOfWork.Users.GetAll().Where(x => x.UserName == model.UserName).SingleOrDefault();
-            var userModel = _mapper.Map<UserViewModel>(userEntity);
+            var userViewModel = _mapper.Map<UserViewModel>(userEntity);
 
-            return userModel;
+            UserImage imageEntity = new()
+            {
+                Path = filePath,
+                UserId = userViewModel.Id
+            };
+
+            await _unitOfWork.UserImages.CreateAsync(imageEntity);
+
+            return userViewModel;
         }
 
         public async Task<bool> ConfirmEmail(string userId, string code)
@@ -230,7 +240,7 @@ namespace Messenger.BLL.Managers
                 _unitOfWork.UserImages.Update(userImageEntity);
             }
 
-            var result = _unitOfWork.Users.UpdateAsync(userEntity);
+            var result = _unitOfWork.Users.Update(userEntity);
 
             return _mapper.Map<UserViewModel>(result);
         }
