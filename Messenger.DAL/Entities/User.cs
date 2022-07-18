@@ -13,5 +13,7 @@ namespace Messenger.DAL.Entities
 
         public virtual ICollection<Message> Messages { get; set; }
         public virtual ICollection<UserAccount> Chats { get; set; }
+
+        public virtual UserImage Image { get; set; }
     }
 }

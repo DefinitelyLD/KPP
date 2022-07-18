@@ -17,15 +17,18 @@ namespace Messenger.BLL.Managers
         private readonly IMapper _mapper;
         private readonly ITokenService _tokenService;
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IImageManager _imageManager;
         public AccountManager (UserManager<User> userManager, 
             IMapper mapper, 
             ITokenService tokenService,
-            IUnitOfWork unitOfWork)
+            IUnitOfWork unitOfWork,
+            IImageManager imageManager)
         {
             _userManager = userManager;
             _mapper = mapper;
             _tokenService = tokenService;
             _unitOfWork = unitOfWork;
+            _imageManager = imageManager;
         }
 
         public async Task<UserViewModel> RegisterUser(UserCreateModel model)
@@ -210,7 +213,7 @@ namespace Messenger.BLL.Managers
             return _mapper.Map<UserViewModel>(userEntity);
         }
 
-        public UserViewModel UpdateUser(UserUpdateModel userModel, string userId)
+        public async Task<UserViewModel> UpdateUser(UserUpdateModel userModel, string userId)
         {
             if (userModel.Id != userId)
                 throw new BadRequestException("Wtf man this account ID is not yours.");
@@ -218,7 +221,16 @@ namespace Messenger.BLL.Managers
             var userEntity = _unitOfWork.Users.GetById(userModel.Id);
             userEntity.UserName = userModel.UserName;
             userEntity.Email = userModel.Email;
-            var result = _unitOfWork.Users.Update(userEntity);
+
+            if (userModel.File != null)
+            {
+                var filePath = await _imageManager.UploadImage(userModel.File);
+                var userImageEntity = _unitOfWork.UserImages.GetAll().Where(u => u.UserId == userModel.Id).SingleOrDefault();
+                userImageEntity.Path = filePath;
+                _unitOfWork.UserImages.Update(userImageEntity);
+            }
+
+            var result = _unitOfWork.Users.UpdateAsync(userEntity);
 
             return _mapper.Map<UserViewModel>(result);
         }

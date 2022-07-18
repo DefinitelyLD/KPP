@@ -7,6 +7,7 @@ namespace Messenger.DAL.UoW
     public interface IUnitOfWork : IDisposable
     {
         IUsersRepository Users { get; }
+        IUserImagesRepository UserImages { get; }
         IUserAccountsRepository UserAccounts { get; }
         IChatsRepository Chats { get; }
         IChatImagesRepository ChatImages { get; }

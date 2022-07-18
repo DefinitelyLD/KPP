@@ -11,6 +11,7 @@ namespace Messenger.DAL.Context
         public DbSet<MessageImage> MessageImages { get; set; }
         public DbSet<ChatImage> ChatImages { get; set; }
         public DbSet<UserAccount> UserAccounts { get; set; }
+        public DbSet<UserImage> UserImages { get; set; }
         public AppDbContext(DbContextOptions<AppDbContext> options)
             : base(options) {}
 
