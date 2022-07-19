@@ -210,11 +210,11 @@ namespace Messenger.WEB.Controllers
         ///     }
         /// </remarks>
         [HttpPut]
-        public UserViewModel UpdateUser([FromBody] UserUpdateModel userModel)
+        public async Task<ActionResult<UserViewModel>> UpdateUser([FromForm] UserUpdateModel userModel)
         {
             var userId = GetUserIdFromHttpContext();
             
-            return _accountManager.UpdateUser(userModel, userId);
+            return await _accountManager.UpdateUser(userModel, userId);
         }
 
         [HttpGet]

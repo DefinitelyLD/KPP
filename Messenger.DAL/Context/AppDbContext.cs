@@ -18,6 +18,8 @@ namespace Messenger.DAL.Context
 
         public DbSet<UserAccount> UserAccounts { get; set; }
 
+        public DbSet<UserImage> UserImages { get; set; }
+
         #endregion
 
         public AppDbContext(DbContextOptions<AppDbContext> options)
