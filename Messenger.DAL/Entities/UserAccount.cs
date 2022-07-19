@@ -1,6 +1,6 @@
 ﻿namespace Messenger.DAL.Entities
 {
-    public class UserAccount: BaseEntity<int>
+    public class UserAccount : BaseEntity<int>
     {
         public int ChatId { get; set; }
         public virtual Chat Chat { get; set; }

@@ -10,6 +10,7 @@ namespace Messenger.Mapping
             services.AddAutoMapper(typeof(UserProfile));
             services.AddAutoMapper(typeof(MessageProfile));
             services.AddAutoMapper(typeof(ChatProfile));
+            services.AddAutoMapper(typeof(UserImageProfile));
 
             return services;
         }
