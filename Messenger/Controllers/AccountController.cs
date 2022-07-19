@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Messenger.BLL.Managers.Interfaces;
+using Messenger.WEB.Roles;
 
 namespace Messenger.WEB.Controllers
 {
@@ -224,9 +225,16 @@ namespace Messenger.WEB.Controllers
             return _accountManager.GetCurrentUser(userId);
         }
 
+        [HttpGet]
+        [Authorize(Roles = RolesConstants.Admin)]
+        public string TestAdmin()
+        {
+            return "123";
+        }
+
         private string GetUserIdFromHttpContext()
         {
-            var httpContext = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier);
+            var httpContext = User.FindFirst(ClaimTypes.NameIdentifier);
             if (httpContext == null)
                 throw new KeyNotFoundException();
             

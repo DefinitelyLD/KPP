@@ -1,9 +1,10 @@
 ﻿using Messenger.DAL.Entities;
+using System.Threading.Tasks;
 
 namespace Messenger.BLL.Token
 {
     public interface ITokenService
     {
-        string BuildToken(User user);
+        Task<string> BuildTokenAsync(User user);
     }
 }

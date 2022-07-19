@@ -11,6 +11,7 @@ namespace Messenger.BLL.Token
         public static IServiceCollection AddJwtToken(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddScoped<ITokenService, TokenService>();
+            services.AddAuthorization();
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                     .AddJwtBearer(options =>
                     {
