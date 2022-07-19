@@ -208,7 +208,7 @@ namespace Messenger.WEB.Controllers
         ///        "email": "stephannazarkin@gmail.com"
         ///     }
         /// </remarks>
-        [HttpPost]
+        [HttpPut]
         public async Task<ActionResult<UserViewModel>> UpdateUser([FromForm] UserUpdateModel userModel)
         {
             var userId = GetUserIdFromHttpContext();
