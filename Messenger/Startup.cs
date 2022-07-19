@@ -21,6 +21,7 @@ using Microsoft.AspNetCore.Mvc.Authorization;
 using System.Reflection;
 using System.IO;
 using System;
+using Messenger.DAL.UoW;
 
 namespace Messenger.WEB
 {
@@ -36,9 +37,15 @@ namespace Messenger.WEB
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddRepository(Configuration);
-            services.AddMappers();
-            services.AddManagers();
+            services.AddCors(o => o.AddPolicy("CorsPolicy", builder => {
+                builder
+                .AllowAnyMethod()
+                .AllowAnyHeader()
+                .AllowCredentials()
+                .WithOrigins("http://localhost:4200")
+                .WithOrigins("https://localhost:44309")
+                .WithOrigins("https://localhost:44389");
+            }));
 
             services.AddMvcCore(options =>
             {
@@ -46,21 +53,14 @@ namespace Messenger.WEB
                     .RequireAuthenticatedUser().Build();
                 options.Filters.Add(new AuthorizeFilter(police));
             });
-
-            services.AddCors(o => o.AddPolicy("CorsPolicy", builder => {
-                builder
-                .AllowAnyMethod()
-                .AllowAnyHeader()
-                .AllowCredentials()
-                .WithOrigins("http://localhost:4200");
-            }));
+            services.AddRepository(Configuration);
 
             var builder = services.AddIdentityCore<User>()
+                .AddRoles<IdentityRole>()
+                .AddEntityFrameworkStores<AppDbContext>()
+                .AddSignInManager<SignInManager<User>>()
                 .AddTokenProvider<DataProtectorTokenProvider<User>>(TokenOptions.DefaultProvider);
-            var identityBuilder = new IdentityBuilder(builder.UserType, builder.Services);
-            identityBuilder.AddEntityFrameworkStores<AppDbContext>();
-            identityBuilder.AddSignInManager<SignInManager<User>>();
-            identityBuilder.Services.Configure<IdentityOptions>(opt =>
+            builder.Services.Configure<IdentityOptions>(opt =>
             {
                 opt.Password.RequireNonAlphanumeric = false;
                 opt.Password.RequireLowercase = false;
@@ -68,17 +68,13 @@ namespace Messenger.WEB
                 opt.Password.RequireDigit = false;
             });
 
+            services.AddJwtToken(Configuration); // Authorization
+            services.AddMappers();
+            services.AddManagers();
             services.AddHttpContextAccessor();
-
-
-            services.AddJwtToken(Configuration);
             services.AddDistributedMemoryCache();
-
             services.AddControllers();
-            services.AddHttpContextAccessor();
-
             services.AddSignalR();
-
             services.AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<UserAccountCreateModelValidator>());
 
             services.AddSwaggerGen(c =>
@@ -113,18 +109,26 @@ namespace Messenger.WEB
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env,
+            RoleManager<IdentityRole> roleManager, UserManager<User> userManager, IUnitOfWork unitOfWork)
         {
+            ContextSeeder.SeedRoles(roleManager);
+            ContextSeeder.SeedUsers(Configuration, userManager, unitOfWork);
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Messenger v1"));
             }
-            app.UseAuthentication();
+
+            app.UseHttpsRedirection();
             app.UseRouting();
-            app.UseStaticFiles();
             app.UseCors("CorsPolicy");
+
+            app.UseAuthentication();
+            app.UseAuthorization();
+            app.UseStaticFiles();
             app.UseMiddleware<ErrorHandlerMiddleware>();
 
             app.UseEndpoints(endpoints =>

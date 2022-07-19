@@ -6,12 +6,22 @@ namespace Messenger.DAL.Context
 {
     public class AppDbContext : IdentityDbContext<User>
     {
+        #region DbSets
+
         public DbSet<Chat> Chats { get; set; }
+
         public DbSet<Message> Messages { get; set; }
+
         public DbSet<MessageImage> MessageImages { get; set; }
+
         public DbSet<ChatImage> ChatImages { get; set; }
+
         public DbSet<UserAccount> UserAccounts { get; set; }
+
         public DbSet<UserImage> UserImages { get; set; }
+
+        #endregion
+
         public AppDbContext(DbContextOptions<AppDbContext> options)
             : base(options) {}
 

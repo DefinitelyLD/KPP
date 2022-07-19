@@ -39,6 +39,7 @@ namespace Messenger.BLL.Managers
             var result = await _userManager.CreateAsync(user, model.Password);
             if (!result.Succeeded)
                 throw new BadRequestException("Registration Error");
+            await _userManager.AddToRoleAsync(user, "User");
 
             var userEntity = _unitOfWork.Users.GetAll().Where(x => x.UserName == model.UserName).SingleOrDefault();
             var userViewModel = _mapper.Map<UserViewModel>(userEntity);
@@ -76,7 +77,7 @@ namespace Messenger.BLL.Managers
                 throw new BadRequestException("Incorrect Password");
 
             var userModel = _mapper.Map<UserViewModel>(userEntity);
-            userModel.Token = GenerateToken(userEntity);
+            userModel.Token = await GenerateToken(userEntity);
 
             return userModel;
         }
@@ -94,9 +95,9 @@ namespace Messenger.BLL.Managers
             return result.Succeeded;
         }
 
-        private string GenerateToken(User user)
+        private async Task<string> GenerateToken(User user)
         {
-            var generatedToken = _tokenService.BuildToken(user);
+            var generatedToken = await _tokenService.BuildTokenAsync(user);
             if (generatedToken == null)
                 throw new BadRequestException("Failed generate token");
 
@@ -247,6 +248,8 @@ namespace Messenger.BLL.Managers
 
         public UserViewModel GetCurrentUser(string userId)
         {
+            var userIdEntity = _userManager.FindByIdAsync(userId).Result;
+            var roles = _userManager.GetRolesAsync(userIdEntity).Result;
             var userEntity = _unitOfWork.Users.GetAll().Where(x => x.Id == userId).SingleOrDefault();
             if (userEntity == null)
                 throw new KeyNotFoundException();
