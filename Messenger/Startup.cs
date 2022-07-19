@@ -21,6 +21,7 @@ using Microsoft.AspNetCore.Mvc.Authorization;
 using System.Reflection;
 using System.IO;
 using System;
+using Messenger.DAL.UoW;
 
 namespace Messenger.WEB
 {
@@ -109,10 +110,10 @@ namespace Messenger.WEB
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env,
-            RoleManager<IdentityRole> roleManager, UserManager<User> userManager)
+            RoleManager<IdentityRole> roleManager, UserManager<User> userManager, IUnitOfWork unitOfWork)
         {
             ContextSeeder.SeedRoles(roleManager);
-            ContextSeeder.SeedUsers(Configuration, userManager);
+            ContextSeeder.SeedUsers(Configuration, userManager, unitOfWork);
 
             if (env.IsDevelopment())
             {

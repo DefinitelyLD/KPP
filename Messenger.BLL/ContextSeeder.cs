@@ -1,4 +1,5 @@
 ﻿using Messenger.DAL.Entities;
+using Messenger.DAL.UoW;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using System;
@@ -19,7 +20,7 @@ namespace Messenger.BLL
             if (!roleManager.RoleExistsAsync("Admin").Result)
                 roleManager.CreateAsync(new IdentityRole("Admin")).Wait();
         }
-        public static void SeedUsers(IConfiguration configuration, UserManager<User> userManager)
+        public static void SeedUsers(IConfiguration configuration, UserManager<User> userManager, IUnitOfWork unitOfWork)
         {
             var mainModeratorEmail = configuration["SuperUser:Email"];
             var mainModeratorName = configuration["SuperUser:UserName"];
@@ -33,6 +34,16 @@ namespace Messenger.BLL
                     Email = mainModeratorEmail,
                     EmailConfirmed = true
                 };
+
+                var filePath = "/DefaultUserImage/image.png";
+
+                UserImage imageEntity = new()
+                {
+                    Path = filePath,
+                    UserId = user.Id
+                };
+
+                unitOfWork.UserImages.CreateAsync(imageEntity);
 
                 userManager.CreateAsync(user, configuration["SuperUser:Password"]).Wait();
                 userManager.AddToRoleAsync(user, "Admin").Wait();
