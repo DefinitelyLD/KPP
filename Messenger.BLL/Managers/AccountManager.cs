@@ -71,8 +71,6 @@ namespace Messenger.BLL.Managers
                 throw new BadRequestException("This username is not registered");
             if (!await _userManager.IsEmailConfirmedAsync(userEntity))
                 throw new BadRequestException("Email is not confirmed");
-            if (userEntity == null)
-                throw new BadRequestException("Login error");
             if (!await _userManager.CheckPasswordAsync(userEntity, model.Password))
                 throw new BadRequestException("Incorrect Password");
 

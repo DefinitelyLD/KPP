@@ -17,5 +17,7 @@ namespace Messenger.DAL.Entities
         public virtual ChatImage Image { get; set; }
 
         public bool IsDeleted { get; set; } = false;
+
+        public bool IsAdminsRoom { get; set; } = false;
     }
 }
