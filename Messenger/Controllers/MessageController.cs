@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Http;
 using System.Threading.Tasks;
 using System.Security.Claims;
 using System;
+using Microsoft.AspNetCore.Authorization;
+using Messenger.WEB.Roles;
 
 namespace Messenger.WEB.Controllers
 {
@@ -42,6 +44,14 @@ namespace Messenger.WEB.Controllers
             return await _messageManager.SendMessage(messageModel, userId);
         }
 
+        [HttpPost]
+        [Authorize(Roles = RolesConstants.Admin)]
+        public async Task<ActionResult<MessageViewModel>> SendAdminsMessage([FromForm] MessageCreateModel messageModel)
+        {
+            var userId = GetUserIdFromHttpContext();
+            return await _messageManager.SendAdminsMessage(messageModel, userId);
+        }
+
         /// <remarks>
         /// Sample request:
         ///
@@ -61,7 +71,6 @@ namespace Messenger.WEB.Controllers
             return await _messageManager.EditMessage(messageModel, userId);
 
         }
-
 
         /// <remarks>
         /// Sample request:
