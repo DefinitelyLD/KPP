@@ -41,7 +41,7 @@ namespace Messenger.BLL.Managers
             }
 
             var messageEntity = _mapper.Map<Message>(messageModel);
-            var chatEntity = messageEntity.Chat;
+            var chatEntity = userAccountEntity.Chat;
 
             if (chatEntity.IsAdminsRoom == true)
             {
