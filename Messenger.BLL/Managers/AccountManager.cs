@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Messenger.BLL.Exceptions;
+using Messenger.BLL.Managers.Interfaces;
 using Messenger.BLL.Token;
 using Messenger.BLL.Users;
 using Messenger.DAL.Entities;
@@ -18,17 +19,20 @@ namespace Messenger.BLL.Managers
         private readonly ITokenService _tokenService;
         private readonly IUnitOfWork _unitOfWork;
         private readonly IImageManager _imageManager;
+        private readonly IActionLogManager _logger;
         public AccountManager (UserManager<User> userManager, 
             IMapper mapper, 
             ITokenService tokenService,
             IUnitOfWork unitOfWork,
-            IImageManager imageManager)
+            IImageManager imageManager,
+            IActionLogManager actionLogManager)
         {
             _userManager = userManager;
             _mapper = mapper;
             _tokenService = tokenService;
             _unitOfWork = unitOfWork;
             _imageManager = imageManager;
+            _logger = actionLogManager;
         }
 
         public async Task<UserViewModel> RegisterUser(UserCreateModel model)
@@ -51,6 +55,7 @@ namespace Messenger.BLL.Managers
             };
 
             await _unitOfWork.UserImages.CreateAsync(imageEntity);
+            await _logger.CreateLog("Registered", userEntity.Id);
 
             return userViewModel;
         }
@@ -59,6 +64,8 @@ namespace Messenger.BLL.Managers
         {
             var user = await _userManager.FindByIdAsync(userId);
             var result = await _userManager.ConfirmEmailAsync(user, code);
+
+            await _logger.CreateLog("Confirmed Email", user.Id);
 
             return result.Succeeded;
         }
@@ -89,6 +96,8 @@ namespace Messenger.BLL.Managers
             if (user == null)
                 throw new KeyNotFoundException();
             var result = await _userManager.ChangePasswordAsync(user, model.OldPassword, model.NewPassword);
+
+            await _logger.CreateLog("Changed Password", user.Id);
 
             return result.Succeeded;
         }
@@ -241,7 +250,16 @@ namespace Messenger.BLL.Managers
 
             var result = _unitOfWork.Users.Update(userEntity);
 
+            await _logger.CreateLog("Updated Profile", userEntity.Id);
+
             return _mapper.Map<UserViewModel>(result);
+        }
+
+        public async Task<bool> IsUserSuperAdmin(string userId)
+        {
+            var user = await _userManager.FindByIdAsync(userId);
+
+            return await _userManager.IsInRoleAsync(user, "Admin");
         }
 
         public UserViewModel GetCurrentUser(string userId)

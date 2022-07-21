@@ -2,6 +2,7 @@
 using Messenger.BLL.ChatImages;
 using Messenger.BLL.Chats;
 using Messenger.BLL.Exceptions;
+using Messenger.BLL.Managers.Interfaces;
 using Messenger.BLL.UserAccounts;
 using Messenger.DAL.Entities;
 using Messenger.DAL.UoW;
@@ -16,14 +17,17 @@ namespace Messenger.BLL.Managers
         private readonly IMapper _mapper;
         private readonly IUnitOfWork _unitOfWork;
         private readonly IImageManager _imageManager;
+        private readonly IActionLogManager _logger;
 
         public ChatroomManager(IMapper mapper,
             IUnitOfWork unitOfWork,
-            IImageManager imageManager)
+            IImageManager imageManager,
+            IActionLogManager actionLogManager)
         {
             _mapper = mapper;
             _unitOfWork = unitOfWork;
             _imageManager = imageManager;
+            _logger = actionLogManager;
         }
 
         public async Task<ChatViewModel> CreateChatroom(ChatCreateModel chatModel, string userId)
@@ -55,7 +59,10 @@ namespace Messenger.BLL.Managers
                 IsAdmin = true
             };
             var ownerAccountEntity = _mapper.Map<UserAccount>(ownerAccountModel);
-            await _unitOfWork.UserAccounts.CreateAsync(ownerAccountEntity);
+
+            var resultEntity = await _unitOfWork.UserAccounts.CreateAsync(ownerAccountEntity);
+
+            await _logger.CreateLog("Chat Created", userId);
 
             return chatViewModel;
         }

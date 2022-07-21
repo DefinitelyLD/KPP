@@ -13,6 +13,7 @@ namespace Messenger.BLL
             services.AddTransient<IChatroomManager, ChatroomManager>();
             services.AddTransient<IImageManager, ImageManager>();
             services.AddTransient<IEmailManager, EmailManager>();
+            services.AddTransient<IActionLogManager, ActionLogManager>();
 
             return services;
         }

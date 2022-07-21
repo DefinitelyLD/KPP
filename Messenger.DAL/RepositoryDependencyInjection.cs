@@ -19,6 +19,7 @@ namespace Messenger.DAL
             services.AddTransient<IUsersRepository, UsersRepository>();
             services.AddTransient<IUserImagesRepository, UserImagesRepository>();
             services.AddTransient<IUserAccountsRepository, UserAccountsRepository>();
+            services.AddTransient<IActionLogsRepository, ActionLogsRepository>();
 
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 
