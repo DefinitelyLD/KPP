@@ -7,15 +7,29 @@ namespace Messenger.DAL.UoW
 {
     public class UnitOfWork : IUnitOfWork
     {
+        private readonly AppDbContext _context;
+
+        #region Properties
+
         public IUsersRepository Users { get; }
+
         public IUserImagesRepository UserImages { get; }
+
         public IChatsRepository Chats { get; }
+
         public IChatImagesRepository ChatImages { get; }
+
         public IMessagesRepository Messages { get; }
+
         public IUserAccountsRepository UserAccounts { get; }
+
         public IMessageImagesRepository MessageImages { get; }
 
-        private readonly AppDbContext _context;
+        public IActionLogsRepository ActionLogs { get; }
+
+        #endregion
+
+        #region Constructor
 
         public UnitOfWork(AppDbContext context, 
             IUsersRepository usersRepository, 
@@ -24,7 +38,8 @@ namespace Messenger.DAL.UoW
             IChatImagesRepository chatImagesRepository,
             IMessagesRepository messagesRepository,
             IMessageImagesRepository messageImagesRepository,
-            IUserAccountsRepository userAccountsRepository)
+            IUserAccountsRepository userAccountsRepository,
+            IActionLogsRepository actionLogsRepository)
         {
             _context = context;
             Users = usersRepository;
@@ -34,20 +49,27 @@ namespace Messenger.DAL.UoW
             ChatImages = chatImagesRepository;
             Messages = messagesRepository;
             MessageImages = messageImagesRepository;
+            ActionLogs = actionLogsRepository;
         }
+
+        #endregion
+
         public int Save()
         {
             return _context.SaveChanges();
         }
+
         public async Task<int> SaveAsync()
         {
             return await _context.SaveChangesAsync();
         }
+
         public void Dispose()
         {
             Dispose(true);
             GC.SuppressFinalize(this);
         }
+
         protected virtual void Dispose(bool disposing)
         {
             if (disposing)

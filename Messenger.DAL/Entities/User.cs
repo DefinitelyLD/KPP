@@ -12,7 +12,10 @@ namespace Messenger.DAL.Entities
         public virtual ICollection<User> BlockedUsersFrom { get; set; }
 
         public virtual ICollection<Message> Messages { get; set; }
+
         public virtual ICollection<UserAccount> Chats { get; set; }
+
+        public virtual ICollection<ActionLog> ActionLogs { get; set; }
 
         public virtual UserImage Image { get; set; }
     }

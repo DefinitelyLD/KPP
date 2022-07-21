@@ -229,7 +229,15 @@ namespace Messenger.WEB.Controllers
         [Authorize(Roles = RolesConstants.Admin)]
         public string TestAdmin()
         {
-            return "123";
+            return "You have role Admin";
+        }
+
+        [HttpGet]
+        public Task<bool> IsUserSuperAdmin()
+        {
+            var userId = GetUserIdFromHttpContext();
+
+            return _accountManager.IsUserSuperAdmin(userId);
         }
 
         private string GetUserIdFromHttpContext()

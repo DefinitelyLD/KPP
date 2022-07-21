@@ -12,14 +12,18 @@ namespace Messenger.BLL
 {
     public static class ContextSeeder
     {
+        private const string User = "User";
+        private const string Admin = "Admin";
+
         public static void SeedRoles(RoleManager<IdentityRole> roleManager)
         {
-            if (!roleManager.RoleExistsAsync("User").Result)
-                roleManager.CreateAsync(new IdentityRole("User")).Wait();
+            if (!roleManager.RoleExistsAsync(User).Result)
+                roleManager.CreateAsync(new IdentityRole(User)).Wait();
 
-            if (!roleManager.RoleExistsAsync("Admin").Result)
-                roleManager.CreateAsync(new IdentityRole("Admin")).Wait();
+            if (!roleManager.RoleExistsAsync(Admin).Result)
+                roleManager.CreateAsync(new IdentityRole(Admin)).Wait();
         }
+
         public static void SeedUsers(IConfiguration configuration, UserManager<User> userManager, IUnitOfWork unitOfWork)
         {
             var mainModeratorEmail = configuration["SuperUser:Email"];
@@ -46,7 +50,7 @@ namespace Messenger.BLL
                 unitOfWork.UserImages.CreateAsync(imageEntity);
 
                 userManager.CreateAsync(user, configuration["SuperUser:Password"]).Wait();
-                userManager.AddToRoleAsync(user, "Admin").Wait();
+                userManager.AddToRoleAsync(user, Admin).Wait();
             }
         }
     }
