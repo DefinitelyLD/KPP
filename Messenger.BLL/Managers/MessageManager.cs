@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Messenger.BLL.Exceptions;
 using Messenger.BLL.MessageImages;
 using Messenger.BLL.Messages;
 using Messenger.DAL.Entities;
@@ -35,7 +36,56 @@ namespace Messenger.BLL.Managers
                 .SingleOrDefault();
 
             if (userAccountEntity == null)
+            {
                 throw new KeyNotFoundException();
+            }
+
+            var messageEntity = _mapper.Map<Message>(messageModel);
+            var chatEntity = messageEntity.Chat;
+
+            if (chatEntity.IsAdminsRoom == true)
+            {
+                throw new NotAllowedException("You are not allowed to send messages in this room.");
+            }
+
+            messageEntity.UserId = userId;
+            var messageViewModel = _mapper.Map<MessageViewModel>
+                (await _unitOfWork.Messages.CreateAsync(messageEntity));
+
+            var imageViewModelCollection = new List<MessageImageViewModel>();
+
+            if (messageModel.Files != null)
+            {
+                foreach (var file in messageModel.Files)
+                {
+                    var filePath = await _imageManager.UploadImage(file);
+
+                    MessageImageCreateModel imageModel = new()
+                    {
+                        Path = filePath,
+                        MessageId = messageViewModel.Id
+                    };
+                    var messageImageEntity = _mapper.Map<MessageImage>(imageModel);
+                    imageViewModelCollection.Add(_mapper.Map<MessageImageViewModel>(messageImageEntity));
+                    await _unitOfWork.MessageImages.CreateAsync(messageImageEntity);
+                }
+            }
+            messageViewModel.Images = imageViewModelCollection;
+
+            return messageViewModel;
+        }
+
+        public async Task<MessageViewModel> SendAdminsMessage(MessageCreateModel messageModel, string userId)
+        {
+            var userAccountEntity = _unitOfWork.UserAccounts
+                .GetAll()
+                .Where(u => u.User.Id == userId && !u.IsBanned && u.ChatId == messageModel.ChatId)
+                .SingleOrDefault();
+
+            if (userAccountEntity == null)
+            {
+                throw new KeyNotFoundException();
+            }
 
             var messageEntity = _mapper.Map<Message>(messageModel);
             messageEntity.UserId = userId;
