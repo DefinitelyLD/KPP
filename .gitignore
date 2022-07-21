@@ -4,8 +4,8 @@
 ## Get latest from https://github.com/github/gitignore/blob/main/VisualStudio.gitignore
 
 # Default Images
-wwwroot/DefaultImage
-wwwroot/DefaultUserImage
+wwwroot/DefaultImage/*
+wwwroot/DefaultUserImage/*
 
 # User-specific files
 *.rsuser
