@@ -21,8 +21,7 @@ namespace Messenger.WEB.Controllers
         }
         
         [HttpGet]
-        //[Authorize(Roles = RolesConstants.Admin)]
-        [AllowAnonymous]
+        [Authorize(Roles = RolesConstants.Admin)]
         public IEnumerable<ActionLogViewModel> GetAllLogs(DateTime? date = null, string userId = null)
         {
             return _logger.GetAllLogs(date, userId);
