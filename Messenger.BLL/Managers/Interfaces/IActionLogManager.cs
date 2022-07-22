@@ -11,6 +11,6 @@ namespace Messenger.BLL.Managers.Interfaces
     public interface IActionLogManager
     {
         public Task<ActionLogViewModel> CreateLog(string ActionName, string userId);
-        public IEnumerable<ActionLogViewModel> GetAllLogs(DateTime? date = null);
+        public IEnumerable<ActionLogViewModel> GetAllLogs(DateTime? date = null, string userId = null);
     }
 }

@@ -41,8 +41,12 @@ namespace Messenger.BLL.Managers
 
             User user = _mapper.Map<User>(model);
             var result = await _userManager.CreateAsync(user, model.Password);
+
             if (!result.Succeeded)
+            {
                 throw new BadRequestException("Registration Error");
+            }
+                
             await _userManager.AddToRoleAsync(user, "User");
 
             var userEntity = _unitOfWork.Users.GetAll().Where(x => x.UserName == model.UserName).SingleOrDefault();
@@ -90,11 +94,17 @@ namespace Messenger.BLL.Managers
         public async Task<bool> ChangeUserPassword(UserChangePasswordModel model, string userId)
         {
             if (model.Id != userId)
-                throw new BadRequestException("Wtf man this account ID is not yours.");
+            {
+                throw new BadRequestException("man this account ID is not yours.");
+            } 
 
             var user = await _userManager.FindByIdAsync(model.Id);
+
             if (user == null)
+            {
                 throw new KeyNotFoundException();
+            }
+                
             var result = await _userManager.ChangePasswordAsync(user, model.OldPassword, model.NewPassword);
 
             await _logger.CreateLog("Changed Password", user.Id);
@@ -234,7 +244,9 @@ namespace Messenger.BLL.Managers
         public async Task<UserViewModel> UpdateUser(UserUpdateModel userModel, string userId)
         {
             if (userModel.Id != userId)
-                throw new BadRequestException("Wtf man this account ID is not yours.");
+            {
+                throw new BadRequestException("man this account ID is not yours.");
+            }
 
             var userEntity = _unitOfWork.Users.GetById(userModel.Id);
             userEntity.UserName = userModel.UserName;
