@@ -37,11 +37,13 @@ namespace Messenger.BLL.Managers
             return model;
         }
 
-        public IEnumerable<ActionLogViewModel> GetAllLogs(DateTime? date = null)
+        public IEnumerable<ActionLogViewModel> GetAllLogs(DateTime? date = null, string userId = null)
         {
             var logEntityList = _unitOfWork.ActionLogs
                 .GetAll()
-                .Where(u => (date == null || u.Time.Date == date.Value.Date))
+                .Where(u => (date == null || u.Time.Date == date.Value.Date) && 
+                (string.IsNullOrEmpty(userId) || u.UserId == userId))
+                .OrderByDescending(d => d.Time)
                 .ToList();
 
             var logModelList = _mapper.Map<IEnumerable<ActionLogViewModel>>(logEntityList);
