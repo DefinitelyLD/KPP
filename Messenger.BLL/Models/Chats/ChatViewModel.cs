@@ -16,5 +16,7 @@ namespace Messenger.BLL.Chats
         public ICollection<MessageViewModel> Messages { get; set; }
 
         public ICollection<UserAccountViewModel> Users { get; set; }
+
+        public bool IsAdminsRoom { get; set; }
     }
 }
