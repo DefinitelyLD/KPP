@@ -97,10 +97,7 @@ namespace Messenger.BLL.Managers
             var ownerAccountEntity = _mapper.Map<UserAccount>(ownerAccountModel);
             await _unitOfWork.UserAccounts.CreateAsync(ownerAccountEntity);
 
-            foreach (var user in userEntityList)
-            {
-                AddToChatroom(user.Id, chatEntity.Id, userId);
-            }
+            userEntityList.ForEach(user => AddToChatroom(user.Id, chatEntity.Id, userId));
 
             return chatViewModel;
         }
