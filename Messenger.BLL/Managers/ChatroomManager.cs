@@ -70,13 +70,10 @@ namespace Messenger.BLL.Managers
         public async Task<ChatViewModel> CreateAdminsChatroom(ChatCreateModel chatModel, string userId)
         {
             var chatEntity = _mapper.Map<Chat>(chatModel);
-
             chatEntity.IsAdminsRoom = true;
-
             var chatViewModel = _mapper.Map<ChatViewModel>(await _unitOfWork.Chats.CreateAsync(chatEntity));
-
             var filePath = "/DefaultImage/adminsRoom.png";
-
+            var userEntityList = _unitOfWork.Users.GetAll().ToList();
             if (chatModel.File != null)
             {
                 filePath = await _imageManager.UploadImage(chatModel.File);
@@ -99,6 +96,8 @@ namespace Messenger.BLL.Managers
             };
             var ownerAccountEntity = _mapper.Map<UserAccount>(ownerAccountModel);
             await _unitOfWork.UserAccounts.CreateAsync(ownerAccountEntity);
+
+            userEntityList.ForEach(user => AddToChatroom(user.Id, chatEntity.Id, userId));
 
             return chatViewModel;
         }
