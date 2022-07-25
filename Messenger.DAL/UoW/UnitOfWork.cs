@@ -1,5 +1,7 @@
 ﻿using Messenger.DAL.Context;
+using Messenger.DAL.Repositories;
 using Messenger.DAL.Repositories.Interfaces;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Threading.Tasks;
 
@@ -9,47 +11,116 @@ namespace Messenger.DAL.UoW
     {
         private readonly AppDbContext _context;
 
-        #region Properties
+        #region Fields
 
-        public IUsersRepository Users { get; }
-
-        public IUserImagesRepository UserImages { get; }
-
-        public IChatsRepository Chats { get; }
-
-        public IChatImagesRepository ChatImages { get; }
-
-        public IMessagesRepository Messages { get; }
-
-        public IUserAccountsRepository UserAccounts { get; }
-
-        public IMessageImagesRepository MessageImages { get; }
-
-        public IActionLogsRepository ActionLogs { get; }
+        private IActionLogsRepository _actionLogsRepository;
+        private IChatImagesRepository _chatImagesRepository;
+        private IChatsRepository _chatsRepository;
+        private IMessageImagesRepository _messageImagesRepository;
+        private IMessagesRepository _messagesRepository;
+        private IUserAccountsRepository _userAccountsRepository;
+        private IUserImagesRepository _userImagesRepository;
+        private IUsersRepository _usersRepository;
 
         #endregion
 
         #region Constructor
 
-        public UnitOfWork(AppDbContext context, 
-            IUsersRepository usersRepository, 
-            IUserImagesRepository userImagesRepository,
-            IChatsRepository chatsRepository,
-            IChatImagesRepository chatImagesRepository,
-            IMessagesRepository messagesRepository,
-            IMessageImagesRepository messageImagesRepository,
-            IUserAccountsRepository userAccountsRepository,
-            IActionLogsRepository actionLogsRepository)
+        public UnitOfWork(DbContextOptions<AppDbContext> contextOptions)
         {
-            _context = context;
-            Users = usersRepository;
-            UserImages = userImagesRepository;
-            UserAccounts = userAccountsRepository;
-            Chats = chatsRepository;
-            ChatImages = chatImagesRepository;
-            Messages = messagesRepository;
-            MessageImages = messageImagesRepository;
-            ActionLogs = actionLogsRepository;
+            _context = new AppDbContext(contextOptions);
+        }
+
+        #endregion
+
+        #region Properties
+
+        public IActionLogsRepository ActionLogs
+        {
+            get
+            {
+                if (_actionLogsRepository == null)
+                    _actionLogsRepository = new ActionLogsRepository(_context);
+
+                return _actionLogsRepository;
+            }
+        }
+
+        public IChatImagesRepository ChatImages
+        {
+            get
+            {
+                if (_chatImagesRepository == null)
+                    _chatImagesRepository = new ChatImagesRepository(_context);
+
+                return _chatImagesRepository;
+            }
+        }
+
+        public IMessageImagesRepository MessageImages
+        {
+            get
+            {
+                if (_messageImagesRepository == null)
+                    _messageImagesRepository = new MessageImagesRepository(_context);
+
+                return _messageImagesRepository;
+            }
+        }
+
+        public IMessagesRepository Messages
+        {
+            get
+            {
+                if (_messagesRepository == null)
+                    _messagesRepository = new MessagesRepository(_context);
+
+                return _messagesRepository;
+            }
+        }
+
+        public IUsersRepository Users
+        {
+            get
+            {
+                if (_usersRepository == null)
+                    _usersRepository = new UsersRepository(_context);
+
+                return _usersRepository;
+            }
+        }
+
+        public IUserAccountsRepository UserAccounts
+        {
+            get
+            {
+                if (_userAccountsRepository == null)
+                    _userAccountsRepository = new UserAccountsRepository(_context);
+
+                return _userAccountsRepository;
+            }
+        }
+
+        public IUserImagesRepository UserImages
+        {
+            get
+            {
+                if (_userImagesRepository == null)
+                    _userImagesRepository = new UserImagesRepository(_context);
+
+                return _userImagesRepository;
+            }
+        }
+
+        public IChatsRepository Chats
+        {
+            get
+            {
+                if (_chatsRepository == null)
+                    _chatsRepository = new ChatsRepository(_context);
+
+                return _chatsRepository;
+            }
         }
 
         #endregion

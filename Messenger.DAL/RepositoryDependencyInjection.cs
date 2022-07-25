@@ -12,15 +12,6 @@ namespace Messenger.DAL
     {
         public static IServiceCollection AddRepository(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddTransient<IMessagesRepository, MessagesRepository>();
-            services.AddTransient<IMessageImagesRepository, MessageImagesRepository>();
-            services.AddTransient<IChatsRepository, ChatsRepository>();
-            services.AddTransient<IChatImagesRepository, ChatImagesRepository>();
-            services.AddTransient<IUsersRepository, UsersRepository>();
-            services.AddTransient<IUserImagesRepository, UserImagesRepository>();
-            services.AddTransient<IUserAccountsRepository, UserAccountsRepository>();
-            services.AddTransient<IActionLogsRepository, ActionLogsRepository>();
-
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 
             services.AddDbContext<AppDbContext>(options =>
