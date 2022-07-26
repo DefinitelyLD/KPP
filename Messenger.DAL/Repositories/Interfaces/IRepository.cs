@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -6,7 +7,7 @@ namespace Messenger.DAL.Repositories.Interfaces
 {
     public interface IRepository<T, TId> : IDisposable where T : class where TId : IComparable<TId>
     {
-        IQueryable<T> GetAll();
+        IEnumerable<T> GetAll();
         T GetById(TId id);
         Task<T> GetByIdAsync(TId id);
         T Create(T entity);
