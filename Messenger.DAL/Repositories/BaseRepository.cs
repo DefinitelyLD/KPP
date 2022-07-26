@@ -52,9 +52,9 @@ namespace Messenger.DAL.Repositories
             return true;
         }
 
-        public virtual IQueryable<T> GetAll()
+        public virtual IEnumerable<T> GetAll()
         {
-            return _dbSet;
+            return _dbSet.ToList();
         }
 
         public virtual T GetById(TId id)
