@@ -255,19 +255,18 @@ namespace Messenger.BLL.Managers
         public async Task<UserAccountViewModel> BanUser(int userAccountId, string adminId)
         {
             var userAccountEntity = _unitOfWork.UserAccounts.GetAll()
-                .Where(u => u.Id == userAccountId)
+                .Where(u => u.Id == userAccountId && !u.IsLeft)
                 .SingleOrDefault();
 
             var adminAccountEntity = _unitOfWork.UserAccounts.GetAll()
                 .Where(u => u.User.Id == adminId &&
-                u.Chat.Id == userAccountEntity.Chat.Id && u.IsAdmin)
+                u.Chat.Id == userAccountEntity.Chat.Id && u.IsAdmin && !u.IsLeft)
                 .SingleOrDefault();
 
             if (adminAccountEntity == null || userAccountEntity == null)
                 throw new KeyNotFoundException();
 
             userAccountEntity.IsBanned = true;
-            userAccountEntity.IsAdmin = false;
 
             return _mapper.Map<UserAccountViewModel>(await _unitOfWork.UserAccounts.UpdateAsync(userAccountEntity));
         }
